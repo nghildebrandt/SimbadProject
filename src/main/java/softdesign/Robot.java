@@ -1,18 +1,26 @@
 package main.java.softdesign;
 
 
+import java.awt.image.BufferedImage;
+
 import javax.vecmath.Vector3d;
 
 import simbad.sim.Agent;
+import simbad.sim.CameraSensor;
 import simbad.sim.RobotFactory;
 
 public class Robot extends Agent {
 
 	private String currentMode;
+	 CameraSensor camera;
+     BufferedImage cameraImage;
 
     public Robot(Vector3d position, String name) {
         super(position, name);
-        
+
+        camera = RobotFactory.addCameraSensor(this);
+        cameraImage = camera.createCompatibleImage();
+
         // Add bumpers
         RobotFactory.addBumperBeltSensor(this, 12);
         // Add sonars
@@ -26,6 +34,7 @@ public class Robot extends Agent {
 
     /** This method is call cyclically (20 times per second) by the simulator engine. */
     public void performBehavior() {
+      camera.copyVisionImage(cameraImage);
         
     	// perform the following actions every 5 virtual seconds
     	if(this.getCounter() % 5 == 0) {
