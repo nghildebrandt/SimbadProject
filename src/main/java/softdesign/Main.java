@@ -1,5 +1,9 @@
 package main.java.softdesign;
 
+import simbad.gui.*;
+import simbad.sim.*;
+import javax.vecmath.Vector3d;
+
 /**
  *
  * Start working on this file
@@ -22,10 +26,10 @@ public class Main {
 	public static void main(String[] args) {
     System.setProperty("j3d.implicitAntialiasing", "true");
     
-    EnvironmentDescription environment = new Environment;
+    EnvironmentDescription environment = new Environment();
     
-    robot robot1 = new robot(new Vector3d(0, 0, 0), "Robot 1");
-    robot robot2 = new robot(new Vector3d(-2, 0, -2), "Robot 2");
+    Robot robot1 = new Robot(new Vector3d(0, 0, 0), "Robot 1");
+    Robot robot2 = new Robot(new Vector3d(-2, 0, -2), "Robot 2");
 
     environment.add(robot1);
     environment.add(robot2);

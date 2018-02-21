@@ -10,8 +10,8 @@ import simbad.sim.Box;
 import simbad.sim.EnvironmentDescription;
 import simbad.sim.Wall;
 
-public class ExampleEnvironment extends EnvironmentDescription {
-	public ExampleEnvironment() {
+public class Environment extends EnvironmentDescription {
+	public Environment() {
 		
 		// turn on the lights
         this.light1IsOn = true;
