@@ -3,6 +3,7 @@ package main.java.softdesign;
 
 import java.awt.image.BufferedImage;
 
+import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
 import simbad.sim.Agent;
@@ -14,9 +15,15 @@ public class Robot extends Agent {
 	private String currentMode;
 	 CameraSensor camera;
      BufferedImage cameraImage;
-
+     Point3d coords = new Point3d();
+     Point3d wall = new Point3d();
+     
+     
     public Robot(Vector3d position, String name) {
         super(position, name);
+        double [] wallArray = {3, 10 , 5};
+        wall = new Point3d(wallArray);
+
 
         camera = RobotFactory.addCameraSensor(this);
         cameraImage = camera.createCompatibleImage();
@@ -35,18 +42,23 @@ public class Robot extends Agent {
     /** This method is call cyclically (20 times per second) by the simulator engine. */
     public void performBehavior() {
       camera.copyVisionImage(cameraImage);
+      
         
     	// perform the following actions every 5 virtual seconds
-    	if(this.getCounter() % 5 == 0) {
+    	if(this.getCounter() % 20 == 0) {
 	    	if(this.collisionDetected()) {
 	    		this.currentMode = "avoidObstacle";
+	    		this.getCoords(coords);
+	    		
+        } else if (coords == wall) {
+          System.out.print("collision Detected");
 	    	} else {
 	    		this.currentMode = "goAround";
 	    	}
 	        
 	    	if(this.currentMode == "goAround") {
 	    		// the robot's speed is always 0.5 m/s
-	            this.setTranslationalVelocity(0.5);
+	            this.setTranslationalVelocity(5);
 	            
 	    		// frequently change orientation
 	            if ((getCounter() % 100) == 0) {

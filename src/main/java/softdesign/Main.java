@@ -2,6 +2,10 @@ package main.java.softdesign;
 
 import simbad.gui.*;
 import simbad.sim.*;
+import simbad.sim.Agent;
+import simbad.sim.EnvironmentDescription;
+import java.util.ArrayList;
+import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
 /**
@@ -22,20 +26,23 @@ import javax.vecmath.Vector3d;
  */
 
 public class Main {
+	 static Point3d coords = new Point3d();
 
-	public static void main(String[] args) {
-    System.setProperty("j3d.implicitAntialiasing", "true");
-    
+  public void start() {
     EnvironmentDescription environment = new Environment();
-    
-    Robot robot1 = new Robot(new Vector3d(0, 0, 0), "Robot 1");
-    Robot robot2 = new Robot(new Vector3d(-2, 0, -2), "Robot 2");
 
-    environment.add(robot1);
-    environment.add(robot2);
+    ArrayList<Agent> swarm = new ArrayList<Agent>();
     
-    // here we create an instance of the whole Simbad simulator and we assign the newly created environment 
-    Simbad frame = new Simbad(environment, false);
-    frame.update(frame.getGraphics());
-	}
+      swarm.add(new Robot(environment.coords(0,1)));
+      swarm.add(new Robot(environment.coords(1,0)));
+  
+    for (Agent robot:swarm)
+      environment.add(robot);
+    
+    new Simbad(environment, false);
+  }
+
+  public static void main(String[] args) {
+	new Main.start();
+  }
 }
