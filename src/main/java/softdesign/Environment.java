@@ -12,7 +12,7 @@ import simbad.sim.Wall;
 
 public class Environment extends EnvironmentDescription {
 	
-	public static final int WORLD_SIZE =  10;
+	public static final int WORLD_SIZE =  32;
 	
 	public Environment() {
     this.light1IsOn = true;
@@ -27,6 +27,9 @@ public class Environment extends EnvironmentDescription {
       return new Vector3d(-y, 0, -x);
   } 
     
+  public int size() {
+	  return WORLD_SIZE;
+  }
   void initializeEnvironment() {    
     Wall w1 = new Wall(new Vector3d(-5, 0, 0), 10, 2, this);
     w1.setColor(new Color3f(Color.BLUE));

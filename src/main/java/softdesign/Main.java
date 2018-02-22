@@ -29,13 +29,26 @@ public class Main {
 	 static Point3d coords = new Point3d();
 
   public void start() {
-    EnvironmentDescription environment = new Environment();
+    Environment environment = new Environment();
 
     ArrayList<Agent> swarm = new ArrayList<Agent>();
-    
-      swarm.add(new Robot(environment.coords(0,1)));
-      swarm.add(new Robot(environment.coords(1,0)));
-  
+
+    if(environment.size() <= 10) {
+      for(int i = 0; i < 2; i ++) {
+        swarm.add(new Robot(environment.coords(0,i), "small"));
+      }
+    } else if (environment.size() > 10 && environment.size() <= 30) {
+        for(int i = 1; i <= 2; i ++) {
+          swarm.add(new Robot(environment.coords(0,i), "medium"));
+          swarm.add(new Robot(environment.coords(-i,0), "medium"));
+        }
+    } else if (environment.size() > 30) {
+      for(int i = 1; i <= 4; i ++) {
+        swarm.add(new Robot(environment.coords(0,i), "large"));
+        swarm.add(new Robot(environment.coords(i,0), "large"));
+      }
+    }
+
     for (Agent robot:swarm)
       environment.add(robot);
     
@@ -43,6 +56,6 @@ public class Main {
   }
 
   public static void main(String[] args) {
-	new Main.start();
+	new Main().start();
   }
 }
