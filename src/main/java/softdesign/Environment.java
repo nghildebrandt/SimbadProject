@@ -12,12 +12,13 @@ import simbad.sim.Wall;
 
 public class Environment extends EnvironmentDescription {
 	
-	public static final int WORLD_SIZE =  32;
+	public static final int WORLD_SIZE =  10;
 	
 	public Environment() {
     this.light1IsOn = true;
     this.light2IsOn = true;
     this.setUsePhysics(true);
+    this.showAxis(true);
     this.setWorldSize(WORLD_SIZE);
     this.initializeEnvironment();
   }
