@@ -26,7 +26,7 @@ import javax.vecmath.Vector3d;
  */
 
 public class Main {
-	 static Point3d coords = new Point3d();
+  static Point3d coords = new Point3d();
 
   public void start() {
     Environment environment = new Environment();
@@ -37,15 +37,15 @@ public class Main {
       for(int i = 0; i < 2; i ++) {
         swarm.add(new Robot(environment.coords(0,i), "small"));
       }
-    } else if (environment.size() > 10 && environment.size() <= 30) {
+    } else if (environment.size() > 10 && environment.size() < 30) {
         for(int i = 1; i <= 2; i ++) {
           swarm.add(new Robot(environment.coords(0,i), "medium"));
           swarm.add(new Robot(environment.coords(-i,0), "medium"));
         }
-    } else if (environment.size() > 30) {
+    } else if (environment.size() >= 30) {
       for(int i = 1; i <= 4; i ++) {
-        swarm.add(new Robot(environment.coords(0,i), "large"));
-        swarm.add(new Robot(environment.coords(i,0), "large"));
+          swarm.add(new Robot(environment.coords(0,i), "large"));
+          swarm.add(new Robot(environment.coords(i,0), "large"));
       }
     }
 
