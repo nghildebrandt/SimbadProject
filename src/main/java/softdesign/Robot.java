@@ -47,37 +47,37 @@ public class Robot extends Agent {
 	}
 
 	public boolean isNearWall() {
-		if (Math.abs(Math.round(coords.x)) == WORLD_SIZE / 2 - 1 | Math.abs(Math.round(coords.z)) == WORLD_SIZE / 2 - 1 )
+		if (Math.abs(Math.round(coords.x)) == WORLD_SIZE / 2 - 1 | Math.abs(Math.round(coords.z)) == WORLD_SIZE / 2 - 1)
 			return true;
 		else
 			return false;
 
 	}
 
-	public double distanceToWall() {
-		return coords.x;
-	}
-
+	
+	
 	public void performBehavior() {
 		camera.copyVisionImage(cameraImage);
 		this.getCoords(coords);
-		boolean turnAway=false;
+		double distX=0, distZ=0;
 		// perform the following actions every 5 virtual seconds
 		if (this.getCounter() % 5 == 0) {
 
 			if (this.isNearWall()) {
-				if(turnAway==false){
-					setRotationalVelocity((Math.PI / 3));
-					turnAway=true;
-				}
-				else{
+				if (Math.abs(coords.getX())<Math.abs(distX) | Math.abs(coords.getZ())<Math.abs(distZ)){
 					setRotationalVelocity(0);
-					turnAway=false;
+				} else {
+					distX=coords.getX();
+					distZ=coords.getZ();
+					setRotationalVelocity((Math.PI / 8));
+					
 				}
-				//this.setTranslationalVelocity(this.getTranslationalVelocity()*2);
+				
+
+				// this.setTranslationalVelocity(this.getTranslationalVelocity()*2);
 			} else {
 				this.setRotationalVelocity(0);
-				//this.setTranslationalVelocity(this.getTranslationalVelocity()/2);
+				// this.setTranslationalVelocity(this.getTranslationalVelocity()/2);
 				if (this.collisionDetected()) {
 					this.currentMode = "avoidObstacle";
 				} else {
