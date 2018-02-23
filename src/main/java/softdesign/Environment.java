@@ -20,17 +20,14 @@ public class Environment extends EnvironmentDescription {
     this.setUsePhysics(true);
     this.showAxis(true);
     this.setWorldSize(WORLD_SIZE);
-    this.initializeEnvironment();
+    this.initializeWalls();
   }
 
   public Vector3d coords(int x, int y) {
       return new Vector3d(-y, 0, -x);
   } 
     
-  public int size() {
-	  return WORLD_SIZE;
-  }
-  void initializeEnvironment() {
+  void initializeWalls() {
 
 	// The walls are now placed at the limit of the world size and the walls
 	// will change in response to the size of the World
@@ -52,16 +49,9 @@ public class Environment extends EnvironmentDescription {
     Wall w4 = new Wall(new Vector3d(0, 0, -WORLD_SIZE / 2), WORLD_SIZE, 2, this);
     w4.setColor(new Color3f(Color.YELLOW));
     add(w4);
-    
-    Wall roomWall1 = new Wall(new Vector3d(2, 0, -3.5), 3, 1, this);
-    roomWall1.setColor(new Color3f(Color.RED));
-    roomWall1.rotate90(1);
-    add(roomWall1);
-    
-    Wall roomWall2 = new Wall(new Vector3d(3.5, 0, -2), 3, 1, this);
-    roomWall2.setColor(new Color3f(Color.YELLOW));
-    add(roomWall2);
-    
+  }
+
+  public void initializeObstacles() {
     Box box1 = new Box(new Vector3d(-3, 0, -3), new Vector3f(1, 1, 1), this);
     box1.setColor(new Color3f(Color.ORANGE));
     add(box1);
@@ -70,5 +60,4 @@ public class Environment extends EnvironmentDescription {
     box2.setColor(new Color3f(Color.ORANGE));
     add(box2);
   }
-    
 }

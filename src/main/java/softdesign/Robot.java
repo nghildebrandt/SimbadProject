@@ -31,22 +31,15 @@ public class Robot extends Agent {
     /** This method is called by the simulator engine on reset. */
   public void initBehavior() {
     try {
-		avoidWalls();
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+		  mapWalls();
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
-    /** This method is call cyclically (20 times per second) by the simulator engine. 
-   * @throws Exception */
-  public void getCoordinates() throws Exception {
-    this.getCoords(coords);
-  }
-
-  public void avoidWalls () throws Exception {
+  public void mapWalls () throws Exception {
     for(int i = 0; i < WORLD_SIZE/2; i++) {
-      System.out.println("i: " + i);
       map.setPoint(i, WORLD_SIZE/2, -1);
       map.setPoint(i, -WORLD_SIZE/2, -1);
       map.setPoint(WORLD_SIZE/2, i, -1);
@@ -54,37 +47,37 @@ public class Robot extends Agent {
     }
   }
 
+  public void avoidWalls () {
+    this.getCoords(coords);
+    if(Math.round(coords.x) == 4) {
+      System.out.println("The wall is near x+");
+      setRotationalVelocity(3.14 /2);
+    } else if (Math.round(coords.x) == -4) {
+      System.out.println("The wall is near x-");
+    } else if (Math.round(coords.z) == -4) {
+      System.out.println("The wall is near z-");
+    } else if (Math.round(coords.x) == -4) {
+      System.out.println("The wall is near x-");
+    }
+  }
+
   public void performBehavior() {
     camera.copyVisionImage(cameraImage);
-
     // perform the following actions every 5 virtual seconds
-    if(this.getCounter() % 20 == 0) {
-      try {
-       avoidWalls();
-      } catch (Exception e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-      if(this.collisionDetected()) {
+    if(this.getCounter() % 5 == 0) {
+      this.getCoords(coords);
+      if(Math.round(coords.x) == 4) {
         this.currentMode = "avoidObstacle";
       } else {
         this.currentMode = "goAround";
       }
-      if(this.currentMode == "goAround") {
-        // the robot's speed is always 0.5 m/s
-      this.setTranslationalVelocity(0.5);
 
-        // frequently change orientation
-    if ((getCounter() % 100) == 0) {
-        setRotationalVelocity(Math.PI / 2 * (0.5 - Math.random()));
-        }  
+      if (this.currentMode == "goAround") {
+        this.setTranslationalVelocity(0.5);
       } else {
-        // don't move
-        this.setTranslationalVelocity(0);
-        // rotate only until obstacle is not there
+        this.setTranslationalVelocity(-1);
         setRotationalVelocity(Math.PI / 2);
       }
     }
-      
   }
 }
