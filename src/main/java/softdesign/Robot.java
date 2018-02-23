@@ -46,10 +46,8 @@ public class Robot extends Agent {
     }
   }
 
-  public void avoidWalls () {
-    do {
-      this.setRotationalVelocity(Math.PI/2);
-    } while(Math.round(coords.x) == 4);
+  public boolean isNearWall() {
+    return Math.round(coords.x) == WORLD_SIZE/2-1;
   }
 
   public void performBehavior() {
