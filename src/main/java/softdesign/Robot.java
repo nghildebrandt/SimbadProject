@@ -3,7 +3,6 @@ package main.java.softdesign;
 import java.awt.image.BufferedImage;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
-
 import simbad.sim.Agent;
 import simbad.sim.CameraSensor;
 import simbad.sim.RobotFactory;
@@ -11,13 +10,13 @@ import simbad.sim.RobotFactory;
 public class Robot extends Agent {
 
   public static final int WORLD_SIZE =  Environment.WORLD_SIZE;
-  private String currentMode;
-  CameraSensor camera;
-  Map map = new Map();
-  BufferedImage cameraImage;
-  Point3d coords = new Point3d();
+    private String currentMode;
+    CameraSensor camera;
+    Map map = new Map();
+    BufferedImage cameraImage;
+    Point3d coords = new Point3d();
 
-  public Robot(Vector3d position, String name) {
+    public Robot(Vector3d position, String name) {
     super(position, name);
     camera = RobotFactory.addCameraSensor(this);
     cameraImage = camera.createCompatibleImage();
@@ -28,10 +27,10 @@ public class Robot extends Agent {
     RobotFactory.addSonarBeltSensor(this, 4);
   }
 
-    /** This method is called by the simulator engine on reset. */
+  /** This method is called by the simulator engine on reset. */
   public void initBehavior() {
     try {
-		  mapWalls();
+      mapWalls();
     } catch (Exception e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -48,34 +47,31 @@ public class Robot extends Agent {
   }
 
   public void avoidWalls () {
-    this.getCoords(coords);
-    if(Math.round(coords.x) == 4) {
-      System.out.println("The wall is near x+");
-      setRotationalVelocity(3.14 /2);
-    } else if (Math.round(coords.x) == -4) {
-      System.out.println("The wall is near x-");
-    } else if (Math.round(coords.z) == -4) {
-      System.out.println("The wall is near z-");
-    } else if (Math.round(coords.x) == -4) {
-      System.out.println("The wall is near x-");
-    }
+    do {
+      this.setRotationalVelocity(Math.PI/2);
+    } while(Math.round(coords.x) == 4);
   }
 
   public void performBehavior() {
     camera.copyVisionImage(cameraImage);
+    this.getCoords(coords);
+
     // perform the following actions every 5 virtual seconds
     if(this.getCounter() % 5 == 0) {
-      this.getCoords(coords);
-      if(Math.round(coords.x) == 4) {
+      if(this.collisionDetected()) {
         this.currentMode = "avoidObstacle";
       } else {
         this.currentMode = "goAround";
-      }
+    }
 
-      if (this.currentMode == "goAround") {
-        this.setTranslationalVelocity(0.5);
-      } else {
-        this.setTranslationalVelocity(-1);
+    if(this.currentMode == "goAround") {
+      this.setTranslationalVelocity(0.5);
+
+      if ((getCounter() % 100) == 0) {
+        setRotationalVelocity(Math.PI / 2 * (0.5 - Math.random()));
+      }
+    } else {
+        this.setTranslationalVelocity(0);
         setRotationalVelocity(Math.PI / 2);
       }
     }
