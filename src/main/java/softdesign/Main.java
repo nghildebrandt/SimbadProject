@@ -13,23 +13,12 @@ public class Main {
 
   public void start() {
     Environment environment = new Environment();
-
-//random change
+    CentralBase centralBase = new CentralBase();
 
     ArrayList<Agent> swarm = new ArrayList<Agent>();
-
+    //use constants for environment size
     if(Environment.WORLD_SIZE <= 10) {
-      swarm.add(new Robot(environment.coords(0,0), "small"));
-    } else if (Environment.WORLD_SIZE > 10 && Environment.WORLD_SIZE < 30) {
-      for(int i = 1; i <= 2; i ++) {
-        swarm.add(new Robot(environment.coords(0,i), "large"));
-        swarm.add(new Robot(environment.coords(i,0), "large"));
-      }
-    } else if (Environment.WORLD_SIZE >= 30) {
-        for(int i = 1; i <= 4; i ++) {
-          swarm.add(new Robot(environment.coords(0,i), "large"));
-          swarm.add(new Robot(environment.coords(i,0), "large"));
-        }
+      swarm.add(new Robot(environment.coords(0,0),"hi", centralBase.sendMap()));
     }
 
     for (Agent robot:swarm)
