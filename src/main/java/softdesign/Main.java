@@ -17,8 +17,8 @@ public class Main {
 
     ArrayList<Agent> swarm = new ArrayList<Agent>();
     //use constants for environment size
-    if(Environment.WORLD_SIZE <= 10) {
-      swarm.add(new Robot(environment.coords(0,0),"hi", centralBase.sendMap()));
+    if(Environment.WORLD_SIZE <= Environment.SMALL) {
+      swarm.add(new Robot(environment.coords(0,0), "small" , centralBase.sendMap()));
     }
 
     for (Agent robot:swarm)

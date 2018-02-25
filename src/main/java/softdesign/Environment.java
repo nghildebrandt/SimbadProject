@@ -5,6 +5,7 @@ import java.awt.Color;
 import javax.vecmath.Color3f;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
+import java.util.concurrent.ThreadLocalRandom;
 
 import simbad.sim.Box;
 import simbad.sim.EnvironmentDescription;
@@ -13,11 +14,13 @@ import simbad.sim.Wall;
 public class Environment extends EnvironmentDescription {
 	
 	public static final int WORLD_SIZE =  10;
+  public static final int OBSTACLES = -1;
+  public static final int SMALL = 10;
+  public static final int LARGE = 30;
 	
 	public Environment() {
     this.light1IsOn = true;
     this.light2IsOn = true;
-    this.setUsePhysics(true);
     this.showAxis(true);
     this.setWorldSize(WORLD_SIZE);
     this.initializeWalls();
@@ -52,12 +55,19 @@ public class Environment extends EnvironmentDescription {
   }
 
   public void initializeObstacles() {
-    Box box1 = new Box(new Vector3d(-3, 0, -3), new Vector3f(1, 1, 1), this);
+    Box box1 = new Box(randomVector(), new Vector3f(1, 1, 1), this);
     box1.setColor(new Color3f(Color.ORANGE));
     add(box1);
     
-    Box box2 = new Box(new Vector3d(-3, 0, 3), new Vector3f(1, 1, 1), this);
+    Box box2 = new Box(randomVector(), new Vector3f(1, 1, 1), this);
     box2.setColor(new Color3f(Color.ORANGE));
     add(box2);
   }
+
+  public Vector3d randomVector() {
+    int randomX = ThreadLocalRandom.current().nextInt(-WORLD_SIZE/2, WORLD_SIZE/2 + 1);
+    int randomY = ThreadLocalRandom.current().nextInt(-WORLD_SIZE/2, WORLD_SIZE/2 + 1);
+    return coords(randomX, randomY);
+  }
+
 }
