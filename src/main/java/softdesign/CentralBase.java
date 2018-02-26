@@ -14,11 +14,15 @@ public class CentralBase {
   }
 
 	public void mapWalls() throws Exception {
-		for (int i = 0; i < world_size/2; i++) {
+		for (int i = 0; i <= world_size/2 ; i++) {
 			map.setPoint(i, world_size/2, WALL);
+			map.setPoint(-i, world_size/2, WALL);
 			map.setPoint(i, -world_size/2, WALL);
+			map.setPoint(-i, -world_size/2, WALL);
 			map.setPoint(world_size/2, i, WALL);
+			map.setPoint(world_size/2, -i, WALL);
 			map.setPoint(-world_size/2, i, WALL);
+			map.setPoint(-world_size/2, -i, WALL);
 		}
 	}
 

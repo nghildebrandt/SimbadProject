@@ -23,14 +23,6 @@ public class Map {
     }
   }
 
-  public void getMap () {
-    for (int i = 0; i < map.length; i++) {
-      for(int j = 0; i < map[i].length; j++) {
-        System.out.print(map[i][j]);
-      }
-    }
-  }
-  
   public int getPoint(int xCoord, int zCoord) throws Exception {
     int x = xCoord - min;
     int z = zCoord - min;
