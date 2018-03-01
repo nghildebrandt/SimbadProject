@@ -7,7 +7,7 @@ public class Map {
   private int world_size = Environment.WORLD_SIZE;
 
   public Map() {
-    this.min = -5;
+    this.min = -world_size/2;
     this.size = world_size + 1;
     map = new int[size][size];
   }
