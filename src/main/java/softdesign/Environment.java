@@ -13,7 +13,7 @@ import simbad.sim.Wall;
 
 public class Environment extends EnvironmentDescription {
 	
-	public static final int WORLD_SIZE =  10;
+	public static final int WORLD_SIZE = 10;
   public static final int SMALL = 10;
   public static final int LARGE = 30;
 	
@@ -23,7 +23,6 @@ public class Environment extends EnvironmentDescription {
     this.showAxis(true);
     this.setWorldSize(WORLD_SIZE);
     this.initializeWalls();
-    this.initializeObstacles();
   }
 
   public Vector3d coords(int x, int y) {

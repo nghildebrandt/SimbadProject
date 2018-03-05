@@ -10,8 +10,12 @@ import simbad.sim.RobotFactory;
 public class Robot extends Agent {
 
 	private String currentMode;
+  public static int UNVISITED = 0;
   private int wall = CentralBase.WALL;
 	CameraSensor camera;
+  CameraSensor camera2;
+  CameraSensor camera3;
+  CameraSensor camera4;
 	Map map = new Map();
 	BufferedImage cameraImage;
 	Point3d coords = new Point3d();
@@ -20,7 +24,13 @@ public class Robot extends Agent {
 		super(position, name);
     this.map = map;
 		camera = RobotFactory.addCameraSensor(this);
+		camera2 = RobotFactory.addCameraSensor(this);
+		camera3 = RobotFactory.addCameraSensor(this);
+		camera4 = RobotFactory.addCameraSensor(this);
 		cameraImage = camera.createCompatibleImage();
+		cameraImage = camera2.createCompatibleImage();
+		cameraImage = camera3.createCompatibleImage();
+		cameraImage = camera4.createCompatibleImage();
 
 		RobotFactory.addBumperBeltSensor(this, 12);
 		RobotFactory.addSonarBeltSensor(this, 4);
@@ -29,10 +39,23 @@ public class Robot extends Agent {
 
 	/** This method is called by the simulator engine on reset. */
 	public void initBehavior() {
+    camera2.rotateY(90);
+    camera3.rotateY(180);
+    camera4.rotateY(270);
 		try {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+  }
+
+  public void hasCovered(Point3d coord) throws Exception {
+    if(isUnvisited(coord)) {
+      camera.copyVisionImage(cameraImage);
+    } else { }
+  }
+  
+  public boolean isUnvisited(Point3d coord) throws Exception {
+    return getValue(coord.x, coord.z) == UNVISITED;
   }
 
 	public boolean isNearWall() throws Exception {
@@ -45,6 +68,7 @@ public class Robot extends Agent {
 
 	public void performBehavior() {
 		camera.copyVisionImage(cameraImage);
+		camera2.copyVisionImage(cameraImage);
 		this.getCoords(coords);
 		// perform the following actions every 5 virtual seconds
 		if (this.getCounter() % 5 == 0) {
@@ -67,7 +91,8 @@ public class Robot extends Agent {
         setRotationalVelocity(Math.PI/2);
       } else {
         this.setTranslationalVelocity(0.5);
-        setRotationalVelocity(Math.PI/2);
+        rotateY(90);
+        System.out.println("rotation" + this.getRotationalVelocity());
       }
     }
   }

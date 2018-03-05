@@ -17,7 +17,13 @@ public class Main {
 
     ArrayList<Agent> swarm = new ArrayList<Agent>();
     if(Environment.WORLD_SIZE <= Environment.SMALL) {
-      swarm.add(new Robot(environment.coords(0,0), "small" , centralBase.sendMap()));
+      swarm.add(new Robot(environment.coords(2,2), "small" , centralBase.sendMap()));
+    }
+    if(Environment.WORLD_SIZE > Environment.SMALL && Environment.WORLD_SIZE < 30) {
+      swarm.add(new Robot(environment.coords(5,5), "small" , centralBase.sendMap()));
+      swarm.add(new Robot(environment.coords(5,-5), "small" , centralBase.sendMap()));
+      swarm.add(new Robot(environment.coords(-5,-5), "small" , centralBase.sendMap()));
+      swarm.add(new Robot(environment.coords(-5,5), "small" , centralBase.sendMap()));
     }
 
     for (Agent robot:swarm)
