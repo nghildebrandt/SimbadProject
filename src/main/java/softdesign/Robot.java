@@ -13,6 +13,7 @@ public class Robot extends Agent {
 	private static final int UNVISITED = 0;
 
 	private String currentMode;
+  private String currentDirection;
 	private Map map;
 	private Point3d coordinates;
 
@@ -74,12 +75,7 @@ public class Robot extends Agent {
 
 			if (this.currentMode == "goAround") {
 				this.setTranslationalVelocity(0.5);
-				this.setRotationalVelocity(0);
-			} else if (this.currentMode == "collisionDetected") {
-				this.setTranslationalVelocity(-0.5);
-				setRotationalVelocity(Math.PI / 2);
 			} else {
-				this.setTranslationalVelocity(0.5);
 				rotateY(90);
 			}
 		}
