@@ -3,29 +3,28 @@ package main.java.softdesign;
 import simbad.gui.Simbad;
 import simbad.sim.Agent;
 
-import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
-	static Point3d coords = new Point3d();
 
-	public void start() {
-		Environment environment = new Environment();
+	private void start() {
 		CentralBase centralBase = new CentralBase();
+		Map map = centralBase.sendMap();
+		List<Agent> swarm = new ArrayList<>();
 
-		ArrayList<Agent> swarm = new ArrayList<Agent>();
 		if (Environment.WORLD_SIZE <= Environment.SMALL) {
-			swarm.add(new Robot(environment.coords(2, 2), "small", centralBase.sendMap()));
-		}
-		if (Environment.WORLD_SIZE > Environment.SMALL && Environment.WORLD_SIZE < 30) {
-			swarm.add(new Robot(environment.coords(5, 5), "small", centralBase.sendMap()));
-			swarm.add(new Robot(environment.coords(5, -5), "small", centralBase.sendMap()));
-			swarm.add(new Robot(environment.coords(-5, -5), "small", centralBase.sendMap()));
-			swarm.add(new Robot(environment.coords(-5, 5), "small", centralBase.sendMap()));
+			swarm.add(new Robot(new Vector3d(2, 0, 2), "small", map));
+		} else if (Environment.WORLD_SIZE > Environment.SMALL && Environment.WORLD_SIZE < 30) {
+			swarm.add(new Robot(new Vector3d(5, 0, 5), "small", map));
+			swarm.add(new Robot(new Vector3d(5, 0, -5), "small", map));
+			swarm.add(new Robot(new Vector3d(-5, 0, -5), "small", map));
+			swarm.add(new Robot(new Vector3d(-5, 0, 5), "small", map));
 		}
 
-		for (Agent robot : swarm)
-			environment.add(robot);
+		Environment environment = new Environment();
+		swarm.forEach(environment::add);
 
 		new Simbad(environment, false);
 	}
