@@ -5,15 +5,11 @@ public class CentralBase {
 	private Map map = new Map();
 
 	CentralBase() {
-		try {
-			mapWalls();
-			mapImaginaryWalls();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		mapWalls();
+		mapImaginaryWalls();
 	}
 
-	private void mapWalls() throws Exception {
+	private void mapWalls() {
 		for (int i = 0; i <= Environment.WORLD_SIZE / 2; i++) {
 			map.setPoint(i, Environment.WORLD_SIZE / 2, Map.WALL);
 			map.setPoint(-i, Environment.WORLD_SIZE / 2, Map.WALL);
@@ -26,7 +22,7 @@ public class CentralBase {
 		}
 	}
 
-	private void mapImaginaryWalls() throws Exception {
+	private void mapImaginaryWalls() {
 		for (int i = 0; i <= Environment.WORLD_SIZE / 2; i++) {
 			map.setPoint(0, i, -1);
 			map.setPoint(0, -i, -1);
