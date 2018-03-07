@@ -7,7 +7,6 @@ public class CentralBase {
 	CentralBase() {
 		try {
 			mapWalls();
-			mapImaginaryWalls();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

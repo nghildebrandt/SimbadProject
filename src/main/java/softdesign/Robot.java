@@ -30,7 +30,8 @@ public class Robot extends Agent {
 
 		RobotFactory.addBumperBeltSensor(this, 12);
 		RobotFactory.addSonarBeltSensor(this, 4);
-		initCameras();
+		camera = RobotFactory.addCameraSensor(this);
+		cameraImage = camera.createCompatibleImage();
 	}
 
 	private void initCameras() {
@@ -72,7 +73,6 @@ public class Robot extends Agent {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 			if (this.currentMode == "goAround") {
 				this.setTranslationalVelocity(0.5);
 			} else {
@@ -90,14 +90,12 @@ public class Robot extends Agent {
 		return map.getPoint((int) Math.round(x), (int) Math.round(z));
 	}
 
-
 	/**
 	 * This method is called by the simulator engine on reset.
 	 */
 	@Override
 	public void initBehavior() {
-		camera2.rotateY(90);
-		camera3.rotateY(180);
-		camera4.rotateY(270);
+    this.rotateY(-Math.PI);
+
 	}
 }
