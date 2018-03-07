@@ -23,6 +23,13 @@ public class Robot extends Agent {
 	public Robot(Vector3d position, String name, Map map) {
 		super(position, name);
     this.map = map;
+
+		RobotFactory.addBumperBeltSensor(this, 12);
+		RobotFactory.addSonarBeltSensor(this, 4);
+    initializeCameras();
+	}
+
+  public void initializeCameras() {
 		camera = RobotFactory.addCameraSensor(this);
 		camera2 = RobotFactory.addCameraSensor(this);
 		camera3 = RobotFactory.addCameraSensor(this);
@@ -31,10 +38,7 @@ public class Robot extends Agent {
 		cameraImage = camera2.createCompatibleImage();
 		cameraImage = camera3.createCompatibleImage();
 		cameraImage = camera4.createCompatibleImage();
-
-		RobotFactory.addBumperBeltSensor(this, 12);
-		RobotFactory.addSonarBeltSensor(this, 4);
-	}
+  }
 
 
 	/** This method is called by the simulator engine on reset. */
@@ -48,6 +52,7 @@ public class Robot extends Agent {
 		}
   }
 
+  //intended to use to check if the image the camera is about to take has already been visited
   public void hasCovered(Point3d coord) throws Exception {
     if(isUnvisited(coord)) {
       camera.copyVisionImage(cameraImage);
@@ -68,7 +73,6 @@ public class Robot extends Agent {
 
 	public void performBehavior() {
 		camera.copyVisionImage(cameraImage);
-		camera2.copyVisionImage(cameraImage);
 		this.getCoords(coords);
 		// perform the following actions every 5 virtual seconds
 		if (this.getCounter() % 5 == 0) {
@@ -92,7 +96,6 @@ public class Robot extends Agent {
       } else {
         this.setTranslationalVelocity(0.5);
         rotateY(90);
-        System.out.println("rotation" + this.getRotationalVelocity());
       }
     }
   }
