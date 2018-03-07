@@ -31,7 +31,7 @@ public class Environment extends EnvironmentDescription {
 	 *  The walls are now placed at the limit of the world size and the walls will change in response to the size of
 	 *  the world
 	 */
-	private void initWalls() {
+	private void initWalls() throws Exception {
 		Wall w1 = new Wall(new Vector3d(-WORLD_SIZE / 2, 0, 0), WORLD_SIZE, 2, this);
 		w1.setColor(new Color3f(Color.BLUE));
 		w1.rotate90(1);
