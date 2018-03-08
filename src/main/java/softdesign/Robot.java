@@ -35,7 +35,6 @@ public class Robot extends Agent {
 
 		RobotFactory.addBumperBeltSensor(this, 12);
 		RobotFactory.addSonarBeltSensor(this, 4);
-    initCameras();
 	}
 
 	private void initCameras() {
@@ -52,40 +51,30 @@ public class Robot extends Agent {
     camera3.rotateY(-(Math.PI));
 	}
 
-	//intended to use to check if the image the camera is about to take has already been visited
-
-
 	@Override
 	public void performBehavior() {
-    System.out.println(currentDirection);
 
 		this.getCoords(coordinate);
 
 		// perform the following actions every 5 virtual seconds
 		if (this.getCounter() % 5 == 0) {
-			try {
-        whatDirection();
-        takeImages();
-				if (this.isNearWall()) {
-					this.currentMode = "avoidObstacle";
-				} else if (this.collisionDetected()) {
-					this.currentMode = "collisionDetected";
-				} else {
-					this.currentMode = "goAround";
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (this.isNearWall()) {
+				this.currentMode = "avoidObstacle";
+			} else if (this.collisionDetected()) {
+				this.currentMode = "collisionDetected";
+			} else {
+				this.currentMode = "goAround";
 			}
 			if (this.currentMode == "goAround") {
 				this.setTranslationalVelocity(0.5);
 			} else {
-        this.rotateY(Math.PI/2);
+        rotateY(Math.PI/2);
 			}
 		}
 	}
 
 
-  private void takeImages() throws Exception{
+  private void takeImages() {
     switch(currentDirection) {
       case SOUTH:
         if(isUnvisited(direction(EAST))) {
@@ -118,17 +107,17 @@ public class Robot extends Agent {
     return null;
   }
 
-  private void coverAndTrack(CameraSensor camera, Point3d coord) throws Exception {
+  private void coverAndTrack(CameraSensor camera, Point3d coord) {
     camera.copyVisionImage(cameraImage);
     isVisited(coord.x, coord.z);
   }
 
-	private boolean isNearWall() throws Exception {
+	private boolean isNearWall() {
 		return getValue(coordinate.x + 1, coordinate.z) == Map.WALL || getValue(coordinate.x - 1, coordinate.z) == Map.WALL
 				|| getValue(coordinate.x, coordinate.z + 1) == Map.WALL || getValue(coordinate.x, coordinate.z - 1) == Map.WALL;
 	}
 
-  private void whatDirection() throws Exception {
+  private void whatDirection() {
     if(getValue(coordinate.x + 1, coordinate.z) == Map.WALL) {
       currentDirection = SOUTH;
     } else if(getValue(coordinate.x - 1, coordinate.z) == Map.WALL) {
@@ -140,19 +129,19 @@ public class Robot extends Agent {
     }
   }
 
-	private int getValueCoord(Point3d coord) throws Exception {
+	private int getValueCoord(Point3d coord) {
 		return map.getPoint((int) Math.round(coord.x), (int) Math.round(coord.z));
 	}
       
-	private boolean isUnvisited(Point3d coord) throws Exception {
+	private boolean isUnvisited(Point3d coord) {
 		return getValue(coord.x, coord.z) == UNVISITED;
 	}
 
-	public void isVisited(double x, double z) throws Exception {
+	public void isVisited(double x, double z) {
     map.setPoint((int) Math.round(x), (int) Math.round(z), 1);
-	}
+  }
 
-	private int getValue(Double x, Double z) throws Exception {
+	private int getValue(Double x, Double z) {
 		return map.getPoint((int) Math.round(x), (int) Math.round(z));
 	}
 
