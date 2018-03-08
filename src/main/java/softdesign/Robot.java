@@ -120,7 +120,7 @@ public class Robot extends Agent {
 
   private void coverAndTrack(CameraSensor camera, Point3d coord) throws Exception {
     camera.copyVisionImage(cameraImage);
-    isCovered(coord.x, coord.z);
+    isVisited(coord.x, coord.z);
   }
 
 	private boolean isNearWall() throws Exception {
@@ -148,7 +148,7 @@ public class Robot extends Agent {
 		return getValue(coord.x, coord.z) == UNVISITED;
 	}
 
-	public void isCovered(double x, double z) throws Exception {
+	public void isVisited(double x, double z) throws Exception {
     map.setPoint((int) Math.round(x), (int) Math.round(z), 1);
 	}
 
