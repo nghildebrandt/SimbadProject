@@ -12,9 +12,9 @@ public class Robot extends Agent {
 
 	private static final int UNVISITED = 0;
 	public static final int SOUTH = 1;
-	private static final int WEST = 2;
-	private static final int NORTH = 3;
-	private static final int EAST = 4;
+	public static final int WEST = 2;
+	public static final int NORTH = 3;
+	public static final int EAST = 4;
 
 	private String currentMode;
   private int currentDirection;
@@ -64,8 +64,7 @@ public class Robot extends Agent {
 				this.setTranslationalVelocity(0.5);
 			} else {
         rotateY(-(Math.PI/2));
-        whatDirection();
-        System.out.println("direction is: " + currentDirection);
+        setDirection();
 			}
 		}
 	}
@@ -109,12 +108,21 @@ public class Robot extends Agent {
     isVisited(coord.x, coord.z);
   }
 
-	private boolean isNearWall() {
-		return getValue(coordinate.x + 1, coordinate.z) == Map.WALL || getValue(coordinate.x - 1, coordinate.z) == Map.WALL
-				|| getValue(coordinate.x, coordinate.z + 1) == Map.WALL || getValue(coordinate.x, coordinate.z - 1) == Map.WALL;
-	}
+  private boolean isNearWall() {
+    switch(currentDirection) {
+      case SOUTH:
+        return getValueCoord(direction(SOUTH)) == Map.WALL;
+      case NORTH:
+        return getValueCoord(direction(NORTH)) == Map.WALL;
+      case WEST:
+        return getValueCoord(direction(WEST)) == Map.WALL;
+      case EAST:
+        return getValueCoord(direction(EAST)) == Map.WALL;
+    }
+    return false;
+  }
 
-  private void whatDirection() {
+  private void setDirection() {
     switch(currentDirection) {
       case SOUTH: currentDirection = WEST; break;
       case WEST: currentDirection = NORTH; break;
@@ -135,10 +143,6 @@ public class Robot extends Agent {
 	public void isVisited(double x, double z) {
     map.setPoint((int) Math.round(x), (int) Math.round(z), 1);
   }
-
-	private int getValue(Double x, Double z) {
-		return map.getPoint((int) Math.round(x), (int) Math.round(z));
-	}
 
 	/**
 	 * This method is called by the simulator engine on reset.
