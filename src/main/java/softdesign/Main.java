@@ -15,18 +15,13 @@ public class Main {
 		List<Agent> swarm = new ArrayList<>();
 
 		if (Environment.WORLD_SIZE <= Environment.SMALL) {
-			swarm.add(new Robot(new Vector3d(0, 0, 0), "small", map));
-		} else if (Environment.WORLD_SIZE > Environment.SMALL && Environment.WORLD_SIZE < 30) {
-			swarm.add(new Robot(new Vector3d(5, 0, 5), "small", map));
-			swarm.add(new Robot(new Vector3d(5, 0, -5), "small", map));
-			swarm.add(new Robot(new Vector3d(-5, 0, -5), "small", map));
-			swarm.add(new Robot(new Vector3d(-5, 0, 5), "small", map));
-		}
+			swarm.add(new Robot(new Vector3d(0, 0, 0), "small", map, Robot.SOUTH));
 
 		Environment environment = new Environment();
 		swarm.forEach(environment::add);
 
 		new Simbad(environment, false);
+    }
 	}
 
 	public static void main(String[] args) {
