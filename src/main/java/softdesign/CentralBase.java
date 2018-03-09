@@ -3,12 +3,10 @@ package main.java.softdesign;
 public class CentralBase {
 
 	private Map map = new Map();
-  private int coverageRequirement;
 
 	CentralBase() {
 		mapWalls();
 		mapImaginaryWalls();
-    coverageRequirement = 0.75;
 	}
 
 	private void mapWalls() {
@@ -34,7 +32,7 @@ public class CentralBase {
 	}
 
 	public boolean isMissionComplete() {
-		return map.totalNumberOfPointsCovered/Environment.WORLD_SIZE > coverageRequirement;
+		return true;
 	}
 
 	//used to give copy to robots

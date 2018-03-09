@@ -5,7 +5,6 @@ import main.java.softdesign.exceptions.GridIndexOutOfBoundsException;
 public class Map {
 
 	public static final int WALL = -1;
-  public static int pointsVisted;
 
 	private int[][] grid;
 	private int size; // TODO rename
@@ -18,7 +17,6 @@ public class Map {
 	}
 
 	public void setPoint(int xCoord, int zCoord, int value) {
-    pointsVisited++;
 		int x = xCoord - min;
 		int z = zCoord - min;
 
@@ -28,10 +26,6 @@ public class Map {
 
 		grid[x][z] = value;
 	}
-
-  public int totalNumberOfPointsCovered() {
-    return pointsVisited;
-  }
 
 	public int getPoint(int xCoord, int zCoord) {
 		int x = xCoord - min;
