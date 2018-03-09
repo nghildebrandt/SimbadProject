@@ -55,10 +55,6 @@ public class Robot extends Agent {
 
 	@Override
 	public void performBehavior() {
-    if(this.getCounter() % 300 == 0) {
-      map.printMatrix();
-    }
-
 		this.getCoords(coordinate);
 
 		// perform the following actions every 5 virtual seconds
