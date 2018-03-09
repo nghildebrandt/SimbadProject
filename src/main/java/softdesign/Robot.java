@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 public class Robot extends Agent {
 
 	private static final int UNVISITED = 0;
+  private static final int VISITED = 1;
 	public static final int SOUTH = 1;
 	public static final int WEST = 2;
 	public static final int NORTH = 3;
@@ -20,7 +21,6 @@ public class Robot extends Agent {
   private int currentDirection;
 	private Map map;
 	private Point3d coordinate;
-  private Point3d east;
 
 	private CameraSensor camera;
 	private CameraSensor camera2;
@@ -33,6 +33,9 @@ public class Robot extends Agent {
 		this.map = map;
     this.currentDirection = currentDirection;
 		this.coordinate = new Point3d();
+    int directionCamera;
+    int directionCamera2;
+    int directionCamera3;
 
 		RobotFactory.addBumperBeltSensor(this, 12);
 		RobotFactory.addSonarBeltSensor(this, 4);
@@ -43,11 +46,11 @@ public class Robot extends Agent {
 		camera = RobotFactory.addCameraSensor(this);
 		camera2 = RobotFactory.addCameraSensor(this);
 		camera3 = RobotFactory.addCameraSensor(this);
-		camera4 = RobotFactory.addCameraSensor(this);
+		//camera4 = RobotFactory.addCameraSensor(this);
 		cameraImage = camera.createCompatibleImage();
 		cameraImage = camera2.createCompatibleImage();
 		cameraImage = camera3.createCompatibleImage();
-		cameraImage = camera4.createCompatibleImage();
+		//cameraImage = camera4.createCompatibleImage();
     camera.rotateY(Math.PI/2);
     camera2.rotateY(-(Math.PI/2));
     camera3.rotateY(Math.PI);
@@ -61,16 +64,17 @@ public class Robot extends Agent {
 		// perform the following actions every 5 virtual seconds
 		if (this.getCounter() % 5 == 0) {
       takeImages();
-			if (this.isNearWall()) {
+			if (this.isNearWall() || this.isNearCovered()) {
 				this.currentMode = "avoidObstacle";
-			} else if (this.collisionDetected()) {
-				this.currentMode = "collisionDetected";
 			} else {
 				this.currentMode = "goAround";
 			}
 			if (this.currentMode == "goAround") {
 				this.setTranslationalVelocity(0.5);
-			} else {
+			} else if (this.currentMode == "isNearPoint") {
+        rotateY(-(Math.PI/2));
+        setDirection();
+      } else {
         rotateY(-(Math.PI/2));
         setDirection();
 			}
@@ -79,37 +83,58 @@ public class Robot extends Agent {
 
   private void takeImages() {
     switch(currentDirection) {
-      case SOUTH: image(camera, camera2, camera3, camera4); break;
-      case WEST: image(camera3, camera4, camera2, camera); break;
-      case NORTH: image(camera2, camera, camera4, camera3); break;
-      }
+      case SOUTH: image(camera, camera2, camera3); break;
+      case WEST: image(camera3, camera2, camera); break;
+      case NORTH: image(camera2, camera, camera3); break;
+    }
   }
 
-  private void image(CameraSensor camera, CameraSensor camera2, CameraSensor camera3, CameraSensor camera4) {
-    if(isUnvisited(direction(EAST))) {
-      coverAndTrack(this.camera, direction(EAST));
+  private boolean isNearCovered() {
+    switch(currentDirection) {
+      case SOUTH:
+        return getValueCoordMove(coordinate.x + 2, coordinate.z) == VISITED;
+      case NORTH:
+        return getValueCoordMove(coordinate.x - 2, coordinate.z) == VISITED;
+      case WEST:
+        return getValueCoordMove(coordinate.x, coordinate.z + 2) == VISITED;
+      case EAST:
+        return getValueCoordMove(coordinate.x, coordinate.z - 2) == VISITED;
     }
-    if(isUnvisited(direction(WEST))) {
-      coverAndTrack(this.camera2, direction(WEST));
-    }
-    if(isUnvisited(direction(NORTH))) {
-      coverAndTrack(this.camera3, direction(NORTH));
-    }
-    if(isUnvisited(direction(SOUTH))) {
-      coverAndTrack(this.camera4, direction(SOUTH));
+    return false;
+  }
+
+  private void image(CameraSensor camera, CameraSensor camera2, CameraSensor camera3) {
+    switch (currentDirection) {
+      case NORTH: move(WEST, EAST, SOUTH); break;
+      case SOUTH: move(EAST, WEST, NORTH); break;
+      case WEST: move(SOUTH, NORTH, EAST); break;
+      case EAST: move(NORTH, SOUTH, WEST); break;
     }
   }
+
+  private void move (int left, int right, int back) {
+    if(isUnvisited(direction(left))) {
+      coverAndTrack(this.camera, direction(left));
+    }
+    if(isUnvisited(direction(right))) {
+      coverAndTrack(this.camera2, direction(right));
+    }
+    if(isUnvisited(direction(back))) {
+      coverAndTrack(this.camera3, direction(back));
+    }
+  }
+
 
   private Point3d direction(int direction) {
     switch(direction) {
       case EAST:
-        return new Point3d(coordinate.x, coordinate.y, coordinate.z - 1);
+        return new Point3d(coordinate.x, coordinate.y, coordinate.z - 2);
       case WEST:
-        return new Point3d(coordinate.x, coordinate.y, coordinate.z + 1);
+        return new Point3d(coordinate.x, coordinate.y, coordinate.z + 2);
       case SOUTH:
-        return new Point3d(coordinate.x + 1, coordinate.y, coordinate.z);
+        return new Point3d(coordinate.x + 2, coordinate.y, coordinate.z);
       case NORTH:
-        return new Point3d(coordinate.x - 1, coordinate.y, coordinate.z);
+        return new Point3d(coordinate.x - 2, coordinate.y, coordinate.z);
     }
     return null;
   }
@@ -133,6 +158,10 @@ public class Robot extends Agent {
     return false;
   }
 
+	private int getValueCoordMove(double x, double z) {
+		return map.getPoint((int) Math.round(x), (int) Math.round(z));
+	}
+
   private void setDirection() {
     switch(currentDirection) {
       case SOUTH: currentDirection = WEST; break;
@@ -152,7 +181,7 @@ public class Robot extends Agent {
 	}
 
 	public void isVisited(Point3d coord) {
-    map.setPoint((int) Math.round(coord.x), (int) Math.round(coord.z), 1);
+    map.setPoint((int) Math.round(coord.x), (int) Math.round(coord.z), VISITED);
   }
 
 	/**

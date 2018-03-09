@@ -14,8 +14,8 @@ public class Main {
 		Map map = centralBase.sendMap();
 		List<Agent> swarm = new ArrayList<>();
 
-		if (Environment.WORLD_SIZE <= Environment.SMALL) {
-			swarm.add(new Robot(new Vector3d(0, 0, 0), "small", map, Robot.SOUTH));
+		if (Environment.WORLD_SIZE <= Environment.LARGE) {
+			swarm.add(new Robot(new Vector3d(2, 0,-2 ), "small", map, Robot.SOUTH));
 
 		Environment environment = new Environment();
 		swarm.forEach(environment::add);
