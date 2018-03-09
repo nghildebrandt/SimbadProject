@@ -24,6 +24,8 @@ public class Robot extends Agent {
 
 	private CameraSensor camera;
 	private CameraSensor camera2;
+	private CameraSensor camera3;
+	private CameraSensor camera4;
 	private BufferedImage cameraImage;
 
 	Robot(Vector3d position, String name, Map map, int currentDirection) {
@@ -39,10 +41,16 @@ public class Robot extends Agent {
 
 	private void initCameras() {
 		camera = RobotFactory.addCameraSensor(this);
-		//camera3 = RobotFactory.addCameraSensor(this);
-		//camera4 = RobotFactory.addCameraSensor(this);
+		camera2 = RobotFactory.addCameraSensor(this);
+		camera3 = RobotFactory.addCameraSensor(this);
+		camera4 = RobotFactory.addCameraSensor(this);
 		cameraImage = camera.createCompatibleImage();
+		cameraImage = camera2.createCompatibleImage();
+		cameraImage = camera3.createCompatibleImage();
+		cameraImage = camera4.createCompatibleImage();
     camera.rotateY(Math.PI/2);
+    camera2.rotateY(-(Math.PI/2));
+    camera3.rotateY(Math.PI);
 	}
 
 	@Override
@@ -71,22 +79,25 @@ public class Robot extends Agent {
 
   private void takeImages() {
     switch(currentDirection) {
-      case SOUTH:
-        if(isUnvisited(direction(EAST))) {
-          coverAndTrack(camera, direction(EAST));
-        }
-        if(isUnvisited(direction(WEST))) {
-          coverAndTrack(camera, direction(WEST));
-        }
-        if(isUnvisited(direction(NORTH))) {
-          coverAndTrack(camera, direction(NORTH));
-        }
-        if(isUnvisited(direction(SOUTH))) {
-          coverAndTrack(camera, direction(SOUTH));
-        }
-        break;
-    }
+      case SOUTH: image(camera, camera2, camera3, camera4); break;
+      case WEST: image(camera3, camera4, camera2, camera); break;
+      case NORTH: image(camera2, camera, camera4, camera3); break;
+      }
+  }
 
+  private void image(CameraSensor camera, CameraSensor camera2, CameraSensor camera3, CameraSensor camera4) {
+    if(isUnvisited(direction(EAST))) {
+      coverAndTrack(this.camera, direction(EAST));
+    }
+    if(isUnvisited(direction(WEST))) {
+      coverAndTrack(this.camera2, direction(WEST));
+    }
+    if(isUnvisited(direction(NORTH))) {
+      coverAndTrack(this.camera3, direction(NORTH));
+    }
+    if(isUnvisited(direction(SOUTH))) {
+      coverAndTrack(this.camera4, direction(SOUTH));
+    }
   }
 
   private Point3d direction(int direction) {
@@ -105,7 +116,7 @@ public class Robot extends Agent {
 
   private void coverAndTrack(CameraSensor camera, Point3d coord) {
     camera.copyVisionImage(cameraImage);
-    isVisited(coord.x, coord.z);
+    isVisited(coord);
   }
 
   private boolean isNearWall() {
@@ -137,11 +148,11 @@ public class Robot extends Agent {
 	}
       
 	private boolean isUnvisited(Point3d coord) {
-		return getValue(coord.x, coord.z) == UNVISITED;
+		return getValueCoord(coord) == UNVISITED;
 	}
 
-	public void isVisited(double x, double z) {
-    map.setPoint((int) Math.round(x), (int) Math.round(z), 1);
+	public void isVisited(Point3d coord) {
+    map.setPoint((int) Math.round(coord.x), (int) Math.round(coord.z), 1);
   }
 
 	/**
