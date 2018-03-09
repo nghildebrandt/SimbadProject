@@ -3,13 +3,10 @@ package main.java.softdesign;
 import main.java.softdesign.exceptions.GridIndexOutOfBoundsException;
 
 public class Map {
-
-	public static final int WALL = -1;
-  public static int pointsVisited;
-
+  private int pointsVisited;
 	private int[][] grid;
-	private int size; // TODO rename
-	private int min; // TODO rename
+	private int size;
+	private int min;
 
 	Map() {
     pointsVisited = 0;
@@ -19,7 +16,6 @@ public class Map {
 	}
 
 	public void setPoint(int xCoord, int zCoord, int value) {
-    System.out.println(pointsVisited);
     this.pointsVisited++;
 		int x = xCoord - min;
 		int z = zCoord - min;

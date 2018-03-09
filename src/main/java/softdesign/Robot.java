@@ -25,7 +25,6 @@ public class Robot extends Agent {
 	private CameraSensor camera;
 	private CameraSensor camera2;
 	private CameraSensor camera3;
-	private CameraSensor camera4;
 	private BufferedImage cameraImage;
 
 	Robot(Vector3d position, String name, Map map, int currentDirection) {
@@ -111,7 +110,7 @@ public class Robot extends Agent {
     }
   }
 
-  //depening on the direction of the robot, this method returns a new coordinate
+  // this method returns a new coordinate
   private Point3d hasPointVisited(int direction) {
     switch(direction) {
       case EAST:
@@ -150,13 +149,13 @@ public class Robot extends Agent {
   private boolean isNearWall() {
     switch(currentDirection) {
       case SOUTH:
-        return getValueCoord(toPoint3d(SOUTH)) == Map.WALL;
+        return getValueCoord(toPoint3d(SOUTH)) == CentralBase.WALL;
       case NORTH:
-        return getValueCoord(toPoint3d(NORTH)) == Map.WALL;
+        return getValueCoord(toPoint3d(NORTH)) == CentralBase.WALL;
       case WEST:
-        return getValueCoord(toPoint3d(WEST)) == Map.WALL;
+        return getValueCoord(toPoint3d(WEST)) == CentralBase.WALL;
       case EAST:
-        return getValueCoord(toPoint3d(EAST)) == Map.WALL;
+        return getValueCoord(toPoint3d(EAST)) == CentralBase.WALL;
     }
     return false;
   }
