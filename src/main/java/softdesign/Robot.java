@@ -88,7 +88,6 @@ public class Robot extends Agent {
     }
   }
 
-
   //the direction at which the camera points to changes as the robot moves, this method makes such that depending on the current direction of the robot that each camera ttached to the robot will point to the right global direction - EAST, WEST, NORTH, SOUTH
   private void checkDirection(CameraSensor camera, CameraSensor camera2, CameraSensor camera3) {
     switch (currentDirection) {
