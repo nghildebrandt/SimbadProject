@@ -10,8 +10,6 @@ import java.awt.image.BufferedImage;
 
 public class Robot extends Agent {
 
-	private static final int UNVISITED = 0;
-  private static final int VISITED = 1;
 	public static final int SOUTH = 1;
 	public static final int WEST = 2;
 	public static final int NORTH = 3;
@@ -131,13 +129,13 @@ public class Robot extends Agent {
   private boolean isNearCovered() {
     switch(currentDirection) {
       case SOUTH:
-        return getValueDouble(coordinate.x + 2, coordinate.z) == VISITED;
+        return getValueDouble(coordinate.x + 2, coordinate.z) == Map.VISITED;
       case NORTH:
-        return getValueDouble(coordinate.x - 2, coordinate.z) == VISITED;
+        return getValueDouble(coordinate.x - 2, coordinate.z) == Map.VISITED;
       case WEST:
-        return getValueDouble(coordinate.x, coordinate.z + 2) == VISITED;
+        return getValueDouble(coordinate.x, coordinate.z + 2) == Map.VISITED;
       case EAST:
-        return getValueDouble(coordinate.x, coordinate.z - 2) == VISITED;
+        return getValueDouble(coordinate.x, coordinate.z - 2) == Map.VISITED;
     }
     return false;
   }
@@ -145,13 +143,13 @@ public class Robot extends Agent {
   private boolean isNearWall() {
     switch(currentDirection) {
       case SOUTH:
-        return getValueCoord(toPoint3d(SOUTH)) == CentralBase.WALL;
+        return getValueCoord(toPoint3d(SOUTH)) == Map.WALL;
       case NORTH:
-        return getValueCoord(toPoint3d(NORTH)) == CentralBase.WALL;
+        return getValueCoord(toPoint3d(NORTH)) == Map.WALL;
       case WEST:
-        return getValueCoord(toPoint3d(WEST)) == CentralBase.WALL;
+        return getValueCoord(toPoint3d(WEST)) == Map.WALL;
       case EAST:
-        return getValueCoord(toPoint3d(EAST)) == CentralBase.WALL;
+        return getValueCoord(toPoint3d(EAST)) == Map.WALL;
     }
     return false;
   }
@@ -190,11 +188,11 @@ public class Robot extends Agent {
   }
       
 	private boolean isUnvisited(Point3d coord) {
-		return getValueCoord(coord) == UNVISITED;
+		return getValueCoord(coord) == Map.UNVISITED;
 	}
 
 	public void isVisited(Point3d coord) {
-    map.setPoint((int) Math.round(coord.x), (int) Math.round(coord.z), VISITED);
+    map.setPoint((int) Math.round(coord.x), (int) Math.round(coord.z), Map.VISITED);
   }
 
 	/**

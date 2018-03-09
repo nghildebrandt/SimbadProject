@@ -3,6 +3,9 @@ package main.java.softdesign;
 import main.java.softdesign.exceptions.GridIndexOutOfBoundsException;
 
 public class Map {
+  public static final int VISITED = 1;
+  public static final int UNVISITED = 0;
+  public static final int WALL = -1;
   private int pointsVisited;
 	private int[][] grid;
 	private int size;

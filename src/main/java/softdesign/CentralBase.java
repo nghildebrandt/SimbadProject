@@ -4,7 +4,6 @@ public class CentralBase {
 
 	private Map map = new Map();
   public double coverageRequirement;
-  public static final int WALL = -1;
 
 	CentralBase() {
 		mapWalls();
@@ -13,23 +12,23 @@ public class CentralBase {
 
 	private void mapWalls() {
 		for (int i = 0; i <= Environment.WORLD_SIZE / 2; i++) {
-			map.setPoint(i, Environment.WORLD_SIZE / 2, WALL);
-			map.setPoint(-i, Environment.WORLD_SIZE / 2, WALL);
-			map.setPoint(i, -Environment.WORLD_SIZE / 2, WALL);
-			map.setPoint(-i, -Environment.WORLD_SIZE / 2, WALL);
-			map.setPoint(Environment.WORLD_SIZE / 2, i, WALL);
-			map.setPoint(Environment.WORLD_SIZE / 2, -i, WALL);
-			map.setPoint(-Environment.WORLD_SIZE / 2, i, WALL);
-			map.setPoint(-Environment.WORLD_SIZE / 2, -i, WALL);
+			map.setPoint(i, Environment.WORLD_SIZE / 2, Map.WALL);
+			map.setPoint(-i, Environment.WORLD_SIZE / 2, Map.WALL);
+			map.setPoint(i, -Environment.WORLD_SIZE / 2, Map.WALL);
+			map.setPoint(-i, -Environment.WORLD_SIZE / 2, Map.WALL);
+			map.setPoint(Environment.WORLD_SIZE / 2, i, Map.WALL);
+			map.setPoint(Environment.WORLD_SIZE / 2, -i, Map.WALL);
+			map.setPoint(-Environment.WORLD_SIZE / 2, i, Map.WALL);
+			map.setPoint(-Environment.WORLD_SIZE / 2, -i, Map.WALL);
 		}
 	}
 
 	private void mapImaginaryWalls() {
 		for (int i = 0; i <= Environment.WORLD_SIZE / 2; i++) {
-			map.setPoint(0, i, -1);
-			map.setPoint(0, -i, -1);
-			map.setPoint(i, 0, -1);
-			map.setPoint(-i, 0, -1);
+			map.setPoint(0, i, Map.WALL);
+			map.setPoint(0, -i, Map.WALL);
+			map.setPoint(i, 0, Map.WALL);
+			map.setPoint(-i, 0, Map.WALL);
 		}
 	}
 
