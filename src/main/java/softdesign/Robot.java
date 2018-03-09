@@ -46,11 +46,9 @@ public class Robot extends Agent {
 		camera = RobotFactory.addCameraSensor(this);
 		camera2 = RobotFactory.addCameraSensor(this);
 		camera3 = RobotFactory.addCameraSensor(this);
-		//camera4 = RobotFactory.addCameraSensor(this);
 		cameraImage = camera.createCompatibleImage();
 		cameraImage = camera2.createCompatibleImage();
 		cameraImage = camera3.createCompatibleImage();
-		//cameraImage = camera4.createCompatibleImage();
     camera.rotateY(Math.PI/2);
     camera2.rotateY(-(Math.PI/2));
     camera3.rotateY(Math.PI);
@@ -58,22 +56,22 @@ public class Robot extends Agent {
 
 	@Override
 	public void performBehavior() {
+    if(this.getCounter() % 300 == 0) {
+      map.printMatrix();
+    }
 
 		this.getCoords(coordinate);
 
 		// perform the following actions every 5 virtual seconds
 		if (this.getCounter() % 5 == 0) {
       takeImages();
-			if (this.isNearWall() || this.isNearCovered()) {
+			if (this.isNearWall() ^ this.isNearCovered()) {
 				this.currentMode = "avoidObstacle";
 			} else {
 				this.currentMode = "goAround";
 			}
 			if (this.currentMode == "goAround") {
 				this.setTranslationalVelocity(0.5);
-			} else if (this.currentMode == "isNearPoint") {
-        rotateY(-(Math.PI/2));
-        setDirection();
       } else {
         rotateY(-(Math.PI/2));
         setDirection();
@@ -81,14 +79,61 @@ public class Robot extends Agent {
 		}
 	}
 
+  //takes images from the back, left, and right side in relation to the robot
   private void takeImages() {
     switch(currentDirection) {
-      case SOUTH: image(camera, camera2, camera3); break;
-      case WEST: image(camera3, camera2, camera); break;
-      case NORTH: image(camera2, camera, camera3); break;
+      case SOUTH: checkDirection(camera, camera2, camera3); break;
+      case WEST: checkDirection(camera3, camera2, camera); break;
+      case NORTH: checkDirection(camera2, camera, camera3); break;
     }
   }
 
+
+  //the direction at which the camera points to changes as the robot moves, this method makes such that depending on the current direction of the robot that each camera ttached to the robot will point to the right global direction - EAST, WEST, NORTH, SOUTH
+  private void checkDirection(CameraSensor camera, CameraSensor camera2, CameraSensor camera3) {
+    switch (currentDirection) {
+      case NORTH: checkCameraInDirections(WEST, EAST, SOUTH); break;
+      case SOUTH: checkCameraInDirections(EAST, WEST, NORTH); break;
+      case WEST: checkCameraInDirections(SOUTH, NORTH, EAST); break;
+      case EAST: checkCameraInDirections(NORTH, SOUTH, WEST); break;
+    }
+  }
+
+  //checks if the points left, right, and back in relation to the robot has been taken a picture of, if an image has not been taken, then an image will be taken
+  private void checkCameraInDirections(int left, int right, int back) {
+    if(isUnvisited(hasPointVisited(left))) {
+      coverAndTrack(this.camera, hasPointVisited(left));
+    }
+    if(isUnvisited(hasPointVisited(right))) {
+      coverAndTrack(this.camera2, hasPointVisited(right));
+    }
+    if(isUnvisited(hasPointVisited(back))) {
+      coverAndTrack(this.camera3, hasPointVisited(back));
+    }
+  }
+
+  //depening on the direction of the robot, this method returns a new coordinate
+  private Point3d hasPointVisited(int direction) {
+    switch(direction) {
+      case EAST:
+        return new Point3d(coordinate.x, coordinate.y, coordinate.z - 1);
+      case WEST:
+        return new Point3d(coordinate.x, coordinate.y, coordinate.z + 1);
+      case SOUTH:
+        return new Point3d(coordinate.x + 1, coordinate.y, coordinate.z);
+      case NORTH:
+        return new Point3d(coordinate.x - 1, coordinate.y, coordinate.z);
+    }
+    return null;
+  }
+
+  //takes picture of point and marks the point as visited
+  private void coverAndTrack(CameraSensor camera, Point3d coord) {
+    camera.copyVisionImage(cameraImage);
+    isVisited(coord);
+  }
+
+  // returns if the coordinate two points in front of the currentDirection has been visited
   private boolean isNearCovered() {
     switch(currentDirection) {
       case SOUTH:
@@ -103,29 +148,26 @@ public class Robot extends Agent {
     return false;
   }
 
-  private void image(CameraSensor camera, CameraSensor camera2, CameraSensor camera3) {
-    switch (currentDirection) {
-      case NORTH: move(WEST, EAST, SOUTH); break;
-      case SOUTH: move(EAST, WEST, NORTH); break;
-      case WEST: move(SOUTH, NORTH, EAST); break;
-      case EAST: move(NORTH, SOUTH, WEST); break;
+  private boolean isNearWall() {
+    switch(currentDirection) {
+      case SOUTH:
+        return getValueCoord(toPoint3d(SOUTH)) == Map.WALL;
+      case NORTH:
+        return getValueCoord(toPoint3d(NORTH)) == Map.WALL;
+      case WEST:
+        return getValueCoord(toPoint3d(WEST)) == Map.WALL;
+      case EAST:
+        return getValueCoord(toPoint3d(EAST)) == Map.WALL;
     }
+    return false;
   }
 
-  private void move (int left, int right, int back) {
-    if(isUnvisited(direction(left))) {
-      coverAndTrack(this.camera, direction(left));
-    }
-    if(isUnvisited(direction(right))) {
-      coverAndTrack(this.camera2, direction(right));
-    }
-    if(isUnvisited(direction(back))) {
-      coverAndTrack(this.camera3, direction(back));
-    }
-  }
+	private int getValueCoord(Point3d coord) {
+		return map.getPoint((int) Math.round(coord.x), (int) Math.round(coord.z));
+	}
 
-
-  private Point3d direction(int direction) {
+  // returns new coordinate which the coordinate +/- 2 point ahead/behind the current direction
+  private Point3d toPoint3d(int direction) {
     switch(direction) {
       case EAST:
         return new Point3d(coordinate.x, coordinate.y, coordinate.z - 2);
@@ -137,25 +179,6 @@ public class Robot extends Agent {
         return new Point3d(coordinate.x - 2, coordinate.y, coordinate.z);
     }
     return null;
-  }
-
-  private void coverAndTrack(CameraSensor camera, Point3d coord) {
-    camera.copyVisionImage(cameraImage);
-    isVisited(coord);
-  }
-
-  private boolean isNearWall() {
-    switch(currentDirection) {
-      case SOUTH:
-        return getValueCoord(direction(SOUTH)) == Map.WALL;
-      case NORTH:
-        return getValueCoord(direction(NORTH)) == Map.WALL;
-      case WEST:
-        return getValueCoord(direction(WEST)) == Map.WALL;
-      case EAST:
-        return getValueCoord(direction(EAST)) == Map.WALL;
-    }
-    return false;
   }
 
 	private int getValueCoordMove(double x, double z) {
@@ -171,10 +194,6 @@ public class Robot extends Agent {
       default: break;
     }
   }
-
-	private int getValueCoord(Point3d coord) {
-		return map.getPoint((int) Math.round(coord.x), (int) Math.round(coord.z));
-	}
       
 	private boolean isUnvisited(Point3d coord) {
 		return getValueCoord(coord) == UNVISITED;
