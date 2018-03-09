@@ -135,13 +135,13 @@ public class Robot extends Agent {
   private boolean isNearCovered() {
     switch(currentDirection) {
       case SOUTH:
-        return getValueCoordMove(coordinate.x + 2, coordinate.z) == VISITED;
+        return getValueDouble(coordinate.x + 2, coordinate.z) == VISITED;
       case NORTH:
-        return getValueCoordMove(coordinate.x - 2, coordinate.z) == VISITED;
+        return getValueDouble(coordinate.x - 2, coordinate.z) == VISITED;
       case WEST:
-        return getValueCoordMove(coordinate.x, coordinate.z + 2) == VISITED;
+        return getValueDouble(coordinate.x, coordinate.z + 2) == VISITED;
       case EAST:
-        return getValueCoordMove(coordinate.x, coordinate.z - 2) == VISITED;
+        return getValueDouble(coordinate.x, coordinate.z - 2) == VISITED;
     }
     return false;
   }
@@ -179,7 +179,7 @@ public class Robot extends Agent {
     return null;
   }
 
-	private int getValueCoordMove(double x, double z) {
+	private int getValueDouble(double x, double z) {
 		return map.getPoint((int) Math.round(x), (int) Math.round(z));
 	}
 

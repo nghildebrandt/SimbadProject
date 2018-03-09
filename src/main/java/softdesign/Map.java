@@ -41,15 +41,4 @@ public class Map {
 
 		return grid[x][z];
 	}
-
-  public void printMatrix() {
-    for (int row = 0; row < grid.length; row++) {
-      for (int col = 0; col < grid[row].length; col++) {
-        System.out.printf("%4d", grid[row][col]);
-      }
-    System.out.println();
-    }
-  }
 }
-
-
