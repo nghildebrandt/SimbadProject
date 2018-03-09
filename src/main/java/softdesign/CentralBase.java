@@ -8,6 +8,7 @@ public class CentralBase {
 	CentralBase() {
 		mapWalls();
     coverageRequirement = 0.75;
+    mapImaginaryWalls();
 	}
 
 	private void mapWalls() {

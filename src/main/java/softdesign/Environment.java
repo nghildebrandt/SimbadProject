@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Environment extends EnvironmentDescription {
 
-	public static final int WORLD_SIZE = 10;
+	public static final int WORLD_SIZE = 20;
 	public static final int SMALL = 10;
 	public static final int LARGE = 30;
 

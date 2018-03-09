@@ -15,7 +15,10 @@ public class Main {
 		List<Agent> swarm = new ArrayList<>();
 
 		if (Environment.WORLD_SIZE <= Environment.LARGE) {
-			swarm.add(new Robot(new Vector3d(3, 0,-3 ), "small", map, Robot.SOUTH));
+			swarm.add(new Robot(new Vector3d(8, 0, 8 ), "small", map, Robot.SOUTH));
+			swarm.add(new Robot(new Vector3d(8, 0,-8 ), "small", map, Robot.SOUTH));
+			swarm.add(new Robot(new Vector3d(-8, 0,-8 ), "small", map, Robot.SOUTH));
+			swarm.add(new Robot(new Vector3d(-8, 0,8 ), "small", map, Robot.SOUTH));
 
 		Environment environment = new Environment();
 		swarm.forEach(environment::add);
