@@ -5,8 +5,8 @@ import java.util.List;
 
 /**
  * Repository for storing images.
- * <p>
- * This interfaces serves as an abstraction for image storage. Its purpose is to abstract the underlying storage
+ *
+ * <p>This interfaces serves as an abstraction for image storage. Its purpose is to abstract the underlying storage
  * mechanism from the rest of the application.
  */
 public interface ImageRepository {
