@@ -26,10 +26,10 @@ public class Environment extends EnvironmentDescription {
 	}
 
 	/**
-	 *  Initializes the walls.
-	 *
-	 *  The walls are now placed at the limit of the world size and the walls will change in response to the size of
-	 *  the world
+	 * Initializes the walls.
+	 * <p>
+	 * The walls are now placed at the limit of the world size and the walls will change in response to the size of
+	 * the world
 	 */
 	private void initWalls() {
 		Wall w1 = new Wall(new Vector3d(-WORLD_SIZE / 2, 0, 0), WORLD_SIZE, 2, this);
