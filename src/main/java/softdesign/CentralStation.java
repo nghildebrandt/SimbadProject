@@ -1,11 +1,11 @@
 package main.java.softdesign;
 
-public class CentralBase {
+public class CentralStation {
 
 	private Map map = new Map();
 	public double coverageRequirement;
 
-	CentralBase() {
+	CentralStation() {
 		mapWalls();
 		coverageRequirement = 0.75;
 		mapImaginaryWalls();
