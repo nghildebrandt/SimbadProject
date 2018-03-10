@@ -10,8 +10,8 @@ import java.util.List;
 public class Main {
 
 	private void start() {
-		CentralBase centralBase = new CentralBase();
-		Map map = centralBase.copyMap();
+		CentralStation centralStation = new CentralStation();
+		Map map = centralStation.copyMap();
 		List<Agent> swarm = new ArrayList<>();
 
 		if (Environment.SIZE <= Environment.LARGE) {

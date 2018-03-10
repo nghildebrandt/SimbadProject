@@ -3,7 +3,7 @@ package main.java.softdesign;
 import main.java.softdesign.image.ImageArrayListStore;
 import main.java.softdesign.image.ImageRepository;
 
-public class CentralBase {
+public class CentralStation {
 
 	private static final double COVERAGE_REQUIREMENT = 0.75;
 
@@ -11,7 +11,7 @@ public class CentralBase {
 
 	private Map map = new Map();
 
-	CentralBase() {
+	CentralStation() {
 		this.imageRepository = new ImageArrayListStore();
 
 		mapWalls();
