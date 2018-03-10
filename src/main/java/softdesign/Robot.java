@@ -217,11 +217,4 @@ public class Robot extends Agent {
 	public void isVisited(Point3d coord) {
 		map.setPoint((int) Math.round(coord.x), (int) Math.round(coord.z), Map.VISITED);
 	}
-
-	/**
-	 * This method is called by the simulator engine on reset.
-	 */
-	@Override
-	public void initBehavior() {
-	}
 }

@@ -3,25 +3,28 @@ package main.java.softdesign;
 import main.java.softdesign.exceptions.GridIndexOutOfBoundsException;
 
 public class Map {
+
 	public static final int VISITED = 1;
 	public static final int UNVISITED = 0;
 	public static final int WALL = -1;
-	private int pointsVisited;
-	private int[][] grid;
+
+	private final int cartesianOffset;
+
+	private int numberOfCoveredPoints;
 	private int size;
-	private int min;
+	private int[][] grid;
 
 	Map() {
-		pointsVisited = 0;
-		this.size = Environment.WORLD_SIZE + 1;
+		this.numberOfCoveredPoints = 0;
+		this.size = Environment.SIZE + 1;
 		this.grid = new int[size][size];
-		this.min = -Environment.WORLD_SIZE / 2;
+		this.cartesianOffset = -Environment.SIZE / 2;
 	}
 
 	public void setPoint(int xCoord, int zCoord, int value) {
-		this.pointsVisited++;
-		int x = xCoord - min;
-		int z = zCoord - min;
+		this.numberOfCoveredPoints++;
+		int x = xCoord - cartesianOffset;
+		int z = zCoord - cartesianOffset;
 
 		if (x < 0 || x >= size || z < 0 || z >= size) {
 			throw new GridIndexOutOfBoundsException("Cannot set a point outside the grid.");
@@ -30,18 +33,18 @@ public class Map {
 		grid[x][z] = value;
 	}
 
-	public int totalNumberOfPointsCovered() {
-		return this.pointsVisited;
-	}
-
 	public int getPoint(int xCoord, int zCoord) {
-		int x = xCoord - min;
-		int z = zCoord - min;
+		int x = xCoord - cartesianOffset;
+		int z = zCoord - cartesianOffset;
 
 		if (x < 0 || x >= size || z < 0 || z >= size) {
 			throw new GridIndexOutOfBoundsException("Cannot get a point outside the grid.");
 		}
 
 		return grid[x][z];
+	}
+
+	public int getNumberOfCoveredPoints() {
+		return numberOfCoveredPoints;
 	}
 }
