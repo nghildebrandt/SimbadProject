@@ -1,31 +1,38 @@
 package main.java.softdesign;
 
+import main.java.softdesign.image.ImageArrayListStore;
+import main.java.softdesign.image.ImageRepository;
+
 public class CentralBase {
 
+	private static final double COVERAGE_REQUIREMENT = 0.75;
+
+	private final ImageRepository imageRepository;
+
 	private Map map = new Map();
-	public double coverageRequirement;
 
 	CentralBase() {
+		this.imageRepository = new ImageArrayListStore();
+
 		mapWalls();
-		coverageRequirement = 0.75;
 		mapImaginaryWalls();
 	}
 
 	private void mapWalls() {
-		for (int i = 0; i <= Environment.WORLD_SIZE / 2; i++) {
-			map.setPoint(i, Environment.WORLD_SIZE / 2, Map.WALL);
-			map.setPoint(-i, Environment.WORLD_SIZE / 2, Map.WALL);
-			map.setPoint(i, -Environment.WORLD_SIZE / 2, Map.WALL);
-			map.setPoint(-i, -Environment.WORLD_SIZE / 2, Map.WALL);
-			map.setPoint(Environment.WORLD_SIZE / 2, i, Map.WALL);
-			map.setPoint(Environment.WORLD_SIZE / 2, -i, Map.WALL);
-			map.setPoint(-Environment.WORLD_SIZE / 2, i, Map.WALL);
-			map.setPoint(-Environment.WORLD_SIZE / 2, -i, Map.WALL);
+		for (int i = 0; i <= Environment.SIZE / 2; i++) {
+			map.setPoint(i, Environment.SIZE / 2, Map.WALL);
+			map.setPoint(-i, Environment.SIZE / 2, Map.WALL);
+			map.setPoint(i, -Environment.SIZE / 2, Map.WALL);
+			map.setPoint(-i, -Environment.SIZE / 2, Map.WALL);
+			map.setPoint(Environment.SIZE / 2, i, Map.WALL);
+			map.setPoint(Environment.SIZE / 2, -i, Map.WALL);
+			map.setPoint(-Environment.SIZE / 2, i, Map.WALL);
+			map.setPoint(-Environment.SIZE / 2, -i, Map.WALL);
 		}
 	}
 
 	private void mapImaginaryWalls() {
-		for (int i = 0; i <= Environment.WORLD_SIZE / 2; i++) {
+		for (int i = 0; i <= Environment.SIZE / 2; i++) {
 			map.setPoint(0, i, Map.WALL);
 			map.setPoint(0, -i, Map.WALL);
 			map.setPoint(i, 0, Map.WALL);
@@ -34,11 +41,10 @@ public class CentralBase {
 	}
 
 	public boolean isMissionComplete() {
-		return map.totalNumberOfPointsCovered() / Environment.WORLD_SIZE * 2 > coverageRequirement;
+		return map.getNumberOfCoveredPoints() / Environment.TOTAL_NUMBER_OF_POINTS > COVERAGE_REQUIREMENT;
 	}
 
-	//used to give copy to robots
-	public Map sendMap() {
+	public Map copyMap() {
 		return map;
 	}
 }
