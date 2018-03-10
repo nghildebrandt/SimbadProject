@@ -15,7 +15,7 @@ public class CentralStation {
 		this.imageRepository = new ImageArrayListStore();
 
 		mapWalls();
-		mapImaginaryWalls();
+		divideIntoSections();
 	}
 
 	private void mapWalls() {
@@ -31,7 +31,12 @@ public class CentralStation {
 		}
 	}
 
-	private void mapImaginaryWalls() {
+	/**
+	 * Divides the map into sections with each representing a sub-world for a robot to reside in.
+	 *
+	 * <p>The division is done by adding "fake" walls into the map.
+	 */
+	private void divideIntoSections() {
 		for (int i = 0; i <= Environment.SIZE / 2; i++) {
 			map.setPoint(0, i, Map.WALL);
 			map.setPoint(0, -i, Map.WALL);
