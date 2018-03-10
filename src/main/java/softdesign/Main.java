@@ -14,19 +14,17 @@ public class Main {
 		Map map = centralBase.sendMap();
 		List<Agent> swarm = new ArrayList<>();
 
-		if (Environment.WORLD_SIZE <= Environment.SMALL) {
-			swarm.add(new Robot(new Vector3d(2, 0, 2), "small", map));
-		} else if (Environment.WORLD_SIZE > Environment.SMALL && Environment.WORLD_SIZE < 30) {
-			swarm.add(new Robot(new Vector3d(5, 0, 5), "small", map));
-			swarm.add(new Robot(new Vector3d(5, 0, -5), "small", map));
-			swarm.add(new Robot(new Vector3d(-5, 0, -5), "small", map));
-			swarm.add(new Robot(new Vector3d(-5, 0, 5), "small", map));
-		}
+		if (Environment.WORLD_SIZE <= Environment.LARGE) {
+			swarm.add(new Robot(new Vector3d(8, 0, 8 ), "small", map, Robot.SOUTH));
+			swarm.add(new Robot(new Vector3d(8, 0,-8 ), "small", map, Robot.SOUTH));
+			swarm.add(new Robot(new Vector3d(-8, 0,-8 ), "small", map, Robot.SOUTH));
+			swarm.add(new Robot(new Vector3d(-8, 0,8 ), "small", map, Robot.SOUTH));
 
 		Environment environment = new Environment();
 		swarm.forEach(environment::add);
 
 		new Simbad(environment, false);
+    }
 	}
 
 	public static void main(String[] args) {
