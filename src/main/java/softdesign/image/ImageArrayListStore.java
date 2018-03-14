@@ -13,11 +13,11 @@ import java.util.List;
  * <p>While in reality you'd want a persistent store, this implementation is sufficient for the purpose of the project
  * demo.
  */
-public class ImageArrayListStore implements ImageRepository {
+class ImageArrayListStore implements ImageRepository {
 
 	private List<BufferedImage> imageList;
 
-	public ImageArrayListStore() {
+	ImageArrayListStore() {
 		this.imageList = new ArrayList<>();
 	}
 

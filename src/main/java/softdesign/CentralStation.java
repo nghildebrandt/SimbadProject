@@ -1,7 +1,7 @@
 package main.java.softdesign;
 
-import main.java.softdesign.image.ImageArrayListStore;
 import main.java.softdesign.image.ImageRepository;
+import main.java.softdesign.image.ImageRepositoryFactory;
 import simbad.gui.Simbad;
 
 import javax.vecmath.Vector3d;
@@ -17,7 +17,7 @@ public class CentralStation {
 	private Map map;
 
 	private CentralStation() {
-		this.imageRepository = new ImageArrayListStore();
+		this.imageRepository = ImageRepositoryFactory.get();
 		this.map = new Map();
 
 		mapWalls();
