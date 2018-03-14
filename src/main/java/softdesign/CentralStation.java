@@ -29,7 +29,11 @@ public class CentralStation {
 	}
 
 	public boolean isMissionComplete() {
-		return map.getNumberOfCoveredPoints() / Environment.TOTAL_NUMBER_OF_POINTS > COVERAGE_REQUIREMENT;
+		return getMissionProgress() > COVERAGE_REQUIREMENT;
+	}
+
+	public double getMissionProgress() {
+		return map.getNumberOfCoveredPoints() / (double) Environment.TOTAL_NUMBER_OF_POINTS;
 	}
 
 	public void startMission(Environment environment) {
