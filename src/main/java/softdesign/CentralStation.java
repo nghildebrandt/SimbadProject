@@ -2,6 +2,9 @@ package main.java.softdesign;
 
 import main.java.softdesign.image.ImageArrayListStore;
 import main.java.softdesign.image.ImageRepository;
+import simbad.gui.Simbad;
+
+import javax.vecmath.Vector3d;
 
 public class CentralStation {
 
@@ -10,10 +13,12 @@ public class CentralStation {
 
 	private final ImageRepository imageRepository;
 
-	private Map map = new Map();
+	private Environment environment;
+	private Map map;
 
 	private CentralStation() {
 		this.imageRepository = new ImageArrayListStore();
+		this.map = new Map();
 
 		mapWalls();
 		divideIntoSections();
@@ -21,6 +26,29 @@ public class CentralStation {
 
 	public static CentralStation getInstance() {
 		return INSTANCE;
+	}
+
+	public boolean isMissionComplete() {
+		return map.getNumberOfCoveredPoints() / Environment.TOTAL_NUMBER_OF_POINTS > COVERAGE_REQUIREMENT;
+	}
+
+	public void startMission(Environment environment) {
+		this.environment = environment;
+		deployRobots();
+		launch();
+	}
+
+	private void deployRobots() {
+		if (Environment.SIZE <= Environment.LARGE) {
+			environment.add(new Robot(new Vector3d(8, 0, 8), "small", map, Robot.SOUTH));
+			environment.add(new Robot(new Vector3d(8, 0, -8), "small", map, Robot.SOUTH));
+			environment.add(new Robot(new Vector3d(-8, 0, -8), "small", map, Robot.SOUTH));
+			environment.add(new Robot(new Vector3d(-8, 0, 8), "small", map, Robot.SOUTH));
+		}
+	}
+
+	private void launch() {
+		new Simbad(environment, false);
 	}
 
 	private void mapWalls() {
@@ -48,13 +76,5 @@ public class CentralStation {
 			map.setPoint(i, 0, Map.WALL);
 			map.setPoint(-i, 0, Map.WALL);
 		}
-	}
-
-	public boolean isMissionComplete() {
-		return map.getNumberOfCoveredPoints() / Environment.TOTAL_NUMBER_OF_POINTS > COVERAGE_REQUIREMENT;
-	}
-
-	public Map copyMap() {
-		return map;
 	}
 }
