@@ -5,17 +5,22 @@ import main.java.softdesign.image.ImageRepository;
 
 public class CentralStation {
 
+	private static final CentralStation instance = new CentralStation();
 	private static final double COVERAGE_REQUIREMENT = 0.75;
 
 	private final ImageRepository imageRepository;
 
 	private Map map = new Map();
 
-	CentralStation() {
+	private CentralStation() {
 		this.imageRepository = new ImageArrayListStore();
 
 		mapWalls();
 		divideIntoSections();
+	}
+
+	public static CentralStation getInstance() {
+		return instance;
 	}
 
 	private void mapWalls() {

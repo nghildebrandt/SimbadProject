@@ -10,7 +10,7 @@ import java.util.List;
 public class Main {
 
 	private void start() {
-		CentralStation centralStation = new CentralStation();
+		CentralStation centralStation = CentralStation.getInstance();
 		Map map = centralStation.copyMap();
 		List<Agent> swarm = new ArrayList<>();
 
@@ -20,7 +20,7 @@ public class Main {
 			swarm.add(new Robot(new Vector3d(-8, 0, -8), "small", map, Robot.SOUTH));
 			swarm.add(new Robot(new Vector3d(-8, 0, 8), "small", map, Robot.SOUTH));
 
-			Environment environment = new Environment();
+			Environment environment = Environment.getInstance();
 			swarm.forEach(environment::add);
 
 			new Simbad(environment, false);
