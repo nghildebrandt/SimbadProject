@@ -5,7 +5,7 @@ import main.java.softdesign.image.ImageRepository;
 
 public class CentralStation {
 
-	private static final CentralStation instance = new CentralStation();
+	private static final CentralStation INSTANCE = new CentralStation();
 	private static final double COVERAGE_REQUIREMENT = 0.75;
 
 	private final ImageRepository imageRepository;
@@ -20,7 +20,7 @@ public class CentralStation {
 	}
 
 	public static CentralStation getInstance() {
-		return instance;
+		return INSTANCE;
 	}
 
 	private void mapWalls() {

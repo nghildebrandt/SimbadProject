@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Environment extends EnvironmentDescription {
 
-	private static final Environment instance = new Environment();
+	private static final Environment INSTANCE = new Environment();
 
 	public static final int SIZE = 20;
 	public static final int TOTAL_NUMBER_OF_POINTS = SIZE * 2;
@@ -30,7 +30,7 @@ public class Environment extends EnvironmentDescription {
 	}
 
 	public static Environment getInstance() {
-		return instance;
+		return INSTANCE;
 	}
 
 	/**
