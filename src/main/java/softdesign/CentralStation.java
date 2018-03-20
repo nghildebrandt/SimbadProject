@@ -13,12 +13,11 @@ public class CentralStation {
 
 	private final ImageRepository imageRepository;
 
-	private Environment environment;
 	private Map map;
 
 	private CentralStation() {
 		this.imageRepository = ImageRepositoryFactory.get();
-		this.map = new Map();
+		this.map = new CartisianGridMap(Environment.SIZE);
 
 		mapWalls();
 		divideIntoSections();
@@ -33,12 +32,21 @@ public class CentralStation {
 	}
 
 	public void startMission(Environment environment) {
-		this.environment = environment;
-		deployRobots();
-		launch();
+		drawMap(environment);
+		deployRobots(environment);
+		launch(environment);
 	}
 
-	private void deployRobots() {
+	/**
+	 * Draws a map from the given environment.
+	 *
+	 * @param environment environment to be mapped
+	 */
+	private void drawMap(Environment environment) {
+		// TODO to be implemented
+	}
+
+	private void deployRobots(Environment environment) {
 		if (Environment.SIZE <= Environment.LARGE) {
 			environment.add(new Robot(new Vector3d(8, 0, 8), "small", map, Robot.SOUTH));
 			environment.add(new Robot(new Vector3d(8, 0, -8), "small", map, Robot.SOUTH));
@@ -47,7 +55,7 @@ public class CentralStation {
 		}
 	}
 
-	private void launch() {
+	private void launch(Environment environment) {
 		new Simbad(environment, false);
 	}
 
