@@ -7,9 +7,12 @@ public class CartisianGridMap extends AbstractMap {
 	private Tile[][] grid;
 
 	public CartisianGridMap(int size) {
-		super(size + 1); // TODO why are we incrementing size by 1?
+		super(size);
+
 		this.cartesianOffset = -(this.size / 2);
-		this.grid = new Tile[size][size];
+
+		int axisPoints = size + 1;
+		this.grid = new Tile[axisPoints][axisPoints];
 	}
 
 	@Override
