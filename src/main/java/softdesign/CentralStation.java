@@ -2,6 +2,8 @@ package main.java.softdesign;
 
 import main.java.softdesign.image.ImageRepository;
 import main.java.softdesign.image.ImageRepositoryFactory;
+import main.java.softdesign.map.CartisianGridMap;
+import main.java.softdesign.map.Map;
 import simbad.gui.Simbad;
 
 import javax.vecmath.Vector3d;
@@ -61,14 +63,14 @@ public class CentralStation {
 
 	private void mapWalls() {
 		for (int i = 0; i <= Environment.SIZE / 2; i++) {
-			map.setPoint(i, Environment.SIZE / 2, Map.WALL);
-			map.setPoint(-i, Environment.SIZE / 2, Map.WALL);
-			map.setPoint(i, -Environment.SIZE / 2, Map.WALL);
-			map.setPoint(-i, -Environment.SIZE / 2, Map.WALL);
-			map.setPoint(Environment.SIZE / 2, i, Map.WALL);
-			map.setPoint(Environment.SIZE / 2, -i, Map.WALL);
-			map.setPoint(-Environment.SIZE / 2, i, Map.WALL);
-			map.setPoint(-Environment.SIZE / 2, -i, Map.WALL);
+			map.markAsWall(i, Environment.SIZE / 2);
+			map.markAsWall(-i, Environment.SIZE / 2);
+			map.markAsWall(i, -Environment.SIZE / 2);
+			map.markAsWall(-i, -Environment.SIZE / 2);
+			map.markAsWall(Environment.SIZE / 2, i);
+			map.markAsWall(Environment.SIZE / 2, -i);
+			map.markAsWall(-Environment.SIZE / 2, i);
+			map.markAsWall(-Environment.SIZE / 2, -i);
 		}
 	}
 
@@ -79,10 +81,10 @@ public class CentralStation {
 	 */
 	private void divideIntoSections() {
 		for (int i = 0; i <= Environment.SIZE / 2; i++) {
-			map.setPoint(0, i, Map.WALL);
-			map.setPoint(0, -i, Map.WALL);
-			map.setPoint(i, 0, Map.WALL);
-			map.setPoint(-i, 0, Map.WALL);
+			map.markAsWall(0, i);
+			map.markAsWall(0, -i);
+			map.markAsWall(i, 0);
+			map.markAsWall(-i, 0);
 		}
 	}
 }

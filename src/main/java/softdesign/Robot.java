@@ -1,5 +1,6 @@
 package main.java.softdesign;
 
+import main.java.softdesign.map.Map;
 import simbad.sim.Agent;
 import simbad.sim.CameraSensor;
 import simbad.sim.RobotFactory;
@@ -55,7 +56,7 @@ public class Robot extends Agent {
 	public void performBehavior() {
 		this.getCoords(coordinate);
 
-		// perform the following actions every 5 virtual seconds
+/*		// perform the following actions every 5 virtual seconds
 		if (this.getCounter() % 5 == 0) {
 			takeImages();
 			if (this.isNearWall() ^ this.isNearCovered()) {
@@ -69,7 +70,9 @@ public class Robot extends Agent {
 				rotateY(-(Math.PI / 2));
 				setDirection();
 			}
-		}
+		}*/
+
+		setTranslationalVelocity(0.5);
 	}
 
 	//takes images from the back, left, and right side in relation to the robot
@@ -143,13 +146,13 @@ public class Robot extends Agent {
 	private boolean isNearCovered() {
 		switch (currentDirection) {
 			case SOUTH:
-				return getValueDouble(coordinate.x + 2, coordinate.z) == Map.VISITED;
+				return getValueDouble(coordinate.x + 2, coordinate.z) == Map.Tile.COVERED;
 			case NORTH:
-				return getValueDouble(coordinate.x - 2, coordinate.z) == Map.VISITED;
+				return getValueDouble(coordinate.x - 2, coordinate.z) == Map.Tile.COVERED;
 			case WEST:
-				return getValueDouble(coordinate.x, coordinate.z + 2) == Map.VISITED;
+				return getValueDouble(coordinate.x, coordinate.z + 2) == Map.Tile.COVERED;
 			case EAST:
-				return getValueDouble(coordinate.x, coordinate.z - 2) == Map.VISITED;
+				return getValueDouble(coordinate.x, coordinate.z - 2) == Map.Tile.COVERED;
 		}
 		return false;
 	}
@@ -157,19 +160,19 @@ public class Robot extends Agent {
 	private boolean isNearWall() {
 		switch (currentDirection) {
 			case SOUTH:
-				return getValueCoord(toPoint3d(SOUTH)) == Map.WALL;
+				return getValueCoord(toPoint3d(SOUTH)) == Map.Tile.WALL;
 			case NORTH:
-				return getValueCoord(toPoint3d(NORTH)) == Map.WALL;
+				return getValueCoord(toPoint3d(NORTH)) == Map.Tile.WALL;
 			case WEST:
-				return getValueCoord(toPoint3d(WEST)) == Map.WALL;
+				return getValueCoord(toPoint3d(WEST)) == Map.Tile.WALL;
 			case EAST:
-				return getValueCoord(toPoint3d(EAST)) == Map.WALL;
+				return getValueCoord(toPoint3d(EAST)) == Map.Tile.WALL;
 		}
 		return false;
 	}
 
-	private int getValueCoord(Point3d coord) {
-		return map.getPoint((int) Math.round(coord.x), (int) Math.round(coord.z));
+	private Map.Tile getValueCoord(Point3d coord) {
+		return map.getTile((int) Math.round(coord.x), (int) Math.round(coord.z));
 	}
 
 	// returns new coordinate which the coordinate +/- 2 point ahead/behind the current direction
@@ -187,8 +190,8 @@ public class Robot extends Agent {
 		return null;
 	}
 
-	private int getValueDouble(double x, double z) {
-		return map.getPoint((int) Math.round(x), (int) Math.round(z));
+	private Map.Tile getValueDouble(double x, double z) {
+		return map.getTile((int) Math.round(x), (int) Math.round(z));
 	}
 
 	private void setDirection() {
@@ -211,10 +214,10 @@ public class Robot extends Agent {
 	}
 
 	private boolean isUnvisited(Point3d coord) {
-		return getValueCoord(coord) == Map.UNVISITED;
+		return getValueCoord(coord) == Map.Tile.EMPTY;
 	}
 
 	public void isVisited(Point3d coord) {
-		map.setPoint((int) Math.round(coord.x), (int) Math.round(coord.z), Map.VISITED);
+		map.markAsCovered((int) Math.round(coord.x), (int) Math.round(coord.z));
 	}
 }
