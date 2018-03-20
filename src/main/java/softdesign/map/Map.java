@@ -6,11 +6,11 @@ public interface Map {
 		EMPTY, COVERED, WALL
 	}
 
-	Tile getTile(int xCoordinate, int yCoordinate);
+	Tile getTile(int xCoordinate, int zCoordinate);
 
 	int getNumberOfCoveredPoints();
 
-	void markAsCovered(int xCoordinate, int yCoordinate);
+	void markAsCovered(int xCoordinate, int zCoordinate);
 
-	void markAsWall(int xCoordinate, int yCoordinate);
+	void markAsWall(int xCoordinate, int zCoordinate);
 }
