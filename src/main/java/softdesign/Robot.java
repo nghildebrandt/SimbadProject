@@ -17,7 +17,6 @@ public class Robot extends Agent {
 		NORTH, EAST, SOUTH, WEST
 	}
 
-	private String currentMode;
 	private Direction currentDirection;
 	private Map map;
 	private Point3d coordinate;
@@ -58,6 +57,8 @@ public class Robot extends Agent {
 		// perform the following actions every 5 virtual seconds
 		if (getCounter() % 5 == 0) {
 			takeImages();
+
+			String currentMode;
 
 			if (isNearWall() ^ isNearCovered()) {
 				currentMode = "avoidObstacle";
