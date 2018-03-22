@@ -212,7 +212,7 @@ public class Robot extends Agent {
 		return getValueCoord(coord) == Map.Tile.EMPTY;
 	}
 
-	public void isVisited(Point3d coord) {
+	private void isVisited(Point3d coord) {
 		map.markAsCovered((int) Math.round(coord.x), (int) Math.round(coord.z));
 	}
 }
