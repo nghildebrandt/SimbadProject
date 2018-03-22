@@ -1,4 +1,4 @@
-package main.java.softdesign;
+package main.java.softdesign.world;
 
 import main.java.softdesign.image.ImageRepository;
 import main.java.softdesign.image.ImageRepositoryFactory;

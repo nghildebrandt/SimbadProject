@@ -1,4 +1,4 @@
-package main.java.softdesign;
+package main.java.softdesign.world;
 
 import main.java.softdesign.map.Map;
 import simbad.sim.Agent;
@@ -9,7 +9,7 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import java.awt.image.BufferedImage;
 
-public class Robot extends Agent {
+class Robot extends Agent {
 
 	private static final String UNRECOGNIZED_DIRECTION_EXCEPTION = "Unrecognized direction %s";
 
@@ -17,7 +17,6 @@ public class Robot extends Agent {
 		NORTH, EAST, SOUTH, WEST
 	}
 
-	private String currentMode;
 	private Direction currentDirection;
 	private Map map;
 	private Point3d coordinate;
@@ -40,30 +39,35 @@ public class Robot extends Agent {
 
 	private void initCameras() {
 		camera = RobotFactory.addCameraSensor(this);
-		camera2 = RobotFactory.addCameraSensor(this);
-		camera3 = RobotFactory.addCameraSensor(this);
-		cameraImage = camera.createCompatibleImage();
-		cameraImage = camera2.createCompatibleImage();
-		cameraImage = camera3.createCompatibleImage();
 		camera.rotateY(Math.PI / 2);
+
+		camera2 = RobotFactory.addCameraSensor(this);
 		camera2.rotateY(-(Math.PI / 2));
+
+		camera3 = RobotFactory.addCameraSensor(this);
 		camera3.rotateY(Math.PI);
+
+		cameraImage = camera.createCompatibleImage();
 	}
 
 	@Override
 	public void performBehavior() {
-		this.getCoords(coordinate);
+		getCoords(coordinate);
 
 		// perform the following actions every 5 virtual seconds
-		if (this.getCounter() % 5 == 0) {
+		if (getCounter() % 5 == 0) {
 			takeImages();
-			if (this.isNearWall() ^ this.isNearCovered()) {
-				this.currentMode = "avoidObstacle";
+
+			String currentMode;
+
+			if (isNearWall() ^ isNearCovered()) {
+				currentMode = "avoidObstacle";
 			} else {
-				this.currentMode = "goAround";
+				currentMode = "goAround";
 			}
-			if (this.currentMode == "goAround") {
-				this.setTranslationalVelocity(0.5);
+
+			if ("goAround".equals(currentMode)) {
+				setTranslationalVelocity(0.5);
 			} else {
 				rotateY(-(Math.PI / 2));
 				setDirection();
@@ -77,19 +81,19 @@ public class Robot extends Agent {
 	private void takeImages() {
 		switch (currentDirection) {
 			case SOUTH:
-				checkDirection(camera, camera2, camera3);
+				checkDirection();
 				break;
 			case WEST:
-				checkDirection(camera3, camera2, camera);
+				checkDirection();
 				break;
 			case NORTH:
-				checkDirection(camera2, camera, camera3);
+				checkDirection();
 				break;
 		}
 	}
 
 	//the direction at which the camera points to changes as the robot moves, this method makes such that depending on the current direction of the robot that each camera ttached to the robot will point to the right global direction - EAST, WEST, NORTH, SOUTH
-	private void checkDirection(CameraSensor camera, CameraSensor camera2, CameraSensor camera3) {
+	private void checkDirection() {
 		switch (currentDirection) {
 			case NORTH:
 				checkCameraInDirections(Direction.WEST, Direction.EAST, Direction.SOUTH);
@@ -109,13 +113,13 @@ public class Robot extends Agent {
 	//checks if the points left, right, and back in relation to the robot has been taken a picture of, if an image has not been taken, then an image will be taken
 	private void checkCameraInDirections(Direction left, Direction right, Direction back) {
 		if (isUnvisited(hasPointVisited(left))) {
-			coverAndTrack(this.camera, hasPointVisited(left));
+			coverAndTrack(camera, hasPointVisited(left));
 		}
 		if (isUnvisited(hasPointVisited(right))) {
-			coverAndTrack(this.camera2, hasPointVisited(right));
+			coverAndTrack(camera2, hasPointVisited(right));
 		}
 		if (isUnvisited(hasPointVisited(back))) {
-			coverAndTrack(this.camera3, hasPointVisited(back));
+			coverAndTrack(camera3, hasPointVisited(back));
 		}
 	}
 
