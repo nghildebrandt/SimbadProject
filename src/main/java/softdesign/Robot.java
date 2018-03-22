@@ -80,19 +80,19 @@ public class Robot extends Agent {
 	private void takeImages() {
 		switch (currentDirection) {
 			case SOUTH:
-				checkDirection(camera, camera2, camera3);
+				checkDirection();
 				break;
 			case WEST:
-				checkDirection(camera3, camera2, camera);
+				checkDirection();
 				break;
 			case NORTH:
-				checkDirection(camera2, camera, camera3);
+				checkDirection();
 				break;
 		}
 	}
 
 	//the direction at which the camera points to changes as the robot moves, this method makes such that depending on the current direction of the robot that each camera ttached to the robot will point to the right global direction - EAST, WEST, NORTH, SOUTH
-	private void checkDirection(CameraSensor camera, CameraSensor camera2, CameraSensor camera3) {
+	private void checkDirection() {
 		switch (currentDirection) {
 			case NORTH:
 				checkCameraInDirections(Direction.WEST, Direction.EAST, Direction.SOUTH);
