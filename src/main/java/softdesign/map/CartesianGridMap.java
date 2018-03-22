@@ -18,8 +18,8 @@ public class CartesianGridMap extends AbstractMap {
 	}
 
 	@Override
-	public Tile getTile(Point3d coord) {
-		return getTile((int) Math.round(coord.x), (int) Math.round(coord.z));
+	public Tile getTile(Point3d coordinate) {
+		return getTile((int) Math.round(coordinate.x), (int) Math.round(coordinate.z));
 	}
 
 	@Override

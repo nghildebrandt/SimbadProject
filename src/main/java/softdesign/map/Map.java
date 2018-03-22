@@ -8,7 +8,7 @@ public interface Map {
 		EMPTY, COVERED, WALL
 	}
 
-	Tile getTile(Point3d coord);
+	Tile getTile(Point3d coordinate);
 
 	Tile getTile(int xCoordinate, int zCoordinate);
 

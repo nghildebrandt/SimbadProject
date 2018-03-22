@@ -83,14 +83,14 @@ public class Robot extends Agent {
 	}
 
 	private void takeImageIfNeeded(Direction direction, CameraSensor camera) {
-		Point3d coord = stepsAhead(direction, 1);
+		Point3d coordinate = stepsAhead(direction, 1);
 
-		if (map.getTile(coord) != Map.Tile.EMPTY) {
+		if (map.getTile(coordinate) != Map.Tile.EMPTY) {
 			return;
 		}
 
 		camera.copyVisionImage(camera.createCompatibleImage());
-		map.markAsCovered((int) Math.round(coord.x), (int) Math.round(coord.z));
+		map.markAsCovered((int) Math.round(coordinate.x), (int) Math.round(coordinate.z));
 	}
 
 	private boolean visitedIsAhead() {
