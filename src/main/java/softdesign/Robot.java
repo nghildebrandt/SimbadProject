@@ -53,20 +53,20 @@ public class Robot extends Agent {
 
 	@Override
 	public void performBehavior() {
-		this.getCoords(coordinate);
+		getCoords(coordinate);
 
 		// perform the following actions every 5 virtual seconds
-		if (this.getCounter() % 5 == 0) {
+		if (getCounter() % 5 == 0) {
 			takeImages();
 
-			if (this.isNearWall() ^ this.isNearCovered()) {
-				this.currentMode = "avoidObstacle";
+			if (isNearWall() ^ isNearCovered()) {
+				currentMode = "avoidObstacle";
 			} else {
-				this.currentMode = "goAround";
+				currentMode = "goAround";
 			}
 
 			if ("goAround".equals(currentMode)) {
-				this.setTranslationalVelocity(0.5);
+				setTranslationalVelocity(0.5);
 			} else {
 				rotateY(-(Math.PI / 2));
 				setDirection();
@@ -112,13 +112,13 @@ public class Robot extends Agent {
 	//checks if the points left, right, and back in relation to the robot has been taken a picture of, if an image has not been taken, then an image will be taken
 	private void checkCameraInDirections(Direction left, Direction right, Direction back) {
 		if (isUnvisited(hasPointVisited(left))) {
-			coverAndTrack(this.camera, hasPointVisited(left));
+			coverAndTrack(camera, hasPointVisited(left));
 		}
 		if (isUnvisited(hasPointVisited(right))) {
-			coverAndTrack(this.camera2, hasPointVisited(right));
+			coverAndTrack(camera2, hasPointVisited(right));
 		}
 		if (isUnvisited(hasPointVisited(back))) {
-			coverAndTrack(this.camera3, hasPointVisited(back));
+			coverAndTrack(camera3, hasPointVisited(back));
 		}
 	}
 
