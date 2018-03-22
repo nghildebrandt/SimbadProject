@@ -58,12 +58,14 @@ public class Robot extends Agent {
 		// perform the following actions every 5 virtual seconds
 		if (this.getCounter() % 5 == 0) {
 			takeImages();
+
 			if (this.isNearWall() ^ this.isNearCovered()) {
 				this.currentMode = "avoidObstacle";
 			} else {
 				this.currentMode = "goAround";
 			}
-			if (this.currentMode == "goAround") {
+
+			if ("goAround".equals(currentMode)) {
 				this.setTranslationalVelocity(0.5);
 			} else {
 				rotateY(-(Math.PI / 2));
