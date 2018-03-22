@@ -11,6 +11,8 @@ import java.awt.image.BufferedImage;
 
 public class Robot extends Agent {
 
+	private static final String UNRECOGNIZED_DIRECTION_EXCEPTION = "Unrecognized direction %s";
+
 	enum Direction {
 		NORTH, EAST, SOUTH, WEST
 	}
@@ -119,17 +121,26 @@ public class Robot extends Agent {
 
 	// this method returns a new coordinate
 	private Point3d hasPointVisited(Direction direction) {
+		Point3d result;
+
 		switch (direction) {
 			case EAST:
-				return new Point3d(coordinate.x, coordinate.y, coordinate.z - 1);
+				result = new Point3d(coordinate.x, coordinate.y, coordinate.z - 1);
+				break;
 			case WEST:
-				return new Point3d(coordinate.x, coordinate.y, coordinate.z + 1);
+				result = new Point3d(coordinate.x, coordinate.y, coordinate.z + 1);
+				break;
 			case SOUTH:
-				return new Point3d(coordinate.x + 1, coordinate.y, coordinate.z);
+				result = new Point3d(coordinate.x + 1, coordinate.y, coordinate.z);
+				break;
 			case NORTH:
-				return new Point3d(coordinate.x - 1, coordinate.y, coordinate.z);
+				result = new Point3d(coordinate.x - 1, coordinate.y, coordinate.z);
+				break;
+			default:
+				throw new IllegalArgumentException(String.format(UNRECOGNIZED_DIRECTION_EXCEPTION, direction));
 		}
-		return null;
+
+		return result;
 	}
 
 	//takes picture of point and marks the point as visited
@@ -140,31 +151,49 @@ public class Robot extends Agent {
 
 	// returns if the coordinate two points in front of the currentDirection has been visited
 	private boolean isNearCovered() {
+		boolean result;
+
 		switch (currentDirection) {
 			case SOUTH:
-				return getValueDouble(coordinate.x + 2, coordinate.z) == Map.Tile.COVERED;
+				result = getValueDouble(coordinate.x + 2, coordinate.z) == Map.Tile.COVERED;
+				break;
 			case NORTH:
-				return getValueDouble(coordinate.x - 2, coordinate.z) == Map.Tile.COVERED;
+				result = getValueDouble(coordinate.x - 2, coordinate.z) == Map.Tile.COVERED;
+				break;
 			case WEST:
-				return getValueDouble(coordinate.x, coordinate.z + 2) == Map.Tile.COVERED;
+				result = getValueDouble(coordinate.x, coordinate.z + 2) == Map.Tile.COVERED;
+				break;
 			case EAST:
-				return getValueDouble(coordinate.x, coordinate.z - 2) == Map.Tile.COVERED;
+				result = getValueDouble(coordinate.x, coordinate.z - 2) == Map.Tile.COVERED;
+				break;
+			default:
+				throw new IllegalArgumentException(String.format(UNRECOGNIZED_DIRECTION_EXCEPTION, currentDirection));
 		}
-		return false;
+
+		return result;
 	}
 
 	private boolean isNearWall() {
+		boolean result;
+
 		switch (currentDirection) {
 			case SOUTH:
-				return getValueCoord(toPoint3d(Direction.SOUTH)) == Map.Tile.WALL;
+				result = getValueCoord(toPoint3d(Direction.SOUTH)) == Map.Tile.WALL;
+				break;
 			case NORTH:
-				return getValueCoord(toPoint3d(Direction.NORTH)) == Map.Tile.WALL;
+				result = getValueCoord(toPoint3d(Direction.NORTH)) == Map.Tile.WALL;
+				break;
 			case WEST:
-				return getValueCoord(toPoint3d(Direction.WEST)) == Map.Tile.WALL;
+				result = getValueCoord(toPoint3d(Direction.WEST)) == Map.Tile.WALL;
+				break;
 			case EAST:
-				return getValueCoord(toPoint3d(Direction.EAST)) == Map.Tile.WALL;
+				result = getValueCoord(toPoint3d(Direction.EAST)) == Map.Tile.WALL;
+				break;
+			default:
+				throw new IllegalArgumentException(String.format(UNRECOGNIZED_DIRECTION_EXCEPTION, currentDirection));
 		}
-		return false;
+
+		return result;
 	}
 
 	private Map.Tile getValueCoord(Point3d coord) {
@@ -172,17 +201,27 @@ public class Robot extends Agent {
 	}
 
 	// returns new coordinate which the coordinate +/- 2 point ahead/behind the current direction
+	private Point3d toPoint3d(Direction direction) {
+		Point3d result;
+
 		switch (direction) {
 			case EAST:
-				return new Point3d(coordinate.x, coordinate.y, coordinate.z - 2);
+				result = new Point3d(coordinate.x, coordinate.y, coordinate.z - 2);
+				break;
 			case WEST:
-				return new Point3d(coordinate.x, coordinate.y, coordinate.z + 2);
+				result = new Point3d(coordinate.x, coordinate.y, coordinate.z + 2);
+				break;
 			case SOUTH:
-				return new Point3d(coordinate.x + 2, coordinate.y, coordinate.z);
+				result = new Point3d(coordinate.x + 2, coordinate.y, coordinate.z);
+				break;
 			case NORTH:
-				return new Point3d(coordinate.x - 2, coordinate.y, coordinate.z);
+				result = new Point3d(coordinate.x - 2, coordinate.y, coordinate.z);
+				break;
+			default:
+				throw new IllegalArgumentException(String.format(UNRECOGNIZED_DIRECTION_EXCEPTION, direction));
 		}
-		return null;
+
+		return result;
 	}
 
 	private Map.Tile getValueDouble(double x, double z) {
@@ -204,7 +243,7 @@ public class Robot extends Agent {
 				currentDirection = Direction.SOUTH;
 				break;
 			default:
-				break;
+				throw new IllegalArgumentException(String.format(UNRECOGNIZED_DIRECTION_EXCEPTION, currentDirection));
 		}
 	}
 
