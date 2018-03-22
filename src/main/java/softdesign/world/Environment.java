@@ -1,4 +1,4 @@
-package main.java.softdesign;
+package main.java.softdesign.world;
 
 import simbad.sim.Box;
 import simbad.sim.EnvironmentDescription;

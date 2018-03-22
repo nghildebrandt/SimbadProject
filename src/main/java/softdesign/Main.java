@@ -1,5 +1,8 @@
 package main.java.softdesign;
 
+import main.java.softdesign.world.CentralStation;
+import main.java.softdesign.world.Environment;
+
 public class Main {
 
 	private static final long REPORT_INTERVAL = 5000L;

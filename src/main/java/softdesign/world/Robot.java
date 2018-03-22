@@ -1,4 +1,4 @@
-package main.java.softdesign;
+package main.java.softdesign.world;
 
 import main.java.softdesign.map.Map;
 import simbad.sim.Agent;
@@ -9,7 +9,7 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import java.awt.image.BufferedImage;
 
-public class Robot extends Agent {
+class Robot extends Agent {
 
 	private static final String UNRECOGNIZED_DIRECTION_EXCEPTION = "Unrecognized direction %s";
 
