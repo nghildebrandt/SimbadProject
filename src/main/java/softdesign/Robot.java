@@ -11,13 +11,12 @@ import java.awt.image.BufferedImage;
 
 public class Robot extends Agent {
 
-	public static final int SOUTH = 1;
-	public static final int WEST = 2;
-	public static final int NORTH = 3;
-	public static final int EAST = 4;
+	enum Direction {
+		NORTH, EAST, SOUTH, WEST
+	}
 
 	private String currentMode;
-	private int currentDirection;
+	private Direction currentDirection;
 	private Map map;
 	private Point3d coordinate;
 
@@ -26,10 +25,10 @@ public class Robot extends Agent {
 	private CameraSensor camera3;
 	private BufferedImage cameraImage;
 
-	Robot(Vector3d position, String name, Map map, int currentDirection) {
+	Robot(Vector3d position, String name, Map map, Direction startingDirection) {
 		super(position, name);
 		this.map = map;
-		this.currentDirection = currentDirection;
+		this.currentDirection = startingDirection;
 		this.coordinate = new Point3d();
 		int directionCamera;
 		int directionCamera2;
@@ -94,22 +93,22 @@ public class Robot extends Agent {
 	private void checkDirection(CameraSensor camera, CameraSensor camera2, CameraSensor camera3) {
 		switch (currentDirection) {
 			case NORTH:
-				checkCameraInDirections(WEST, EAST, SOUTH);
+				checkCameraInDirections(Direction.WEST, Direction.EAST, Direction.SOUTH);
 				break;
 			case SOUTH:
-				checkCameraInDirections(EAST, WEST, NORTH);
+				checkCameraInDirections(Direction.EAST, Direction.WEST, Direction.NORTH);
 				break;
 			case WEST:
-				checkCameraInDirections(SOUTH, NORTH, EAST);
+				checkCameraInDirections(Direction.SOUTH, Direction.NORTH, Direction.EAST);
 				break;
 			case EAST:
-				checkCameraInDirections(NORTH, SOUTH, WEST);
+				checkCameraInDirections(Direction.NORTH, Direction.SOUTH, Direction.WEST);
 				break;
 		}
 	}
 
 	//checks if the points left, right, and back in relation to the robot has been taken a picture of, if an image has not been taken, then an image will be taken
-	private void checkCameraInDirections(int left, int right, int back) {
+	private void checkCameraInDirections(Direction left, Direction right, Direction back) {
 		if (isUnvisited(hasPointVisited(left))) {
 			coverAndTrack(this.camera, hasPointVisited(left));
 		}
@@ -122,7 +121,7 @@ public class Robot extends Agent {
 	}
 
 	// this method returns a new coordinate
-	private Point3d hasPointVisited(int direction) {
+	private Point3d hasPointVisited(Direction direction) {
 		switch (direction) {
 			case EAST:
 				return new Point3d(coordinate.x, coordinate.y, coordinate.z - 1);
@@ -160,13 +159,13 @@ public class Robot extends Agent {
 	private boolean isNearWall() {
 		switch (currentDirection) {
 			case SOUTH:
-				return getValueCoord(toPoint3d(SOUTH)) == Map.Tile.WALL;
+				return getValueCoord(toPoint3d(Direction.SOUTH)) == Map.Tile.WALL;
 			case NORTH:
-				return getValueCoord(toPoint3d(NORTH)) == Map.Tile.WALL;
+				return getValueCoord(toPoint3d(Direction.NORTH)) == Map.Tile.WALL;
 			case WEST:
-				return getValueCoord(toPoint3d(WEST)) == Map.Tile.WALL;
+				return getValueCoord(toPoint3d(Direction.WEST)) == Map.Tile.WALL;
 			case EAST:
-				return getValueCoord(toPoint3d(EAST)) == Map.Tile.WALL;
+				return getValueCoord(toPoint3d(Direction.EAST)) == Map.Tile.WALL;
 		}
 		return false;
 	}
@@ -176,7 +175,6 @@ public class Robot extends Agent {
 	}
 
 	// returns new coordinate which the coordinate +/- 2 point ahead/behind the current direction
-	private Point3d toPoint3d(int direction) {
 		switch (direction) {
 			case EAST:
 				return new Point3d(coordinate.x, coordinate.y, coordinate.z - 2);
@@ -197,16 +195,16 @@ public class Robot extends Agent {
 	private void setDirection() {
 		switch (currentDirection) {
 			case SOUTH:
-				currentDirection = WEST;
+				currentDirection = Direction.WEST;
 				break;
 			case WEST:
-				currentDirection = NORTH;
+				currentDirection = Direction.NORTH;
 				break;
 			case NORTH:
-				currentDirection = EAST;
+				currentDirection = Direction.EAST;
 				break;
 			case EAST:
-				currentDirection = SOUTH;
+				currentDirection = Direction.SOUTH;
 				break;
 			default:
 				break;
