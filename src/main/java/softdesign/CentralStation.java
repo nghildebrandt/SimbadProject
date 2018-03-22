@@ -2,6 +2,8 @@ package main.java.softdesign;
 
 import main.java.softdesign.image.ImageRepository;
 import main.java.softdesign.image.ImageRepositoryFactory;
+import main.java.softdesign.map.CartisianGridMap;
+import main.java.softdesign.map.Map;
 import simbad.gui.Simbad;
 
 import javax.vecmath.Vector3d;
@@ -13,12 +15,11 @@ public class CentralStation {
 
 	private final ImageRepository imageRepository;
 
-	private Environment environment;
 	private Map map;
 
 	private CentralStation() {
 		this.imageRepository = ImageRepositoryFactory.get();
-		this.map = new Map();
+		this.map = new CartisianGridMap(Environment.SIZE);
 
 		mapWalls();
 		divideIntoSections();
@@ -37,12 +38,21 @@ public class CentralStation {
 	}
 
 	public void startMission(Environment environment) {
-		this.environment = environment;
-		deployRobots();
-		launch();
+		drawMap(environment);
+		deployRobots(environment);
+		launch(environment);
 	}
 
-	private void deployRobots() {
+	/**
+	 * Draws a map from the given environment.
+	 *
+	 * @param environment environment to be mapped
+	 */
+	private void drawMap(Environment environment) {
+		// TODO to be implemented
+	}
+
+	private void deployRobots(Environment environment) {
 		if (Environment.SIZE <= Environment.LARGE) {
 			environment.add(new Robot(new Vector3d(8, 0, 8), "small", map, Robot.SOUTH));
 			environment.add(new Robot(new Vector3d(8, 0, -8), "small", map, Robot.SOUTH));
@@ -51,20 +61,20 @@ public class CentralStation {
 		}
 	}
 
-	private void launch() {
+	private void launch(Environment environment) {
 		new Simbad(environment, false);
 	}
 
 	private void mapWalls() {
 		for (int i = 0; i <= Environment.SIZE / 2; i++) {
-			map.setPoint(i, Environment.SIZE / 2, Map.WALL);
-			map.setPoint(-i, Environment.SIZE / 2, Map.WALL);
-			map.setPoint(i, -Environment.SIZE / 2, Map.WALL);
-			map.setPoint(-i, -Environment.SIZE / 2, Map.WALL);
-			map.setPoint(Environment.SIZE / 2, i, Map.WALL);
-			map.setPoint(Environment.SIZE / 2, -i, Map.WALL);
-			map.setPoint(-Environment.SIZE / 2, i, Map.WALL);
-			map.setPoint(-Environment.SIZE / 2, -i, Map.WALL);
+			map.markAsWall(i, Environment.SIZE / 2);
+			map.markAsWall(-i, Environment.SIZE / 2);
+			map.markAsWall(i, -Environment.SIZE / 2);
+			map.markAsWall(-i, -Environment.SIZE / 2);
+			map.markAsWall(Environment.SIZE / 2, i);
+			map.markAsWall(Environment.SIZE / 2, -i);
+			map.markAsWall(-Environment.SIZE / 2, i);
+			map.markAsWall(-Environment.SIZE / 2, -i);
 		}
 	}
 
@@ -75,10 +85,10 @@ public class CentralStation {
 	 */
 	private void divideIntoSections() {
 		for (int i = 0; i <= Environment.SIZE / 2; i++) {
-			map.setPoint(0, i, Map.WALL);
-			map.setPoint(0, -i, Map.WALL);
-			map.setPoint(i, 0, Map.WALL);
-			map.setPoint(-i, 0, Map.WALL);
+			map.markAsWall(0, i);
+			map.markAsWall(0, -i);
+			map.markAsWall(i, 0);
+			map.markAsWall(-i, 0);
 		}
 	}
 }
