@@ -1,12 +1,12 @@
 package main.java.softdesign.map;
 
-public class CartisianGridMap extends AbstractMap {
+public class CartesianGridMap extends AbstractMap {
 
 	private final int cartesianOffset;
 
 	private Tile[][] grid;
 
-	public CartisianGridMap(int size) {
+	public CartesianGridMap(int size) {
 		super(size);
 
 		this.cartesianOffset = -(this.size / 2);
