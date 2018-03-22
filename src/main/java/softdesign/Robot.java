@@ -40,14 +40,15 @@ public class Robot extends Agent {
 
 	private void initCameras() {
 		camera = RobotFactory.addCameraSensor(this);
-		camera2 = RobotFactory.addCameraSensor(this);
-		camera3 = RobotFactory.addCameraSensor(this);
-		cameraImage = camera.createCompatibleImage();
-		cameraImage = camera2.createCompatibleImage();
-		cameraImage = camera3.createCompatibleImage();
 		camera.rotateY(Math.PI / 2);
+
+		camera2 = RobotFactory.addCameraSensor(this);
 		camera2.rotateY(-(Math.PI / 2));
+
+		camera3 = RobotFactory.addCameraSensor(this);
 		camera3.rotateY(Math.PI);
+
+		cameraImage = camera.createCompatibleImage();
 	}
 
 	@Override
