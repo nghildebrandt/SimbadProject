@@ -56,7 +56,7 @@ public class Robot extends Agent {
 	public void performBehavior() {
 		this.getCoords(coordinate);
 
-/*		// perform the following actions every 5 virtual seconds
+		// perform the following actions every 5 virtual seconds
 		if (this.getCounter() % 5 == 0) {
 			takeImages();
 			if (this.isNearWall() ^ this.isNearCovered()) {
@@ -70,7 +70,7 @@ public class Robot extends Agent {
 				rotateY(-(Math.PI / 2));
 				setDirection();
 			}
-		}*/
+		}
 
 		setTranslationalVelocity(0.5);
 	}
