@@ -3,7 +3,7 @@ package main.java.softdesign.map;
 public interface Map {
 
 	enum Tile {
-		EMPTY, COVERED, WALL
+		COVERED, WALL
 	}
 
 	Tile getTile(int xCoordinate, int zCoordinate);

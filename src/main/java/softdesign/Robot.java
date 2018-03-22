@@ -248,7 +248,7 @@ public class Robot extends Agent {
 	}
 
 	private boolean isUnvisited(Point3d coord) {
-		return getValueCoord(coord) == Map.Tile.EMPTY;
+		return getValueCoord(coord) == null;
 	}
 
 	private void isVisited(Point3d coord) {
