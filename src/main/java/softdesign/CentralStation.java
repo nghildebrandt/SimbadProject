@@ -38,18 +38,8 @@ public class CentralStation {
 	}
 
 	public void startMission(Environment environment) {
-		drawMap(environment);
 		deployRobots(environment);
 		launch(environment);
-	}
-
-	/**
-	 * Draws a map from the given environment.
-	 *
-	 * @param environment environment to be mapped
-	 */
-	private void drawMap(Environment environment) {
-		// TODO to be implemented
 	}
 
 	private void deployRobots(Environment environment) {

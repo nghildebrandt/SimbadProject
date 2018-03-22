@@ -21,8 +21,8 @@ public class Environment extends EnvironmentDescription {
 	public static final int LARGE = 30;
 
 	private Environment() {
-		this.light1IsOn = true;
-		this.light2IsOn = true;
+		light1IsOn = true;
+		light2IsOn = true;
 
 		showAxis(true);
 		setWorldSize(SIZE);
@@ -40,33 +40,27 @@ public class Environment extends EnvironmentDescription {
 	 * the world
 	 */
 	private void initWalls() {
-		Wall w1 = new Wall(new Vector3d(-SIZE / 2, 0, 0), SIZE, 2, this);
-		w1.setColor(new Color3f(Color.BLUE));
-		w1.rotate90(1);
-		add(w1);
+		addWall(new Vector3d(-SIZE / 2, 0, 0), new Color3f(Color.BLUE), true);
+		addWall(new Vector3d(SIZE / 2, 0, 0), new Color3f(Color.GREEN), true);
+		addWall(new Vector3d(0, 0, SIZE / 2), new Color3f(Color.RED), false);
+		addWall(new Vector3d(0, 0, -SIZE / 2), new Color3f(Color.YELLOW), false);
+	}
 
-		Wall w2 = new Wall(new Vector3d(SIZE / 2, 0, 0), SIZE, 2, this);
-		w2.setColor(new Color3f(Color.GREEN));
-		w2.rotate90(1);
-		add(w2);
-
-		Wall w3 = new Wall(new Vector3d(0, 0, SIZE / 2), SIZE, 2, this);
-		w3.setColor(new Color3f(Color.RED));
-		add(w3);
-
-		Wall w4 = new Wall(new Vector3d(0, 0, -SIZE / 2), SIZE, 2, this);
-		w4.setColor(new Color3f(Color.YELLOW));
-		add(w4);
+	private void addWall(Vector3d position, Color3f color, boolean rotate) {
+		Wall wall = new Wall(position, SIZE, 2, this);
+		wall.setColor(color);
+		if(rotate) {
+			wall.rotate90(1);
+		}
+		add(wall);
 	}
 
 	public void initObstacles() {
-		Box box1 = new Box(randomVector(), new Vector3f(1, 1, 1), this);
-		box1.setColor(new Color3f(Color.ORANGE));
-		add(box1);
-
-		Box box2 = new Box(randomVector(), new Vector3f(1, 1, 1), this);
-		box2.setColor(new Color3f(Color.ORANGE));
-		add(box2);
+		for(int i = 0; i < 2; i++) {
+			Box box = new Box(randomVector(), new Vector3f(1, 1, 1), this);
+			box.setColor(new Color3f(Color.ORANGE));
+			add(box);
+		}
 	}
 
 	private Vector3d randomVector() {
