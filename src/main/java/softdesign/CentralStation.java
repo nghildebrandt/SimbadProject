@@ -54,10 +54,10 @@ public class CentralStation {
 
 	private void deployRobots(Environment environment) {
 		if (Environment.SIZE <= Environment.LARGE) {
-			environment.add(new Robot(new Vector3d(8, 0, 8), "small", map, Robot.SOUTH));
-			environment.add(new Robot(new Vector3d(8, 0, -8), "small", map, Robot.SOUTH));
-			environment.add(new Robot(new Vector3d(-8, 0, -8), "small", map, Robot.SOUTH));
-			environment.add(new Robot(new Vector3d(-8, 0, 8), "small", map, Robot.SOUTH));
+			environment.add(new Robot(new Vector3d(8, 0, 8), "small", map, Robot.Direction.SOUTH));
+			environment.add(new Robot(new Vector3d(8, 0, -8), "small", map, Robot.Direction.SOUTH));
+			environment.add(new Robot(new Vector3d(-8, 0, -8), "small", map, Robot.Direction.SOUTH));
+			environment.add(new Robot(new Vector3d(-8, 0, 8), "small", map, Robot.Direction.SOUTH));
 		}
 	}
 
