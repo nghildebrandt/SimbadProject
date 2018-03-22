@@ -30,9 +30,6 @@ public class Robot extends Agent {
 		this.map = map;
 		this.currentDirection = startingDirection;
 		this.coordinate = new Point3d();
-		int directionCamera;
-		int directionCamera2;
-		int directionCamera3;
 
 		RobotFactory.addBumperBeltSensor(this, 12);
 		RobotFactory.addSonarBeltSensor(this, 4);
