@@ -11,33 +11,23 @@ import javax.vecmath.Vector3d;
 import java.awt.image.BufferedImage;
 
 public class Robot extends Agent {
-	private static final String UNRECOGNIZED_DIRECTION_EXCEPTION = "Unrecognized direction %s";
-
 	public enum Direction {
 		SOUTH, WEST, NORTH, EAST;
 
-		public Direction rightOf(int turns) {
+		public Direction rightBy() {
+			switch(this) {
+				case SOUTH: return WEST;
+				case WEST: return NORTH;
+				case NORTH: return EAST;
+				case EAST: return SOUTH;
+				default: throw new IllegalArgumentException("Unrecognized direction");
+			}
+		}
+
+		public Direction rightBy(int turns) {
 			if(turns == 0) { return this; }
 
-			Direction nextRight;
-			switch(this) {
-				case SOUTH:
-					nextRight = WEST;
-					break;
-				case WEST:
-					nextRight = NORTH;
-					break;
-				case NORTH:
-					nextRight = EAST;
-					break;
-				case EAST:
-					nextRight = SOUTH;
-					break;
-				default:
-					throw new IllegalArgumentException(String.format(UNRECOGNIZED_DIRECTION_EXCEPTION, this));
-			}
-
-			return nextRight.rightOf(turns - 1);
+			return rightBy().rightBy(turns - 1);
 		}
 	}
 
@@ -79,7 +69,7 @@ public class Robot extends Agent {
 		if (wallIsAhead() || visitedIsAhead()) {
 			setTranslationalVelocity(0);
 			rotateY(-(Math.PI / 2));
-			currentDirection = currentDirection.rightOf(1);
+			currentDirection = currentDirection.rightBy(1);
 		} else {
 			setTranslationalVelocity(1);
 		}
@@ -87,9 +77,9 @@ public class Robot extends Agent {
 
 	//takes images from the back, left, and right side if not take yet
 	private void ensureNeighbouringImagesTaken() {
-		takeImageIfNeeded(currentDirection.rightOf(1), backCamera);
-		takeImageIfNeeded(currentDirection.rightOf(2), rightCamera);
-		takeImageIfNeeded(currentDirection.rightOf(3), leftCamera);
+		takeImageIfNeeded(currentDirection.rightBy(1), backCamera);
+		takeImageIfNeeded(currentDirection.rightBy(2), rightCamera);
+		takeImageIfNeeded(currentDirection.rightBy(3), leftCamera);
 	}
 
 	private void takeImageIfNeeded(Direction direction, CameraSensor camera) {
@@ -113,16 +103,11 @@ public class Robot extends Agent {
 
 	private Point3d stepsAhead(Direction direction, int steps) {
 		switch (direction) {
-			case EAST:
-				return new Point3d(coordinate.x, coordinate.y, coordinate.z - steps);
-			case WEST:
-				return new Point3d(coordinate.x, coordinate.y, coordinate.z + steps);
-			case SOUTH:
-				return new Point3d(coordinate.x + steps, coordinate.y, coordinate.z);
-			case NORTH:
-				return new Point3d(coordinate.x - steps, coordinate.y, coordinate.z);
-			default:
-				throw new IllegalArgumentException(String.format(UNRECOGNIZED_DIRECTION_EXCEPTION, currentDirection));
+			case EAST: return new Point3d(coordinate.x, coordinate.y, coordinate.z - steps);
+			case WEST: return new Point3d(coordinate.x, coordinate.y, coordinate.z + steps);
+			case SOUTH: return new Point3d(coordinate.x + steps, coordinate.y, coordinate.z);
+			case NORTH: return new Point3d(coordinate.x - steps, coordinate.y, coordinate.z);
+			default: throw new IllegalArgumentException("Unrecognized direction");
 		}
 	}
 }
