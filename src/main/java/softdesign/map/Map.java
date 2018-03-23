@@ -5,7 +5,7 @@ import javax.vecmath.Point3d;
 public interface Map {
 
 	enum Tile {
-		EMPTY, COVERED, WALL
+		COVERED, WALL
 	}
 
 	Tile getTile(Point3d coordinate);

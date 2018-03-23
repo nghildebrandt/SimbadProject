@@ -85,7 +85,7 @@ public class Robot extends Agent {
 	private void takeImageIfNeeded(Direction direction, CameraSensor camera) {
 		Point3d coordinate = stepsAhead(direction, 1);
 
-		if (map.getTile(coordinate) != Map.Tile.EMPTY) {
+		if (map.getTile(coordinate) != null) {
 			return;
 		}
 
