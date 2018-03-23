@@ -1,19 +1,17 @@
 package main.java.softdesign.map;
 
 import javax.vecmath.Point3d;
+import main.java.softdesign.Environment;
 
 public class CartesianGridMap extends AbstractMap {
 
-	private final int cartesianOffset;
-
 	private Tile[][] grid;
+	private int coveredCount = 0;
 
-	public CartesianGridMap(int size) {
-		super(size);
+	public CartesianGridMap() {
+		super();
 
-		this.cartesianOffset = -(this.size / 2);
-
-		int axisPoints = size + 1;
+		int axisPoints = Environment.SIZE;
 		this.grid = new Tile[axisPoints][axisPoints];
 
 		for(int i = 0; i < grid.length; i++) {
@@ -23,39 +21,33 @@ public class CartesianGridMap extends AbstractMap {
     }
 	}
 
-	@Override
-	public Tile getTile(Point3d coordinate) {
-		return getTile((int) Math.round(coordinate.x), (int) Math.round(coordinate.z));
+	public double getCoveredRatio() {
+		return ((double) coveredCount) / Math.pow(Environment.SIZE + 1, 2);
 	}
 
 	@Override
-	public Tile getTile(int xCoordinate, int zCoordinate) {
-		int x = xCoordinate - cartesianOffset;
-		int z = zCoordinate - cartesianOffset;
-		
+	public Tile getTile(CartesianCoordinate coordinate) {
     try {
-      return grid[x][z];
+      return grid[coordinate.x][coordinate.z];
     } catch(ArrayIndexOutOfBoundsException e) {
       return Tile.WALL;
     }
 	}
 
 	@Override
-	public void markAsCovered(int xCoordinate, int zCoordinate) {
-		setTile(xCoordinate, zCoordinate, Tile.COVERED);
-		incrementNumberOfCoveredPoints();
+	public void markAsCovered(CartesianCoordinate coordinate) {
+		if(getTile(coordinate) != Tile.COVERED) { coveredCount++; }
+
+		setTile(coordinate, Tile.COVERED);
 	}
 
 	@Override
-	public void markAsWall(int xCoordinate, int zCoordinate) {
-		setTile(xCoordinate, zCoordinate, Tile.WALL);
+	public void markAsWall(CartesianCoordinate coordinate) {
+		setTile(coordinate, Tile.WALL);
 	}
 	
-	private void setTile(int xCoordinate, int zCoordinate, Tile tile) {
-		int x = xCoordinate - cartesianOffset;
-		int z = zCoordinate - cartesianOffset;
-
-		grid[x][z] = tile;
+	private void setTile(CartesianCoordinate coordinate, Tile tile) {
+		grid[coordinate.x][coordinate.z] = tile;
 	}
 
 	// Also: definitely remove this before submitting, its ugly af.
@@ -68,12 +60,12 @@ public class CartesianGridMap extends AbstractMap {
     }
     s += "+\n";
 
-		for(int i = 0; i < grid.length; i++) {
+		for(int z = 0; z < grid.length; z++) {
       s += "|";
-			for(int j = 0; j < grid[i].length; j++) {
-				if(grid[i][j] == Tile.COVERED) {
+			for(int x = 0; x < grid[z].length; x++) {
+				if(grid[x][z] == Tile.COVERED) {
 					s += "X";
-				} else if(grid[i][j] == Tile.WALL) {
+				} else if(grid[x][z] == Tile.WALL) {
 					s += "O";
 				} else {
 					s += " ";

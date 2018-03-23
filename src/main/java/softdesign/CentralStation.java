@@ -19,7 +19,7 @@ public class CentralStation {
 
 	private CentralStation() {
 		this.imageRepository = ImageRepositoryFactory.get();
-		this.map = new CartesianGridMap(Environment.SIZE);
+		this.map = new CartesianGridMap();
 	}
 
 	public static CentralStation getInstance() {
@@ -31,7 +31,7 @@ public class CentralStation {
 	}
 
 	public double getMissionProgress() {
-		return map.getNumberOfCoveredPoints() / (double) Environment.TOTAL_NUMBER_OF_POINTS;
+		return map.getCoveredRatio();
 	}
 
 	public void startMission(Environment environment) {
@@ -40,7 +40,12 @@ public class CentralStation {
 	}
 
 	private void deployRobots(Environment environment) {
-		environment.add(new Robot(new Vector3d(9, 0, 9), "small", map, Robot.Direction.SOUTH));
+		int extremes = Environment.SIZE/2;
+
+		environment.add(new Robot(new Vector3d(extremes, 0, extremes), "small", map));
+		environment.add(new Robot(new Vector3d(-extremes, 0, extremes), "small", map));
+		environment.add(new Robot(new Vector3d(-extremes, 0, -extremes), "small", map));
+		environment.add(new Robot(new Vector3d(extremes, 0, -extremes), "small", map));
 	}
 
 	private void launch(Environment environment) {

@@ -1,20 +1,18 @@
 package main.java.softdesign.map;
 
-import javax.vecmath.Point3d;
-
 public interface Map {
 
 	enum Tile {
 		EMPTY, COVERED, WALL
 	}
 
-	Tile getTile(Point3d coordinate);
-
-	Tile getTile(int xCoordinate, int zCoordinate);
+	Tile getTile(CartesianCoordinate coordinate);
 
 	int getNumberOfCoveredPoints();
 
-	void markAsCovered(int xCoordinate, int zCoordinate);
+	void markAsCovered(CartesianCoordinate coordinate);
 
-	void markAsWall(int xCoordinate, int zCoordinate);
+	void markAsWall(CartesianCoordinate coordinate);
+
+	double getCoveredRatio();
 }
