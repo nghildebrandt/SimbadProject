@@ -14,7 +14,7 @@ public class Environment extends EnvironmentDescription {
 
 	private static final Environment INSTANCE = new Environment();
 
-	public static final int SIZE = 201;
+	public static final int SIZE = 21;
 	public static final int TOTAL_NUMBER_OF_POINTS = SIZE * SIZE;
 
 	private Environment() {
