@@ -69,10 +69,7 @@ public class Robot extends Agent {
 
 		if(map.getTile(tileAhead(currentDirection)) == Map.Tile.WALL) {
 			turnRight();
-			return;
-		}
-
-		if(Math.random() > 0.01) {
+		} if else (Math.random() > 0.01) {
 			move();
 		} else {
 			turnRight();
@@ -92,11 +89,12 @@ public class Robot extends Agent {
 	private void updateCoordinate() {
 		Point3d point = new Point3d();
 		getCoords(point);
-		this.coordinate = new CartesianCoordinate(point);
+		coordinate = new CartesianCoordinate(point);
 	}
 
+  // TODO remove
 	private void usedForLogginNothingElse() {
-		// System.out.println(map.toString());
+		System.out.println(map.toString());
 	}
 
 	//takes images from the back, left, and right side if not take yet
@@ -109,10 +107,10 @@ public class Robot extends Agent {
 	private void takeImageIfNeeded(Direction direction, CameraSensor camera) {
 		CartesianCoordinate coordinate = tileAhead(direction);
 
-		if (map.getTile(coordinate) != Map.Tile.EMPTY) { return; }
-
-		camera.copyVisionImage(camera.createCompatibleImage());
-		map.markAsCovered(coordinate);
+		if (map.getTile(coordinate) == Map.Tile.EMPTY) {
+			camera.copyVisionImage(camera.createCompatibleImage());
+			map.markAsCovered(coordinate);
+		}
 	}
 
 	private CartesianCoordinate tileAhead(Direction direction) {

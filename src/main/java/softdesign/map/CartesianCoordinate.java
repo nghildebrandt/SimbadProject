@@ -4,6 +4,7 @@ import javax.vecmath.Point3d;
 import main.java.softdesign.Environment;
 
 public class CartesianCoordinate {
+
 	public int x;
 	public int z;
 

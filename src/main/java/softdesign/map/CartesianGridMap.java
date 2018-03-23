@@ -17,21 +17,21 @@ public class CartesianGridMap extends AbstractMap {
 		for(int i = 0; i < grid.length; i++) {
 			for(int j = 0; j < grid[i].length; j++) {
 				grid[i][j] = Tile.EMPTY;
-      }
-    }
+			}
+		}
 	}
 
 	public double getCoveredRatio() {
-		return ((double) coveredCount) / Math.pow(Environment.SIZE + 1, 2);
+		return (double) coveredCount / Math.pow(Environment.SIZE + 1, 2);
 	}
 
 	@Override
 	public Tile getTile(CartesianCoordinate coordinate) {
-    try {
-      return grid[coordinate.x][coordinate.z];
-    } catch(ArrayIndexOutOfBoundsException e) {
-      return Tile.WALL;
-    }
+		try {
+			return grid[coordinate.x][coordinate.z];
+		} catch(ArrayIndexOutOfBoundsException e) {
+			return Tile.WALL;
+		}
 	}
 
 	@Override
@@ -50,18 +50,18 @@ public class CartesianGridMap extends AbstractMap {
 		grid[coordinate.x][coordinate.z] = tile;
 	}
 
-	// Also: definitely remove this before submitting, its ugly af.
+	// TODO definitely remove this before submitting, its ugly af.
 	@Override
 	public String toString() {
 		String s = "\n+";
 
-    for(int j = 0; j < grid[0].length; j++) {
-      s += "-";
-    }
-    s += "+\n";
+		for(int j = 0; j < grid[0].length; j++) {
+			s += "-";
+		}
+		s += "+\n";
 
 		for(int z = 0; z < grid.length; z++) {
-      s += "|";
+			s += "|";
 			for(int x = 0; x < grid[z].length; x++) {
 				if(grid[x][z] == Tile.COVERED) {
 					s += "X";
@@ -71,14 +71,14 @@ public class CartesianGridMap extends AbstractMap {
 					s += " ";
 				}
 			}
-      s += "|\n";
+			s += "|\n";
 		}
 
-    s += "+";
-    for(int j = 0; j < grid[grid.length - 1].length; j++) {
-      s += "-";
-    }
-    s += "+\n";
+		s += "+";
+		for(int j = 0; j < grid[grid.length - 1].length; j++) {
+			s += "-";
+		}
+		s += "+\n";
 
 		return s;
 	}
