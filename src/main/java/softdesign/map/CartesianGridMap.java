@@ -1,12 +1,12 @@
 package main.java.softdesign.map;
 
 import javax.vecmath.Point3d;
+
 import main.java.softdesign.Environment;
 
 public class CartesianGridMap extends AbstractMap {
 
 	private Tile[][] grid;
-	private int coveredCount = 0;
 
 	public CartesianGridMap() {
 		super();
@@ -14,15 +14,13 @@ public class CartesianGridMap extends AbstractMap {
 		int axisPoints = Environment.SIZE;
 		this.grid = new Tile[axisPoints][axisPoints];
 
-		for(int i = 0; i < grid.length; i++) {
-			for(int j = 0; j < grid[i].length; j++) {
-				grid[i][j] = Tile.EMPTY;
-			}
+		for(Tile[] row : grid) {
+			java.util.Arrays.fill(row, Tile.EMPTY);
 		}
 	}
 
 	public double getCoveredRatio() {
-		return (double) coveredCount / Math.pow(Environment.SIZE + 1, 2);
+		return 0d;
 	}
 
 	@Override
@@ -35,19 +33,10 @@ public class CartesianGridMap extends AbstractMap {
 	}
 
 	@Override
-	public void markAsCovered(CartesianCoordinate coordinate) {
-		if(getTile(coordinate) != Tile.COVERED) { coveredCount++; }
-
-		setTile(coordinate, Tile.COVERED);
-	}
-
-	@Override
-	public void markAsWall(CartesianCoordinate coordinate) {
-		setTile(coordinate, Tile.WALL);
-	}
-	
-	private void setTile(CartesianCoordinate coordinate, Tile tile) {
-		grid[coordinate.x][coordinate.z] = tile;
+	public void setTile(CartesianCoordinate coordinate, Tile tile) {
+		try {
+			grid[coordinate.x][coordinate.z] = tile;
+		} catch(ArrayIndexOutOfBoundsException e) {}
 	}
 
 	// TODO definitely remove this before submitting, its ugly af.
@@ -65,6 +54,8 @@ public class CartesianGridMap extends AbstractMap {
 			for(int x = 0; x < grid[z].length; x++) {
 				if(grid[x][z] == Tile.COVERED) {
 					s += "X";
+				} else if(grid[x][z] == Tile.ROBOT) {
+					s += "e";
 				} else if(grid[x][z] == Tile.WALL) {
 					s += "O";
 				} else {

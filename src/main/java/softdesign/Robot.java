@@ -67,10 +67,17 @@ public class Robot extends Agent {
 		ensureNeighbouringImagesTaken();
 		usedForLogginNothingElse();
 
-		if(map.getTile(tileAhead(currentDirection)) == Map.Tile.WALL) {
+		if(!coordinate.isOnGrid()) { return; }
+
+		map.setTile(coordinate, Map.Tile.ROBOT);
+		map.setTile(tileAhead(currentDirection, -1), Map.Tile.COVERED);
+
+		if(!map.getTile(tileAhead(currentDirection, 1)).isDrivable()) {
 			turnRight();
-		} if else (Math.random() > 0.01) {
-			move();
+		}
+
+		if (Math.random() > 0.01) {
+			setTranslationalVelocity(1);
 		} else {
 			turnRight();
 		}
@@ -82,17 +89,13 @@ public class Robot extends Agent {
 		currentDirection = currentDirection.rightBy(1);
 	}
 
-	private void move() {
-		setTranslationalVelocity(1);
-	}
-
 	private void updateCoordinate() {
 		Point3d point = new Point3d();
 		getCoords(point);
 		coordinate = new CartesianCoordinate(point);
 	}
 
-  // TODO remove
+	// TODO remove
 	private void usedForLogginNothingElse() {
 		System.out.println(map.toString());
 	}
@@ -105,20 +108,20 @@ public class Robot extends Agent {
 	}
 
 	private void takeImageIfNeeded(Direction direction, CameraSensor camera) {
-		CartesianCoordinate coordinate = tileAhead(direction);
+		CartesianCoordinate coordinate = tileAhead(direction, 1);
 
 		if (map.getTile(coordinate) == Map.Tile.EMPTY) {
 			camera.copyVisionImage(camera.createCompatibleImage());
-			map.markAsCovered(coordinate);
+			map.setTile(coordinate, Map.Tile.COVERED);
 		}
 	}
 
-	private CartesianCoordinate tileAhead(Direction direction) {
+	private CartesianCoordinate tileAhead(Direction direction, int steps) {
 		switch (direction) {
-			case EAST: return new CartesianCoordinate(coordinate.x + 1, coordinate.z);
-			case WEST: return new CartesianCoordinate(coordinate.x - 1, coordinate.z);
-			case NORTH: return new CartesianCoordinate(coordinate.x, coordinate.z - 1);
-			case SOUTH: return new CartesianCoordinate(coordinate.x, coordinate.z + 1);
+			case EAST: return new CartesianCoordinate(coordinate.x + steps, coordinate.z);
+			case WEST: return new CartesianCoordinate(coordinate.x - steps, coordinate.z);
+			case NORTH: return new CartesianCoordinate(coordinate.x, coordinate.z - steps);
+			case SOUTH: return new CartesianCoordinate(coordinate.x, coordinate.z + steps);
 			default: throw new IllegalArgumentException("Unrecognized direction");
 		}
 	}
