@@ -1,18 +1,25 @@
 package main.java.softdesign.map;
 
-public class CartisianGridMap extends AbstractMap {
+import javax.vecmath.Point3d;
+
+public class CartesianGridMap extends AbstractMap {
 
 	private final int cartesianOffset;
 
 	private Tile[][] grid;
 
-	public CartisianGridMap(int size) {
+	public CartesianGridMap(int size) {
 		super(size);
 
 		this.cartesianOffset = -(this.size / 2);
 
 		int axisPoints = size + 1;
 		this.grid = new Tile[axisPoints][axisPoints];
+	}
+
+	@Override
+	public Tile getTile(Point3d coordinate) {
+		return getTile((int) Math.round(coordinate.x), (int) Math.round(coordinate.z));
 	}
 
 	@Override

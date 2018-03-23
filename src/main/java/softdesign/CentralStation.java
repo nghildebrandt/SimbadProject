@@ -2,7 +2,7 @@ package main.java.softdesign;
 
 import main.java.softdesign.image.ImageRepository;
 import main.java.softdesign.image.ImageRepositoryFactory;
-import main.java.softdesign.map.CartisianGridMap;
+import main.java.softdesign.map.CartesianGridMap;
 import main.java.softdesign.map.Map;
 import simbad.gui.Simbad;
 
@@ -19,7 +19,7 @@ public class CentralStation {
 
 	private CentralStation() {
 		this.imageRepository = ImageRepositoryFactory.get();
-		this.map = new CartisianGridMap(Environment.SIZE);
+		this.map = new CartesianGridMap(Environment.SIZE);
 
 		mapWalls();
 		divideIntoSections();
@@ -38,18 +38,8 @@ public class CentralStation {
 	}
 
 	public void startMission(Environment environment) {
-		drawMap(environment);
 		deployRobots(environment);
 		launch(environment);
-	}
-
-	/**
-	 * Draws a map from the given environment.
-	 *
-	 * @param environment environment to be mapped
-	 */
-	private void drawMap(Environment environment) {
-		// TODO to be implemented
 	}
 
 	private void deployRobots(Environment environment) {

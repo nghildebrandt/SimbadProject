@@ -2,6 +2,10 @@
 bin/
 .settings/
 
-# IntelliJ
+# IntelliJ files
 .idea/
 *.iml
+
+# Eclipse files
+.classpath
+.project
