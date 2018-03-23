@@ -20,9 +20,6 @@ public class CentralStation {
 	private CentralStation() {
 		this.imageRepository = ImageRepositoryFactory.get();
 		this.map = new CartesianGridMap(Environment.SIZE);
-
-		mapWalls();
-		divideIntoSections();
 	}
 
 	public static CentralStation getInstance() {
@@ -43,42 +40,10 @@ public class CentralStation {
 	}
 
 	private void deployRobots(Environment environment) {
-		if (Environment.SIZE <= Environment.LARGE) {
-			environment.add(new Robot(new Vector3d(8, 0, 8), "small", map, Robot.Direction.SOUTH));
-			environment.add(new Robot(new Vector3d(8, 0, -8), "small", map, Robot.Direction.SOUTH));
-			environment.add(new Robot(new Vector3d(-8, 0, -8), "small", map, Robot.Direction.SOUTH));
-			environment.add(new Robot(new Vector3d(-8, 0, 8), "small", map, Robot.Direction.SOUTH));
-		}
+		environment.add(new Robot(new Vector3d(9, 0, 9), "small", map, Robot.Direction.SOUTH));
 	}
 
 	private void launch(Environment environment) {
 		new Simbad(environment, false);
-	}
-
-	private void mapWalls() {
-		for (int i = 0; i <= Environment.SIZE / 2; i++) {
-			map.markAsWall(i, Environment.SIZE / 2);
-			map.markAsWall(-i, Environment.SIZE / 2);
-			map.markAsWall(i, -Environment.SIZE / 2);
-			map.markAsWall(-i, -Environment.SIZE / 2);
-			map.markAsWall(Environment.SIZE / 2, i);
-			map.markAsWall(Environment.SIZE / 2, -i);
-			map.markAsWall(-Environment.SIZE / 2, i);
-			map.markAsWall(-Environment.SIZE / 2, -i);
-		}
-	}
-
-	/**
-	 * Divides the map into sections with each representing a sub-world for a robot to reside in.
-	 *
-	 * <p>The division is done by adding "fake" walls into the map.
-	 */
-	private void divideIntoSections() {
-		for (int i = 0; i <= Environment.SIZE / 2; i++) {
-			map.markAsWall(0, i);
-			map.markAsWall(0, -i);
-			map.markAsWall(i, 0);
-			map.markAsWall(-i, 0);
-		}
 	}
 }
