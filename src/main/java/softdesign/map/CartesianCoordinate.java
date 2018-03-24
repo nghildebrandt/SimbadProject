@@ -10,6 +10,7 @@ public class CartesianCoordinate {
 	public int x;
 	public int z;
 
+	private int environmentSize;
 	private boolean onGrid;
 
 	public CartesianCoordinate(int x, int z) {
@@ -17,7 +18,8 @@ public class CartesianCoordinate {
 		this.z = z;
 	}
 
-	public CartesianCoordinate(Point3d point) {
+	public CartesianCoordinate(Point3d point, int environmentSize) {
+		this.environmentSize = environmentSize;
 		double estimatedX = point.x + cartesianOffset();
 		double estimatedZ = point.z + cartesianOffset();
 
@@ -31,7 +33,7 @@ public class CartesianCoordinate {
 		return onGrid;
 	}
 
-	private static int cartesianOffset() {
-		return (Environment.SIZE - 1) / 2;
+	private int cartesianOffset() {
+		return (this.environmentSize - 1) / 2;
 	}
 }

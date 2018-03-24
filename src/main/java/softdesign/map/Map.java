@@ -17,4 +17,6 @@ public interface Map {
 	void setTile(CartesianCoordinate coordinate, Tile tile);
 
 	double getCoveredRatio();
+
+	int getSize();
 }

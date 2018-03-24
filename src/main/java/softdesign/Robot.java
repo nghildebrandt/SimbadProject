@@ -65,7 +65,8 @@ public class Robot extends Agent {
 		updateCoordinate();
 
 		ensureNeighbouringImagesTaken();
-		usedForLogginNothingElse();
+		// TODO remove
+		System.out.println(map.toString());
 
 		if(!coordinate.isOnGrid()) { return; }
 
@@ -74,9 +75,7 @@ public class Robot extends Agent {
 
 		if(!map.getTile(tileAhead(currentDirection, 1)).isDrivable()) {
 			turnRight();
-		}
-
-		if (Math.random() > 0.01) {
+		} else if (Math.random() > 0.01) {
 			setTranslationalVelocity(1);
 		} else {
 			turnRight();
@@ -92,12 +91,7 @@ public class Robot extends Agent {
 	private void updateCoordinate() {
 		Point3d point = new Point3d();
 		getCoords(point);
-		coordinate = new CartesianCoordinate(point);
-	}
-
-	// TODO remove
-	private void usedForLogginNothingElse() {
-		System.out.println(map.toString());
+		coordinate = new CartesianCoordinate(point, map.getSize());
 	}
 
 	//takes images from the back, left, and right side if not take yet

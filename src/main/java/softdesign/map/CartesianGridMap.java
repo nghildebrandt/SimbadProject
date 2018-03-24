@@ -7,12 +7,13 @@ import main.java.softdesign.Environment;
 public class CartesianGridMap extends AbstractMap {
 
 	private Tile[][] grid;
+	int size;
 
-	public CartesianGridMap() {
+	public CartesianGridMap(int size) {
 		super();
 
-		int axisPoints = Environment.SIZE;
-		this.grid = new Tile[axisPoints][axisPoints];
+		this.grid = new Tile[size][size];
+		this.size = size;
 
 		for(Tile[] row : grid) {
 			java.util.Arrays.fill(row, Tile.EMPTY);
@@ -20,7 +21,17 @@ public class CartesianGridMap extends AbstractMap {
 	}
 
 	public double getCoveredRatio() {
-		return 0d;
+		int covered = 0;
+		int toCover = 0;
+
+		for(Tile[] row : grid) {
+			for(Tile tile: row) {
+				if(tile == Map.Tile.COVERED) { covered++; }
+				if(tile == Map.Tile.EMPTY || tile == Map.Tile.ROBOT) { toCover++; }
+			}
+		}
+
+		return (double) covered / (covered + toCover);
 	}
 
 	@Override
@@ -39,38 +50,27 @@ public class CartesianGridMap extends AbstractMap {
 		} catch(ArrayIndexOutOfBoundsException e) {}
 	}
 
+	@Override
+	public int getSize() {
+		return size;
+	}
+
 	// TODO definitely remove this before submitting, its ugly af.
 	@Override
 	public String toString() {
 		String s = "\n+";
 
-		for(int j = 0; j < grid[0].length; j++) {
-			s += "-";
-		}
-		s += "+\n";
+		for(int j = 0; j < grid[0].length; j++) { s += "-"; } s += "+\n|";
 
-		for(int z = 0; z < grid.length; z++) {
-			s += "|";
-			for(int x = 0; x < grid[z].length; x++) {
-				if(grid[x][z] == Tile.COVERED) {
-					s += "X";
-				} else if(grid[x][z] == Tile.ROBOT) {
-					s += "e";
-				} else if(grid[x][z] == Tile.WALL) {
-					s += "O";
-				} else {
-					s += " ";
-				}
-			}
-			s += "|\n";
-		}
+		for(int z = 0; z < grid.length; z++) { for(int x = 0; x < grid[z].length; x++) {
+				if(grid[x][z] == Tile.COVERED) { s += "X"; }
+				if(grid[x][z] == Tile.ROBOT) { s += "e"; }
+				if(grid[x][z] == Tile.WALL) { s += "O"; }
+				if(grid[x][z] == Tile.EMPTY) { s += " "; }
+			} s += "|\n|"; }
 
-		s += "+";
-		for(int j = 0; j < grid[grid.length - 1].length; j++) {
-			s += "-";
-		}
-		s += "+\n";
+		s += "+"; for(int j = 0; j < grid[grid.length - 1].length; j++) { s += "-"; }
 
-		return s;
+		return s + "+\n";
 	}
 }

@@ -19,7 +19,6 @@ public class CentralStation {
 
 	private CentralStation() {
 		this.imageRepository = ImageRepositoryFactory.get();
-		this.map = new CartesianGridMap();
 	}
 
 	public static CentralStation getInstance() {
@@ -35,12 +34,13 @@ public class CentralStation {
 	}
 
 	public void startMission(Environment environment) {
+		map = new CartesianGridMap(environment.getSize());
 		deployRobots(environment);
 		launch(environment);
 	}
 
 	private void deployRobots(Environment environment) {
-		int extremes = Environment.SIZE/2;
+		int extremes = map.getSize() / 2;
 
 		environment.add(new Robot(new Vector3d(extremes, 0, extremes), "small", map));
 		environment.add(new Robot(new Vector3d(-extremes, 0, extremes), "small", map));

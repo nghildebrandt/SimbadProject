@@ -12,17 +12,22 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Environment extends EnvironmentDescription {
 
-	private static final Environment INSTANCE = new Environment();
+	private static final int SMALL = 5;
+	private static final int MEDIUM = 15;
+	private static final int LARGE = 25;
 
-	public static final int SIZE = 5;
-	public static final int TOTAL_NUMBER_OF_POINTS = SIZE * SIZE;
+	private static final Environment INSTANCE = new Environment(LARGE);
 
-	private Environment() {
+	private int size;
+
+	private Environment(int size) {
+		this.size = size;
+
 		light1IsOn = true;
 		light2IsOn = true;
 
 		showAxis(true);
-		setWorldSize(SIZE);
+		setWorldSize(size);
 		initWalls();
 	}
 
@@ -31,14 +36,14 @@ public class Environment extends EnvironmentDescription {
 	}
 
 	private void initWalls() {
-		addWall(new Vector3d(-SIZE / 2.0, 0, 0), new Color3f(Color.BLUE), true);
-		addWall(new Vector3d(SIZE / 2.0, 0, 0), new Color3f(Color.GREEN), true);
-		addWall(new Vector3d(0, 0, SIZE / 2.0), new Color3f(Color.RED), false);
-		addWall(new Vector3d(0, 0, -SIZE / 2.0), new Color3f(Color.YELLOW), false);
+		addWall(new Vector3d(-this.size / 2.0, 0, 0), new Color3f(Color.BLUE), true);
+		addWall(new Vector3d(this.size / 2.0, 0, 0), new Color3f(Color.GREEN), true);
+		addWall(new Vector3d(0, 0, this.size / 2.0), new Color3f(Color.RED), false);
+		addWall(new Vector3d(0, 0, -this.size / 2.0), new Color3f(Color.YELLOW), false);
 	}
 
 	private void addWall(Vector3d position, Color3f color, boolean rotate) {
-		Wall wall = new Wall(position, SIZE, 2, this);
+		Wall wall = new Wall(position, this.size, 2, this);
 		wall.setColor(color);
 		if(rotate) {
 			wall.rotate90(1);
@@ -54,9 +59,13 @@ public class Environment extends EnvironmentDescription {
 		}
 	}
 
+	public int getSize() {
+		return size;
+	}
+
 	private Vector3d randomVector() {
-		int randomX = ThreadLocalRandom.current().nextInt(-SIZE / 2, SIZE / 2 + 1);
-		int randomY = ThreadLocalRandom.current().nextInt(-SIZE / 2, SIZE / 2 + 1);
+		int randomX = ThreadLocalRandom.current().nextInt(-this.size / 2, this.size / 2 + 1);
+		int randomY = ThreadLocalRandom.current().nextInt(-this.size / 2, this.size / 2 + 1);
 		return new Vector3d(randomY, 0, randomX);
 	}
 }
