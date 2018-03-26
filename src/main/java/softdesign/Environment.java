@@ -14,11 +14,8 @@ public class Environment extends EnvironmentDescription {
 
 	private static final Environment INSTANCE = new Environment();
 
-	public static final int SIZE = 20;
+	public static final int SIZE = 21;
 	public static final int TOTAL_NUMBER_OF_POINTS = SIZE * SIZE;
-
-	public static final int SMALL = 10;
-	public static final int LARGE = 30;
 
 	private Environment() {
 		light1IsOn = true;
@@ -33,17 +30,11 @@ public class Environment extends EnvironmentDescription {
 		return INSTANCE;
 	}
 
-	/**
-	 * Initializes the walls.
-	 *
-	 * <p>The walls are now placed at the limit of the world size and the walls will change in response to the size of
-	 * the world
-	 */
 	private void initWalls() {
-		addWall(new Vector3d(-SIZE / 2, 0, 0), new Color3f(Color.BLUE), true);
-		addWall(new Vector3d(SIZE / 2, 0, 0), new Color3f(Color.GREEN), true);
-		addWall(new Vector3d(0, 0, SIZE / 2), new Color3f(Color.RED), false);
-		addWall(new Vector3d(0, 0, -SIZE / 2), new Color3f(Color.YELLOW), false);
+		addWall(new Vector3d(-SIZE / 2.0, 0, 0), new Color3f(Color.BLUE), true);
+		addWall(new Vector3d(SIZE / 2.0, 0, 0), new Color3f(Color.GREEN), true);
+		addWall(new Vector3d(0, 0, SIZE / 2.0), new Color3f(Color.RED), false);
+		addWall(new Vector3d(0, 0, -SIZE / 2.0), new Color3f(Color.YELLOW), false);
 	}
 
 	private void addWall(Vector3d position, Color3f color, boolean rotate) {

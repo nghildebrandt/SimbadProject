@@ -1,6 +1,7 @@
 package main.java.softdesign;
 
 import main.java.softdesign.map.Map;
+import main.java.softdesign.map.CartesianCoordinate;
 
 import simbad.sim.Agent;
 import simbad.sim.CameraSensor;
@@ -11,7 +12,9 @@ import javax.vecmath.Vector3d;
 import java.awt.image.BufferedImage;
 
 public class Robot extends Agent {
+
 	public enum Direction {
+
 		SOUTH, WEST, NORTH, EAST;
 
 		public Direction rightBy() {
@@ -33,17 +36,17 @@ public class Robot extends Agent {
 
 	private Direction currentDirection;
 	private Map map;
-	private Point3d coordinate;
+	private CartesianCoordinate coordinate;
 
 	private CameraSensor backCamera;
 	private CameraSensor leftCamera;
 	private CameraSensor rightCamera;
 
-	Robot(Vector3d position, String name, Map map, Direction startingDirection) {
+	Robot(Vector3d position, String name, Map map) {
 		super(position, name);
+
 		this.map = map;
-		this.currentDirection = startingDirection;
-		this.coordinate = new Point3d();
+		this.currentDirection = Direction.EAST;
 
 		RobotFactory.addBumperBeltSensor(this, 12);
 		RobotFactory.addSonarBeltSensor(this, 4);
@@ -52,61 +55,70 @@ public class Robot extends Agent {
 		this.backCamera = RobotFactory.addCameraSensor(this);
 		this.rightCamera = RobotFactory.addCameraSensor(this);
 
-		this.leftCamera.rotateY(-(Math.PI / 2));
+		this.leftCamera.rotateY(Math.PI / 2);
 		this.backCamera.rotateY(Math.PI);
-		this.rightCamera.rotateY(Math.PI / 2);
+		this.rightCamera.rotateY(-Math.PI / 2);
 	}
 
 	@Override
 	public void performBehavior() {
-		getCoords(coordinate);
-
-		// perform the following actions every 5 virtual seconds
-		if (getCounter() % 5 != 0) { return; }
+		updateCoordinate();
 
 		ensureNeighbouringImagesTaken();
+		usedForLogginNothingElse();
 
-		if (wallIsAhead() || visitedIsAhead()) {
-			setTranslationalVelocity(0);
-			rotateY(-(Math.PI / 2));
-			currentDirection = currentDirection.rightBy(1);
+		if(map.getTile(tileAhead(currentDirection)) == Map.Tile.WALL) {
+			turnRight();
+		} if else (Math.random() > 0.01) {
+			move();
 		} else {
-			setTranslationalVelocity(1);
+			turnRight();
 		}
+	}
+
+	private void turnRight() {
+		setTranslationalVelocity(0);
+		rotateY(-(Math.PI / 2));
+		currentDirection = currentDirection.rightBy(1);
+	}
+
+	private void move() {
+		setTranslationalVelocity(1);
+	}
+
+	private void updateCoordinate() {
+		Point3d point = new Point3d();
+		getCoords(point);
+		coordinate = new CartesianCoordinate(point);
+	}
+
+  // TODO remove
+	private void usedForLogginNothingElse() {
+		System.out.println(map.toString());
 	}
 
 	//takes images from the back, left, and right side if not take yet
 	private void ensureNeighbouringImagesTaken() {
-		takeImageIfNeeded(currentDirection.rightBy(1), backCamera);
-		takeImageIfNeeded(currentDirection.rightBy(2), rightCamera);
+		takeImageIfNeeded(currentDirection.rightBy(1), rightCamera);
+		takeImageIfNeeded(currentDirection.rightBy(2), backCamera);
 		takeImageIfNeeded(currentDirection.rightBy(3), leftCamera);
 	}
 
 	private void takeImageIfNeeded(Direction direction, CameraSensor camera) {
-		Point3d coordinate = stepsAhead(direction, 1);
+		CartesianCoordinate coordinate = tileAhead(direction);
 
-		if (map.getTile(coordinate) != null) {
-			return;
+		if (map.getTile(coordinate) == Map.Tile.EMPTY) {
+			camera.copyVisionImage(camera.createCompatibleImage());
+			map.markAsCovered(coordinate);
 		}
-
-		camera.copyVisionImage(camera.createCompatibleImage());
-		map.markAsCovered((int) Math.round(coordinate.x), (int) Math.round(coordinate.z));
 	}
 
-	private boolean visitedIsAhead() {
-		return map.getTile(stepsAhead(currentDirection, 1)) == Map.Tile.COVERED;
-	}
-
-	private boolean wallIsAhead() {
-		return map.getTile(stepsAhead(currentDirection, 1)) == Map.Tile.WALL;
-	}
-
-	private Point3d stepsAhead(Direction direction, int steps) {
+	private CartesianCoordinate tileAhead(Direction direction) {
 		switch (direction) {
-			case EAST: return new Point3d(coordinate.x, coordinate.y, coordinate.z - steps);
-			case WEST: return new Point3d(coordinate.x, coordinate.y, coordinate.z + steps);
-			case SOUTH: return new Point3d(coordinate.x + steps, coordinate.y, coordinate.z);
-			case NORTH: return new Point3d(coordinate.x - steps, coordinate.y, coordinate.z);
+			case EAST: return new CartesianCoordinate(coordinate.x + 1, coordinate.z);
+			case WEST: return new CartesianCoordinate(coordinate.x - 1, coordinate.z);
+			case NORTH: return new CartesianCoordinate(coordinate.x, coordinate.z - 1);
+			case SOUTH: return new CartesianCoordinate(coordinate.x, coordinate.z + 1);
 			default: throw new IllegalArgumentException("Unrecognized direction");
 		}
 	}
