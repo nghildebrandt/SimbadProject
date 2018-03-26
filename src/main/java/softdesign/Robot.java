@@ -71,9 +71,9 @@ public class Robot extends Agent {
 		getMap().setTile(coordinate, Map.Tile.ROBOT);
 		getMap().setTile(tileAhead(currentDirection, -1), Map.Tile.COVERED);
 
-		if(!coordinate.isOnGrid()) { return; }
-
-		if(!getMap().getTile(tileAhead(currentDirection, 1)).isDrivable()) {
+		if(!coordinate.isOnGrid()) {
+			return;
+		} else if(!getMap().getTile(tileAhead(currentDirection, 1)).isDrivable()) {
 			turnRight();
 		} else if (Math.random() > 0.01) {
 			setTranslationalVelocity(1);
