@@ -35,17 +35,17 @@ public class Robot extends Agent {
 	}
 
 	private Direction currentDirection;
-	private Map map;
+	private CentralStation centralStation;
 	private CartesianCoordinate coordinate;
 
 	private CameraSensor backCamera;
 	private CameraSensor leftCamera;
 	private CameraSensor rightCamera;
 
-	Robot(Vector3d position, String name, Map map) {
+	Robot(Vector3d position, String name, CentralStation centralStation) {
 		super(position, name);
 
-		this.map = map;
+		this.centralStation = centralStation;
 		this.currentDirection = Direction.EAST;
 
 		RobotFactory.addBumperBeltSensor(this, 12);
@@ -66,14 +66,14 @@ public class Robot extends Agent {
 
 		ensureNeighbouringImagesTaken();
 		// TODO remove
-		System.out.println(map.toString());
+		System.out.println(getMap().toString());
+
+		getMap().setTile(coordinate, Map.Tile.ROBOT);
+		getMap().setTile(tileAhead(currentDirection, -1), Map.Tile.COVERED);
 
 		if(!coordinate.isOnGrid()) { return; }
 
-		map.setTile(coordinate, Map.Tile.ROBOT);
-		map.setTile(tileAhead(currentDirection, -1), Map.Tile.COVERED);
-
-		if(!map.getTile(tileAhead(currentDirection, 1)).isDrivable()) {
+		if(!getMap().getTile(tileAhead(currentDirection, 1)).isDrivable()) {
 			turnRight();
 		} else if (Math.random() > 0.01) {
 			setTranslationalVelocity(1);
@@ -91,7 +91,7 @@ public class Robot extends Agent {
 	private void updateCoordinate() {
 		Point3d point = new Point3d();
 		getCoords(point);
-		coordinate = new CartesianCoordinate(point, map.getSize());
+		coordinate = new CartesianCoordinate(point, getMap().getSize());
 	}
 
 	//takes images from the back, left, and right side if not take yet
@@ -101,12 +101,19 @@ public class Robot extends Agent {
 		takeImageIfNeeded(currentDirection.rightBy(3), leftCamera);
 	}
 
+	private Map getMap() {
+		return centralStation.getMap();
+	}
+
 	private void takeImageIfNeeded(Direction direction, CameraSensor camera) {
 		CartesianCoordinate coordinate = tileAhead(direction, 1);
 
-		if (map.getTile(coordinate) == Map.Tile.EMPTY) {
-			camera.copyVisionImage(camera.createCompatibleImage());
-			map.setTile(coordinate, Map.Tile.COVERED);
+		if(getMap().getTile(coordinate) == Map.Tile.EMPTY) {
+			BufferedImage image = camera.createCompatibleImage();
+			centralStation.saveImage(image);
+			camera.copyVisionImage(image);
+
+			getMap().setTile(coordinate, Map.Tile.COVERED);
 		}
 	}
 

@@ -1,6 +1,6 @@
 package main.java.softdesign.map;
 
-import javax.vecmath.Point3d;
+import javax.vecmath.Tuple3d;
 import main.java.softdesign.Environment;
 
 public class CartesianCoordinate {
@@ -18,7 +18,7 @@ public class CartesianCoordinate {
 		this.z = z;
 	}
 
-	public CartesianCoordinate(Point3d point, int environmentSize) {
+	public CartesianCoordinate(Tuple3d point, int environmentSize) {
 		this.environmentSize = environmentSize;
 		double estimatedX = point.x + cartesianOffset();
 		double estimatedZ = point.z + cartesianOffset();

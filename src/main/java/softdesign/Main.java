@@ -13,7 +13,6 @@ public class Main {
 
 		while (true) {
 			stepCounter++;
-			System.out.println(centralStation.getMissionProgress());
 
 			Thread.sleep(REPORT_INTERVAL);
 		}
