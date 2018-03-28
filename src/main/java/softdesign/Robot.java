@@ -35,17 +35,17 @@ public class Robot extends Agent {
 	}
 
 	private Direction currentDirection;
-	private Map map;
+	private CentralStation centralStation;
 	private CartesianCoordinate coordinate;
 
 	private CameraSensor backCamera;
 	private CameraSensor leftCamera;
 	private CameraSensor rightCamera;
 
-	Robot(Vector3d position, String name, Map map) {
+	Robot(Vector3d position, String name, CentralStation centralStation) {
 		super(position, name);
 
-		this.map = map;
+		this.centralStation = centralStation;
 		this.currentDirection = Direction.EAST;
 
 		RobotFactory.addBumperBeltSensor(this, 12);
@@ -65,12 +65,16 @@ public class Robot extends Agent {
 		updateCoordinate();
 
 		ensureNeighbouringImagesTaken();
-		usedForLogginNothingElse();
 
-		if(map.getTile(tileAhead(currentDirection)) == Map.Tile.WALL) {
+		getMap().setTile(coordinate, Map.Tile.ROBOT);
+		getMap().setTile(tileAhead(currentDirection, -1), Map.Tile.COVERED);
+
+		if(!coordinate.isOnGrid()) {
+			return;
+		} else if(!getMap().getTile(tileAhead(currentDirection, 1)).isPassable()) {
 			turnRight();
-		} if else (Math.random() > 0.01) {
-			move();
+		} else if (Math.random() > 0.01) {
+			setTranslationalVelocity(1);
 		} else {
 			turnRight();
 		}
@@ -82,19 +86,10 @@ public class Robot extends Agent {
 		currentDirection = currentDirection.rightBy(1);
 	}
 
-	private void move() {
-		setTranslationalVelocity(1);
-	}
-
 	private void updateCoordinate() {
 		Point3d point = new Point3d();
 		getCoords(point);
-		coordinate = new CartesianCoordinate(point);
-	}
-
-  // TODO remove
-	private void usedForLogginNothingElse() {
-		System.out.println(map.toString());
+		coordinate = new CartesianCoordinate(point, getMap().getSize());
 	}
 
 	//takes images from the back, left, and right side if not take yet
@@ -104,22 +99,34 @@ public class Robot extends Agent {
 		takeImageIfNeeded(currentDirection.rightBy(3), leftCamera);
 	}
 
-	private void takeImageIfNeeded(Direction direction, CameraSensor camera) {
-		CartesianCoordinate coordinate = tileAhead(direction);
+	private Map getMap() {
+		return centralStation.getMap();
+	}
 
-		if (map.getTile(coordinate) == Map.Tile.EMPTY) {
-			camera.copyVisionImage(camera.createCompatibleImage());
-			map.markAsCovered(coordinate);
+	private void takeImageIfNeeded(Direction direction, CameraSensor camera) {
+		CartesianCoordinate coordinate = tileAhead(direction, 1);
+
+		if(getMap().getTile(coordinate) == Map.Tile.EMPTY) {
+			BufferedImage image = camera.createCompatibleImage();
+			centralStation.saveImage(image);
+			camera.copyVisionImage(image);
+
+			getMap().setTile(coordinate, Map.Tile.COVERED);
 		}
 	}
 
-	private CartesianCoordinate tileAhead(Direction direction) {
+	private CartesianCoordinate tileAhead(Direction direction, int steps) {
 		switch (direction) {
-			case EAST: return new CartesianCoordinate(coordinate.x + 1, coordinate.z);
-			case WEST: return new CartesianCoordinate(coordinate.x - 1, coordinate.z);
-			case NORTH: return new CartesianCoordinate(coordinate.x, coordinate.z - 1);
-			case SOUTH: return new CartesianCoordinate(coordinate.x, coordinate.z + 1);
-			default: throw new IllegalArgumentException("Unrecognized direction");
+			case EAST:
+				return new CartesianCoordinate(coordinate.x + steps, coordinate.z);
+			case WEST:
+				return new CartesianCoordinate(coordinate.x - steps, coordinate.z);
+			case NORTH:
+				return new CartesianCoordinate(coordinate.x, coordinate.z - steps);
+			case SOUTH:
+				return new CartesianCoordinate(coordinate.x, coordinate.z + steps);
+			default:
+				throw new IllegalArgumentException("Unrecognized direction");
 		}
 	}
 }

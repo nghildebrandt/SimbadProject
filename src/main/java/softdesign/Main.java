@@ -11,8 +11,9 @@ public class Main {
 		CentralStation centralStation = CentralStation.getInstance();
 		centralStation.startMission(environment);
 
-		while (true) {
+		while(!centralStation.isMissionComplete()) {
 			stepCounter++;
+
 			System.out.println(centralStation.getMissionProgress());
 
 			Thread.sleep(REPORT_INTERVAL);

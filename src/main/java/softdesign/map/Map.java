@@ -3,16 +3,20 @@ package main.java.softdesign.map;
 public interface Map {
 
 	enum Tile {
-		COVERED, WALL
+		COVERED, WALL, EMPTY, ROBOT;
+
+		public boolean isPassable() {
+			return this == COVERED || this == EMPTY;
+		}
 	}
 
 	Tile getTile(CartesianCoordinate coordinate);
 
 	int getNumberOfCoveredPoints();
 
-	void markAsCovered(CartesianCoordinate coordinate);
-
-	void markAsWall(CartesianCoordinate coordinate);
+	void setTile(CartesianCoordinate coordinate, Tile tile);
 
 	double getCoveredRatio();
+
+	int getSize();
 }

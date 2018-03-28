@@ -1,11 +1,14 @@
 package main.java.softdesign;
 
-import main.java.softdesign.image.ImageRepository;
-import main.java.softdesign.image.ImageRepositoryFactory;
+import main.java.softdesign.map.CartesianCoordinate;
 import main.java.softdesign.map.CartesianGridMap;
 import main.java.softdesign.map.Map;
+import main.java.softdesign.image.ImageRepository;
+import main.java.softdesign.image.ImageRepositoryFactory;
+
 import simbad.gui.Simbad;
 
+import java.awt.image.BufferedImage;
 import javax.vecmath.Vector3d;
 
 public class CentralStation {
@@ -14,12 +17,10 @@ public class CentralStation {
 	private static final double COVERAGE_REQUIREMENT = 0.75;
 
 	private final ImageRepository imageRepository;
-
 	private Map map;
 
 	private CentralStation() {
 		this.imageRepository = ImageRepositoryFactory.get();
-		this.map = new CartesianGridMap();
 	}
 
 	public static CentralStation getInstance() {
@@ -34,18 +35,35 @@ public class CentralStation {
 		return map.getCoveredRatio();
 	}
 
+	public Map getMap() {
+		return map;
+	}
+
+	public void saveImage(BufferedImage image) {
+		imageRepository.save(image);
+	}
+
 	public void startMission(Environment environment) {
+		setupMap(environment);
 		deployRobots(environment);
 		launch(environment);
 	}
 
-	private void deployRobots(Environment environment) {
-		int extremes = Environment.SIZE/2;
+	private void setupMap(Environment environment) {
+		map = new CartesianGridMap(environment.getSize());
 
-		environment.add(new Robot(new Vector3d(extremes, 0, extremes), "small", map));
-		environment.add(new Robot(new Vector3d(-extremes, 0, extremes), "small", map));
-		environment.add(new Robot(new Vector3d(-extremes, 0, -extremes), "small", map));
-		environment.add(new Robot(new Vector3d(extremes, 0, -extremes), "small", map));
+		for(CartesianCoordinate obstacleCoordinates : environment.getObstacleCoordinates()) {
+			map.setTile(obstacleCoordinates, Map.Tile.WALL);
+		}
+	}
+
+	private void deployRobots(Environment environment) {
+		int extremes = environment.getSize() / 2;
+
+		environment.add(new Robot(new Vector3d(extremes, 0, extremes), "small", this));
+		environment.add(new Robot(new Vector3d(-extremes, 0, extremes), "small", this));
+		environment.add(new Robot(new Vector3d(-extremes, 0, -extremes), "small", this));
+		environment.add(new Robot(new Vector3d(extremes, 0, -extremes), "small", this));
 	}
 
 	private void launch(Environment environment) {
