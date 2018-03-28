@@ -1,7 +1,5 @@
 package main.java.softdesign;
 
-import main.java.softdesign.map.Map;
-import main.java.softdesign.map.CartesianGridMap;
 import main.java.softdesign.map.CartesianCoordinate;
 
 import simbad.sim.Box;
@@ -14,6 +12,7 @@ import javax.vecmath.Vector3f;
 import javax.vecmath.Point3d;
 import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.ArrayList;
 
 public class Environment extends EnvironmentDescription {
 
@@ -21,17 +20,17 @@ public class Environment extends EnvironmentDescription {
 	private static final int MEDIUM = 15;
 	private static final int LARGE = 25;
 
-	private static final float BOX_SIZE = 1f;
+	private static final float BOX_SIZE = 0.5f;
 
 	private static final Environment INSTANCE = new Environment(MEDIUM);
 
 	private int size;
-	private Map map;
+	private ArrayList<CartesianCoordinate> obstacleCoordinates;
 
 	private Environment(int size) {
 		this.size = size;
 
-		map = new CartesianGridMap(size);
+		obstacleCoordinates = new ArrayList<CartesianCoordinate>();
 
 		light1IsOn = true;
 		light2IsOn = true;
@@ -41,10 +40,6 @@ public class Environment extends EnvironmentDescription {
 		setWorldSize(size);
 		initWalls();
 		initObstacles();
-	}
-
-	public Map getMap() {
-		return map;
 	}
 
 	public static Environment getInstance() {
@@ -67,12 +62,16 @@ public class Environment extends EnvironmentDescription {
 		add(wall);
 	}
 
+	public ArrayList<CartesianCoordinate> getObstacleCoordinates() {
+		return obstacleCoordinates;
+	}
+
 	public void initObstacles() {
 		for(int i = 0; i < 20; i++) {
 			Vector3d location = randomVector();
 
+			obstacleCoordinates.add(new CartesianCoordinate(location, getSize()));
 			Box box = new Box(location, new Vector3f(BOX_SIZE/2, BOX_SIZE/2, BOX_SIZE/2), this);
-			map.setTile(new CartesianCoordinate(location, getSize()), Map.Tile.WALL);
 
 			box.setColor(new Color3f(Color.ORANGE));
 			add(box);
