@@ -13,6 +13,7 @@ import javax.vecmath.Point3d;
 import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Environment extends EnvironmentDescription {
 
@@ -25,7 +26,7 @@ public class Environment extends EnvironmentDescription {
 	private static final Environment INSTANCE = new Environment(MEDIUM);
 
 	private int size;
-	private ArrayList<CartesianCoordinate> obstacleCoordinates;
+	private List<CartesianCoordinate> obstacleCoordinates;
 
 	private Environment(int size) {
 		this.size = size;
@@ -62,7 +63,7 @@ public class Environment extends EnvironmentDescription {
 		add(wall);
 	}
 
-	public ArrayList<CartesianCoordinate> getObstacleCoordinates() {
+	public List<CartesianCoordinate> getObstacleCoordinates() {
 		return obstacleCoordinates;
 	}
 
