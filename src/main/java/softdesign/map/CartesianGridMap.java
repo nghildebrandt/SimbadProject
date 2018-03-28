@@ -27,8 +27,8 @@ public class CartesianGridMap extends AbstractMap {
 
 		for(Tile[] row : grid) {
 			for(Tile tile: row) {
-				if(tile == Map.Tile.COVERED) { covered++; }
-				if(tile == Map.Tile.EMPTY || tile == Map.Tile.ROBOT) { toCover++; }
+				if(tile == Map.Tile.COVERED) covered++;
+				if(tile == Map.Tile.EMPTY || tile == Map.Tile.ROBOT) toCover++;
 			}
 		}
 

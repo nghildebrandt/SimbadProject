@@ -7,10 +7,10 @@ import java.util.List;
 /**
  * In-memory store for image.
  *
- * A very primitive implementation of {@link ImageRepository}. It uses an {@link ArrayList} as its underlying storage
+ * <p>A very primitive implementation of {@link ImageRepository}. It uses an {@link ArrayList} as its underlying storage
  * mechanism.
  *
- * While in reality you'd want a persistent store, this implementation is sufficient for the purpose of the project
+ * <p>While in reality you'd want a persistent store, this implementation is sufficient for the purpose of the project
  * demo.
  */
 class ImageArrayListStore implements ImageRepository {

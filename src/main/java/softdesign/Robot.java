@@ -65,8 +65,6 @@ public class Robot extends Agent {
 		updateCoordinate();
 
 		ensureNeighbouringImagesTaken();
-		// TODO remove
-		System.out.println(getMap().toString());
 
 		getMap().setTile(coordinate, Map.Tile.ROBOT);
 		getMap().setTile(tileAhead(currentDirection, -1), Map.Tile.COVERED);
@@ -119,11 +117,16 @@ public class Robot extends Agent {
 
 	private CartesianCoordinate tileAhead(Direction direction, int steps) {
 		switch (direction) {
-			case EAST: return new CartesianCoordinate(coordinate.x + steps, coordinate.z);
-			case WEST: return new CartesianCoordinate(coordinate.x - steps, coordinate.z);
-			case NORTH: return new CartesianCoordinate(coordinate.x, coordinate.z - steps);
-			case SOUTH: return new CartesianCoordinate(coordinate.x, coordinate.z + steps);
-			default: throw new IllegalArgumentException("Unrecognized direction");
+			case EAST:
+				return new CartesianCoordinate(coordinate.x + steps, coordinate.z);
+			case WEST:
+				return new CartesianCoordinate(coordinate.x - steps, coordinate.z);
+			case NORTH:
+				return new CartesianCoordinate(coordinate.x, coordinate.z - steps);
+			case SOUTH:
+				return new CartesianCoordinate(coordinate.x, coordinate.z + steps);
+			default:
+				throw new IllegalArgumentException("Unrecognized direction");
 		}
 	}
 }
