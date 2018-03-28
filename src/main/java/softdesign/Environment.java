@@ -52,14 +52,14 @@ public class Environment extends EnvironmentDescription {
 	}
 
 	private void initWalls() {
-		addWall(new Vector3d(-this.size / 2.0, 0, 0), new Color3f(Color.BLUE), true);
-		addWall(new Vector3d(this.size / 2.0, 0, 0), new Color3f(Color.GREEN), true);
-		addWall(new Vector3d(0, 0, this.size / 2.0), new Color3f(Color.RED), false);
-		addWall(new Vector3d(0, 0, -this.size / 2.0), new Color3f(Color.YELLOW), false);
+		addWall(new Vector3d(-size / 2.0, 0, 0), new Color3f(Color.BLUE), true);
+		addWall(new Vector3d(size / 2.0, 0, 0), new Color3f(Color.GREEN), true);
+		addWall(new Vector3d(0, 0, size / 2.0), new Color3f(Color.RED), false);
+		addWall(new Vector3d(0, 0, -size / 2.0), new Color3f(Color.YELLOW), false);
 	}
 
 	private void addWall(Vector3d position, Color3f color, boolean rotate) {
-		Wall wall = new Wall(position, this.size, 2, this);
+		Wall wall = new Wall(position, size, 2, this);
 		wall.setColor(color);
 		if(rotate) {
 			wall.rotate90(1);
@@ -84,8 +84,8 @@ public class Environment extends EnvironmentDescription {
 	}
 
 	private Vector3d randomVector() {
-		int randomX = ThreadLocalRandom.current().nextInt(-this.size / 2, this.size / 2 + 1);
-		int randomY = ThreadLocalRandom.current().nextInt(-this.size / 2, this.size / 2 + 1);
+		int randomX = ThreadLocalRandom.current().nextInt(-size / 2, size / 2 + 1);
+		int randomY = ThreadLocalRandom.current().nextInt(-size / 2, size / 2 + 1);
 		return new Vector3d(randomY - BOX_SIZE/2, 0, randomX - BOX_SIZE/2);
 	}
 }

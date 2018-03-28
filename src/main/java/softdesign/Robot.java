@@ -73,7 +73,7 @@ public class Robot extends Agent {
 
 		if(!coordinate.isOnGrid()) {
 			return;
-		} else if(!getMap().getTile(tileAhead(currentDirection, 1)).isDrivable()) {
+		} else if(!getMap().getTile(tileAhead(currentDirection, 1)).isPassable()) {
 			turnRight();
 		} else if (Math.random() > 0.01) {
 			setTranslationalVelocity(1);

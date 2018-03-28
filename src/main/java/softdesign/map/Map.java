@@ -5,7 +5,7 @@ public interface Map {
 	enum Tile {
 		COVERED, WALL, EMPTY, ROBOT;
 
-		public boolean isDrivable() {
+		public boolean isPassable() {
 			return this == COVERED || this == EMPTY;
 		}
 	}

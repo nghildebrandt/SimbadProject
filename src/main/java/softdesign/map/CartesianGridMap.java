@@ -1,13 +1,14 @@
 package main.java.softdesign.map;
 
 import javax.vecmath.Point3d;
+import java.util.Arrays;
 
 import main.java.softdesign.Environment;
 
 public class CartesianGridMap extends AbstractMap {
 
 	private Tile[][] grid;
-	int size;
+	private int size;
 
 	public CartesianGridMap(int size) {
 		super();
@@ -16,7 +17,7 @@ public class CartesianGridMap extends AbstractMap {
 		this.size = size;
 
 		for(Tile[] row : grid) {
-			java.util.Arrays.fill(row, Tile.EMPTY);
+			Arrays.fill(row, Tile.EMPTY);
 		}
 	}
 
