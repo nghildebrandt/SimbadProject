@@ -71,8 +71,10 @@ public class CentralStation {
 
 		environment.add(new Robot(new Vector3d(extremes, 0, extremes), "small", this));
 		environment.add(new Robot(new Vector3d(-extremes, 0, extremes), "small", this));
-		environment.add(new Robot(new Vector3d(-extremes, 0, -extremes), "small", this));
-		environment.add(new Robot(new Vector3d(extremes, 0, -extremes), "small", this));
+		if(!environment.isSmall()) {
+			environment.add(new Robot(new Vector3d(-extremes, 0, -extremes), "small", this));
+			environment.add(new Robot(new Vector3d(extremes, 0, -extremes), "small", this));
+		}
 	}
 
 	private void launch(Environment environment) {

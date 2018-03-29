@@ -13,6 +13,9 @@ import java.awt.image.BufferedImage;
 
 public class Robot extends Agent {
 
+	private static double DIRECTION_CHANGE_PROBABILITY = 0.01;
+	private static double BREAKDOWN_PROBABILITY_PROBABILITY = 0.001;
+
 	public enum Direction {
 
 		SOUTH, WEST, NORTH, EAST;
@@ -33,6 +36,8 @@ public class Robot extends Agent {
 			return rightBy().rightBy(turns - 1);
 		}
 	}
+
+	private boolean broken = false;
 
 	private Direction currentDirection;
 	private CentralStation centralStation;
@@ -64,6 +69,8 @@ public class Robot extends Agent {
 	public void performBehavior() {
 		updateCoordinate();
 
+		if(broken) return;
+
 		ensureNeighbouringImagesTaken();
 
 		centralStation.sendTile(coordinate, Map.Tile.ROBOT);
@@ -71,12 +78,14 @@ public class Robot extends Agent {
 
 		if(!coordinate.isOnGrid()) {
 			return;
+		} else if(Math.random() < BREAKDOWN_PROBABILITY_PROBABILITY) {
+			broken = true;
 		} else if(!centralStation.requestTile(tileAhead(currentDirection, 1)).isPassable()) {
 			turnRight();
-		} else if (Math.random() > 0.01) {
-			setTranslationalVelocity(1);
-		} else {
+		} else if (Math.random() < DIRECTION_CHANGE_PROBABILITY) {
 			turnRight();
+		} else {
+			setTranslationalVelocity(1);
 		}
 	}
 
