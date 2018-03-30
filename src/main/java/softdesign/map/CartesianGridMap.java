@@ -53,23 +53,4 @@ public class CartesianGridMap extends AbstractMap {
 	public int getSize() {
 		return size;
 	}
-
-	// TODO definitely remove this before submitting, its ugly af.
-	@Override
-	public String toString() {
-		String s = "\n|";
-
-		for(int j = 0; j < grid[0].length; j++) { s += "-"; } s += "|\n|";
-
-		for(int z = 0; z < grid.length; z++) { for(int x = 0; x < grid[z].length; x++) {
-			if(grid[x][z] == Tile.COVERED) { s += "X"; }
-			if(grid[x][z] == Tile.ROBOT) { s += "e"; }
-			if(grid[x][z] == Tile.WALL) { s += "O"; }
-			if(grid[x][z] == Tile.EMPTY) { s += " "; }
-		} s += "|\n|"; }
-
-		for(int j = 0; j < grid[grid.length - 1].length; j++) { s += "-"; }
-
-		return s + "|\n";
-	}
 }
