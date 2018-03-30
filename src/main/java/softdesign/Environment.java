@@ -70,7 +70,7 @@ public class Environment extends EnvironmentDescription {
 	}
 
 	public void initObstacles() {
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 5; i++) {
 			Vector3d location = randomVector();
 
 			obstacleCoordinates.add(new CartesianCoordinate(location, getSize()));

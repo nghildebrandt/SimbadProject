@@ -89,6 +89,7 @@ public class Robot extends Agent {
 
 		if (Math.random() < BREAKDOWN_PROBABILITY_PROBABILITY) {
 			broken = true;
+      setTranslationalVelocity(0);
 		} else if (!centralStation.requestTile(tileAhead(currentDirection, 1)).isPassable()) {
 			turnRight();
 		} else if (Math.random() < DIRECTION_CHANGE_PROBABILITY) {
