@@ -1,7 +1,6 @@
 package main.java.softdesign.map;
 
 import javax.vecmath.Tuple3d;
-import main.java.softdesign.Environment;
 
 public class CartesianCoordinate {
 

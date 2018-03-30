@@ -1,9 +1,6 @@
 package main.java.softdesign.map;
 
-import javax.vecmath.Point3d;
 import java.util.Arrays;
-
-import main.java.softdesign.Environment;
 
 public class CartesianGridMap extends AbstractMap {
 
@@ -16,7 +13,7 @@ public class CartesianGridMap extends AbstractMap {
 		this.grid = new Tile[size][size];
 		this.size = size;
 
-		for(Tile[] row : grid) {
+		for (Tile[] row : grid) {
 			Arrays.fill(row, Tile.EMPTY);
 		}
 	}
@@ -25,10 +22,10 @@ public class CartesianGridMap extends AbstractMap {
 		int covered = 0;
 		int toCover = 0;
 
-		for(Tile[] row : grid) {
-			for(Tile tile: row) {
-				if(tile == Map.Tile.COVERED) covered++;
-				if(tile == Map.Tile.EMPTY || tile == Map.Tile.ROBOT) toCover++;
+		for (Tile[] row : grid) {
+			for (Tile tile : row) {
+				if (tile == Map.Tile.COVERED) covered++;
+				if (tile == Map.Tile.EMPTY || tile == Map.Tile.ROBOT) toCover++;
 			}
 		}
 
@@ -39,7 +36,7 @@ public class CartesianGridMap extends AbstractMap {
 	public Tile getTile(CartesianCoordinate coordinate) {
 		try {
 			return grid[coordinate.x][coordinate.z];
-		} catch(ArrayIndexOutOfBoundsException e) {
+		} catch (ArrayIndexOutOfBoundsException e) {
 			return Tile.WALL;
 		}
 	}
@@ -48,7 +45,8 @@ public class CartesianGridMap extends AbstractMap {
 	public void setTile(CartesianCoordinate coordinate, Tile tile) {
 		try {
 			grid[coordinate.x][coordinate.z] = tile;
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch (ArrayIndexOutOfBoundsException e) {
+		}
 	}
 
 	@Override
