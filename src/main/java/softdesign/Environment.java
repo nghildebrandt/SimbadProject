@@ -64,11 +64,10 @@ public class Environment extends EnvironmentDescription {
 	}
 
 	private void initObstacles() {
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < NUMBER_OF_OBSTACLES; i++) {
 			Vector3d location = randomVector();
 			CartesianCoordinate obstacleCoordinate = new CartesianCoordinate(location, size);
 
-		for (int i = 0; i < NUMBER_OF_OBSTACLES; i++) {
 			obstacleCoordinates.add(obstacleCoordinate);
 			Box box = new Box(location, new Vector3f(BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2), this);
 
