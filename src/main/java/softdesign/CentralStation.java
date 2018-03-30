@@ -3,6 +3,7 @@ package main.java.softdesign;
 import main.java.softdesign.map.CartesianCoordinate;
 import main.java.softdesign.map.CartesianGridMap;
 import main.java.softdesign.map.Map;
+import main.java.softdesign.map.Map.Tile;
 import main.java.softdesign.image.ImageRepository;
 import main.java.softdesign.image.ImageRepositoryFactory;
 
@@ -35,12 +36,20 @@ public class CentralStation {
 		return map.getCoveredRatio();
 	}
 
-	public Map getMap() {
-		return map;
+	public void sendImage(BufferedImage image) {
+		imageRepository.save(image);
 	}
 
-	public void saveImage(BufferedImage image) {
-		imageRepository.save(image);
+	public Tile requestTile(CartesianCoordinate coordinate) {
+		return map.getTile(coordinate);
+	}
+
+	public void sendTile(CartesianCoordinate coordinate, Tile tile) {
+		map.setTile(coordinate, tile);
+	}
+
+	public int requestMapSize() {
+		return map.getSize();
 	}
 
 	public void startMission(Environment environment) {
@@ -62,8 +71,10 @@ public class CentralStation {
 
 		environment.add(new Robot(new Vector3d(extremes, 0, extremes), "small", this));
 		environment.add(new Robot(new Vector3d(-extremes, 0, extremes), "small", this));
-		environment.add(new Robot(new Vector3d(-extremes, 0, -extremes), "small", this));
-		environment.add(new Robot(new Vector3d(extremes, 0, -extremes), "small", this));
+		if(!environment.isSmall()) {
+			environment.add(new Robot(new Vector3d(-extremes, 0, -extremes), "small", this));
+			environment.add(new Robot(new Vector3d(extremes, 0, -extremes), "small", this));
+		}
 	}
 
 	private void launch(Environment environment) {

@@ -47,6 +47,10 @@ public class Environment extends EnvironmentDescription {
 		return INSTANCE;
 	}
 
+	public boolean isSmall() {
+		return size <= SMALL;
+	}
+
 	private void initWalls() {
 		addWall(new Vector3d(-size / 2.0, 0, 0), new Color3f(Color.BLUE), true);
 		addWall(new Vector3d(size / 2.0, 0, 0), new Color3f(Color.GREEN), true);
