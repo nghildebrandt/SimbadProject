@@ -73,10 +73,11 @@ public class Robot extends Agent {
 
 	@Override
 	public void performBehavior() {
+		if (broken) {
+			return;
+		}
+
 		updateCoordinate();
-
-		if (broken) return;
-
 		ensureNeighbouringImagesTaken();
 
 		centralStation.sendTile(coordinate, Map.Tile.ROBOT);
@@ -84,7 +85,9 @@ public class Robot extends Agent {
 
 		if (!coordinate.isOnGrid()) {
 			return;
-		} else if (Math.random() < BREAKDOWN_PROBABILITY_PROBABILITY) {
+		}
+
+		if (Math.random() < BREAKDOWN_PROBABILITY_PROBABILITY) {
 			broken = true;
 		} else if (!centralStation.requestTile(tileAhead(currentDirection, 1)).isPassable()) {
 			turnRight();
