@@ -19,6 +19,7 @@ public class Environment extends EnvironmentDescription {
 	private static final int MEDIUM = 15;
 	private static final int LARGE = 25;
 
+	private static final int NUMBER_OF_OBSTACLES = 20;
 	private static final float BOX_SIZE = 0.5f;
 
 	private static final Environment INSTANCE = new Environment(MEDIUM);
@@ -67,6 +68,7 @@ public class Environment extends EnvironmentDescription {
 			Vector3d location = randomVector();
 			CartesianCoordinate obstacleCoordinate = new CartesianCoordinate(location, size);
 
+		for (int i = 0; i < NUMBER_OF_OBSTACLES; i++) {
 			obstacleCoordinates.add(obstacleCoordinate);
 			Box box = new Box(location, new Vector3f(BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2), this);
 
