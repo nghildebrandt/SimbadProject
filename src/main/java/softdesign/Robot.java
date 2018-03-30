@@ -1,8 +1,7 @@
 package main.java.softdesign;
 
-import main.java.softdesign.map.Map;
 import main.java.softdesign.map.CartesianCoordinate;
-
+import main.java.softdesign.map.Map;
 import simbad.sim.Agent;
 import simbad.sim.CameraSensor;
 import simbad.sim.RobotFactory;
@@ -13,26 +12,38 @@ import java.awt.image.BufferedImage;
 
 public class Robot extends Agent {
 
+	private static double DIRECTION_CHANGE_PROBABILITY = 0.01;
+	private static double BREAKDOWN_PROBABILITY_PROBABILITY = 0.001;
+
 	public enum Direction {
 
 		SOUTH, WEST, NORTH, EAST;
 
 		public Direction rightBy() {
-			switch(this) {
-				case SOUTH: return WEST;
-				case WEST: return NORTH;
-				case NORTH: return EAST;
-				case EAST: return SOUTH;
-				default: throw new IllegalArgumentException("Unrecognized direction");
+			switch (this) {
+				case SOUTH:
+					return WEST;
+				case WEST:
+					return NORTH;
+				case NORTH:
+					return EAST;
+				case EAST:
+					return SOUTH;
+				default:
+					throw new IllegalArgumentException("Unrecognized direction");
 			}
 		}
 
 		public Direction rightBy(int turns) {
-			if(turns == 0) { return this; }
+			if (turns == 0) {
+				return this;
+			}
 
 			return rightBy().rightBy(turns - 1);
 		}
 	}
+
+	private boolean broken = false;
 
 	private Direction currentDirection;
 	private CentralStation centralStation;
@@ -62,21 +73,28 @@ public class Robot extends Agent {
 
 	@Override
 	public void performBehavior() {
-		updateCoordinate();
+		if (broken) {
+			return;
+		}
 
+		updateCoordinate();
 		ensureNeighbouringImagesTaken();
 
-		getMap().setTile(coordinate, Map.Tile.ROBOT);
-		getMap().setTile(tileAhead(currentDirection, -1), Map.Tile.COVERED);
+		centralStation.sendTile(coordinate, Map.Tile.ROBOT);
+		centralStation.sendTile(tileAhead(currentDirection, -1), Map.Tile.COVERED);
 
-		if(!coordinate.isOnGrid()) {
+		if (!coordinate.isOnGrid()) {
 			return;
-		} else if(!getMap().getTile(tileAhead(currentDirection, 1)).isPassable()) {
+		}
+
+		if (Math.random() < BREAKDOWN_PROBABILITY_PROBABILITY) {
+			broken = true;
+		} else if (!centralStation.requestTile(tileAhead(currentDirection, 1)).isPassable()) {
 			turnRight();
-		} else if (Math.random() > 0.01) {
-			setTranslationalVelocity(1);
+		} else if (Math.random() < DIRECTION_CHANGE_PROBABILITY) {
+			turnRight();
 		} else {
-			turnRight();
+			setTranslationalVelocity(1);
 		}
 	}
 
@@ -89,7 +107,7 @@ public class Robot extends Agent {
 	private void updateCoordinate() {
 		Point3d point = new Point3d();
 		getCoords(point);
-		coordinate = new CartesianCoordinate(point, getMap().getSize());
+		coordinate = new CartesianCoordinate(point, centralStation.requestMapSize());
 	}
 
 	//takes images from the back, left, and right side if not take yet
@@ -99,19 +117,15 @@ public class Robot extends Agent {
 		takeImageIfNeeded(currentDirection.rightBy(3), leftCamera);
 	}
 
-	private Map getMap() {
-		return centralStation.getMap();
-	}
-
 	private void takeImageIfNeeded(Direction direction, CameraSensor camera) {
 		CartesianCoordinate coordinate = tileAhead(direction, 1);
 
-		if(getMap().getTile(coordinate) == Map.Tile.EMPTY) {
+		if (centralStation.requestTile(coordinate) == Map.Tile.EMPTY) {
 			BufferedImage image = camera.createCompatibleImage();
-			centralStation.saveImage(image);
+			centralStation.sendImage(image);
 			camera.copyVisionImage(image);
 
-			getMap().setTile(coordinate, Map.Tile.COVERED);
+			centralStation.sendTile(coordinate, Map.Tile.COVERED);
 		}
 	}
 

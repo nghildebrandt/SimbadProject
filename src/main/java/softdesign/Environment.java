@@ -1,7 +1,6 @@
 package main.java.softdesign;
 
 import main.java.softdesign.map.CartesianCoordinate;
-
 import simbad.sim.Box;
 import simbad.sim.EnvironmentDescription;
 import simbad.sim.Wall;
@@ -9,11 +8,10 @@ import simbad.sim.Wall;
 import javax.vecmath.Color3f;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
-import javax.vecmath.Point3d;
 import java.awt.*;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Environment extends EnvironmentDescription {
 
@@ -47,6 +45,10 @@ public class Environment extends EnvironmentDescription {
 		return INSTANCE;
 	}
 
+	public boolean isSmall() {
+		return size <= SMALL;
+	}
+
 	private void initWalls() {
 		addWall(new Vector3d(-size / 2.0, 0, 0), new Color3f(Color.BLUE), true);
 		addWall(new Vector3d(size / 2.0, 0, 0), new Color3f(Color.GREEN), true);
@@ -57,7 +59,7 @@ public class Environment extends EnvironmentDescription {
 	private void addWall(Vector3d position, Color3f color, boolean rotate) {
 		Wall wall = new Wall(position, size, 2, this);
 		wall.setColor(color);
-		if(rotate) {
+		if (rotate) {
 			wall.rotate90(1);
 		}
 		add(wall);
@@ -68,11 +70,11 @@ public class Environment extends EnvironmentDescription {
 	}
 
 	public void initObstacles() {
-		for(int i = 0; i < 20; i++) {
+		for (int i = 0; i < 20; i++) {
 			Vector3d location = randomVector();
 
 			obstacleCoordinates.add(new CartesianCoordinate(location, getSize()));
-			Box box = new Box(location, new Vector3f(BOX_SIZE/2, BOX_SIZE/2, BOX_SIZE/2), this);
+			Box box = new Box(location, new Vector3f(BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2), this);
 
 			box.setColor(new Color3f(Color.ORANGE));
 			add(box);
@@ -86,6 +88,6 @@ public class Environment extends EnvironmentDescription {
 	private Vector3d randomVector() {
 		int randomX = ThreadLocalRandom.current().nextInt(-size / 2, size / 2 + 1);
 		int randomY = ThreadLocalRandom.current().nextInt(-size / 2, size / 2 + 1);
-		return new Vector3d(randomY - BOX_SIZE/2, 0, randomX - BOX_SIZE/2);
+		return new Vector3d(randomY - BOX_SIZE / 2, 0, randomX - BOX_SIZE / 2);
 	}
 }
