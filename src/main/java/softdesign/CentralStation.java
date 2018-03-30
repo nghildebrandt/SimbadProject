@@ -17,6 +17,7 @@ public class CentralStation {
 	private static final double COVERAGE_REQUIREMENT = 0.75;
 
 	private final ImageRepository imageRepository;
+
 	private Map map;
 
 	private CentralStation() {
@@ -52,16 +53,16 @@ public class CentralStation {
 	}
 
 	public void startMission(Environment environment) {
-		setupMap(environment);
+		drawMap(environment);
 		deployRobots(environment);
-		launch(environment);
+		launchMission(environment);
 	}
 
-	private void setupMap(Environment environment) {
+	private void drawMap(Environment environment) {
 		map = new CartesianGridMap(environment.getSize());
 
-		for (CartesianCoordinate obstacleCoordinates : environment.getObstacleCoordinates()) {
-			map.setTile(obstacleCoordinates, Map.Tile.WALL);
+		for (CartesianCoordinate obstacleCoordinate : environment.getObstacleCoordinates()) {
+			map.setTile(obstacleCoordinate, Map.Tile.WALL);
 		}
 	}
 
@@ -76,7 +77,7 @@ public class CentralStation {
 		}
 	}
 
-	private void launch(Environment environment) {
+	private void launchMission(Environment environment) {
 		new Simbad(environment, false);
 	}
 }

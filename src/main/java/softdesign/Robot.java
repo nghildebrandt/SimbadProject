@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
 public class Robot extends Agent {
 
 	private static double DIRECTION_CHANGE_PROBABILITY = 0.01;
-	private static double BREAKDOWN_PROBABILITY_PROBABILITY = 0.001;
+	private static double BREAKDOWN_PROBABILITY = 0.001;
 
 	public enum Direction {
 
@@ -87,21 +87,30 @@ public class Robot extends Agent {
 			return;
 		}
 
-		if (Math.random() < BREAKDOWN_PROBABILITY_PROBABILITY) {
+		if (Math.random() < BREAKDOWN_PROBABILITY) {
 			broken = true;
 		} else if (!centralStation.requestTile(tileAhead(currentDirection, 1)).isPassable()) {
+			stop();
 			turnRight();
 		} else if (Math.random() < DIRECTION_CHANGE_PROBABILITY) {
+			stop();
 			turnRight();
 		} else {
-			setTranslationalVelocity(1);
+			moveInCurrentDirection();
 		}
 	}
 
-	private void turnRight() {
+	private void stop() {
 		setTranslationalVelocity(0);
+	}
+
+	private void turnRight() {
 		rotateY(-(Math.PI / 2));
 		currentDirection = currentDirection.rightBy(1);
+	}
+
+	private void moveInCurrentDirection() {
+		setTranslationalVelocity(1);
 	}
 
 	private void updateCoordinate() {

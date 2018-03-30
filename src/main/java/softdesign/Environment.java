@@ -19,6 +19,7 @@ public class Environment extends EnvironmentDescription {
 	private static final int MEDIUM = 15;
 	private static final int LARGE = 25;
 
+	private static final int NUMBER_OF_OBSTACLES = 20;
 	private static final float BOX_SIZE = 0.5f;
 
 	private static final Environment INSTANCE = new Environment(MEDIUM);
@@ -29,15 +30,15 @@ public class Environment extends EnvironmentDescription {
 	private Environment(int size) {
 		this.size = size;
 
-		obstacleCoordinates = new ArrayList<CartesianCoordinate>();
+		obstacleCoordinates = new ArrayList<>();
 
 		light1IsOn = true;
 		light2IsOn = true;
 
+		setWorldSize(size);
 		showAxis(true);
 
-		setWorldSize(size);
-		initWalls();
+		initOuterWalls();
 		initObstacles();
 	}
 
@@ -45,11 +46,7 @@ public class Environment extends EnvironmentDescription {
 		return INSTANCE;
 	}
 
-	public boolean isSmall() {
-		return size <= SMALL;
-	}
-
-	private void initWalls() {
+	private void initOuterWalls() {
 		addWall(new Vector3d(-size / 2.0, 0, 0), new Color3f(Color.BLUE), true);
 		addWall(new Vector3d(size / 2.0, 0, 0), new Color3f(Color.GREEN), true);
 		addWall(new Vector3d(0, 0, size / 2.0), new Color3f(Color.RED), false);
@@ -62,18 +59,16 @@ public class Environment extends EnvironmentDescription {
 		if (rotate) {
 			wall.rotate90(1);
 		}
+
 		add(wall);
 	}
 
-	public List<CartesianCoordinate> getObstacleCoordinates() {
-		return obstacleCoordinates;
-	}
-
-	public void initObstacles() {
-		for (int i = 0; i < 20; i++) {
+	private void initObstacles() {
+		for (int i = 0; i < NUMBER_OF_OBSTACLES; i++) {
 			Vector3d location = randomVector();
+			CartesianCoordinate obstacleCoordinate = new CartesianCoordinate(location, size);
 
-			obstacleCoordinates.add(new CartesianCoordinate(location, getSize()));
+			obstacleCoordinates.add(obstacleCoordinate);
 			Box box = new Box(location, new Vector3f(BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2), this);
 
 			box.setColor(new Color3f(Color.ORANGE));
@@ -81,13 +76,21 @@ public class Environment extends EnvironmentDescription {
 		}
 	}
 
-	public int getSize() {
-		return size;
-	}
-
 	private Vector3d randomVector() {
 		int randomX = ThreadLocalRandom.current().nextInt(-size / 2, size / 2 + 1);
 		int randomY = ThreadLocalRandom.current().nextInt(-size / 2, size / 2 + 1);
 		return new Vector3d(randomY - BOX_SIZE / 2, 0, randomX - BOX_SIZE / 2);
+	}
+
+	public boolean isSmall() {
+		return size <= SMALL;
+	}
+
+	public List<CartesianCoordinate> getObstacleCoordinates() {
+		return obstacleCoordinates;
+	}
+
+	public int getSize() {
+		return size;
 	}
 }
