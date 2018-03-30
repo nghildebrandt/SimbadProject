@@ -65,7 +65,7 @@ public class Environment extends EnvironmentDescription {
 
 	private void initObstacles() {
 		for (int i = 0; i < NUMBER_OF_OBSTACLES; i++) {
-			Vector3d location = randomVector();
+			Vector3d location = generateRandomVector();
 			CartesianCoordinate obstacleCoordinate = new CartesianCoordinate(location, size);
 
 			obstacleCoordinates.add(obstacleCoordinate);
@@ -76,7 +76,7 @@ public class Environment extends EnvironmentDescription {
 		}
 	}
 
-	private Vector3d randomVector() {
+	private Vector3d generateRandomVector() {
 		int randomX = ThreadLocalRandom.current().nextInt(-size / 2, size / 2 + 1);
 		int randomY = ThreadLocalRandom.current().nextInt(-size / 2, size / 2 + 1);
 		return new Vector3d(randomY - BOX_SIZE / 2, 0, randomX - BOX_SIZE / 2);
