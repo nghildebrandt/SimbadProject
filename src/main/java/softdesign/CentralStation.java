@@ -1,16 +1,15 @@
 package main.java.softdesign;
 
+import main.java.softdesign.image.ImageRepository;
+import main.java.softdesign.image.ImageRepositoryFactory;
 import main.java.softdesign.map.CartesianCoordinate;
 import main.java.softdesign.map.CartesianGridMap;
 import main.java.softdesign.map.Map;
 import main.java.softdesign.map.Map.Tile;
-import main.java.softdesign.image.ImageRepository;
-import main.java.softdesign.image.ImageRepositoryFactory;
-
 import simbad.gui.Simbad;
 
-import java.awt.image.BufferedImage;
 import javax.vecmath.Vector3d;
+import java.awt.image.BufferedImage;
 
 public class CentralStation {
 
@@ -61,7 +60,7 @@ public class CentralStation {
 	private void setupMap(Environment environment) {
 		map = new CartesianGridMap(environment.getSize());
 
-		for(CartesianCoordinate obstacleCoordinates : environment.getObstacleCoordinates()) {
+		for (CartesianCoordinate obstacleCoordinates : environment.getObstacleCoordinates()) {
 			map.setTile(obstacleCoordinates, Map.Tile.WALL);
 		}
 	}
@@ -71,7 +70,7 @@ public class CentralStation {
 
 		environment.add(new Robot(new Vector3d(extremes, 0, extremes), "small", this));
 		environment.add(new Robot(new Vector3d(-extremes, 0, extremes), "small", this));
-		if(!environment.isSmall()) {
+		if (!environment.isSmall()) {
 			environment.add(new Robot(new Vector3d(-extremes, 0, -extremes), "small", this));
 			environment.add(new Robot(new Vector3d(extremes, 0, -extremes), "small", this));
 		}

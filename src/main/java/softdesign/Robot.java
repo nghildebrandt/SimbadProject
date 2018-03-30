@@ -1,8 +1,7 @@
 package main.java.softdesign;
 
-import main.java.softdesign.map.Map;
 import main.java.softdesign.map.CartesianCoordinate;
-
+import main.java.softdesign.map.Map;
 import simbad.sim.Agent;
 import simbad.sim.CameraSensor;
 import simbad.sim.RobotFactory;
@@ -21,17 +20,24 @@ public class Robot extends Agent {
 		SOUTH, WEST, NORTH, EAST;
 
 		public Direction rightBy() {
-			switch(this) {
-				case SOUTH: return WEST;
-				case WEST: return NORTH;
-				case NORTH: return EAST;
-				case EAST: return SOUTH;
-				default: throw new IllegalArgumentException("Unrecognized direction");
+			switch (this) {
+				case SOUTH:
+					return WEST;
+				case WEST:
+					return NORTH;
+				case NORTH:
+					return EAST;
+				case EAST:
+					return SOUTH;
+				default:
+					throw new IllegalArgumentException("Unrecognized direction");
 			}
 		}
 
 		public Direction rightBy(int turns) {
-			if(turns == 0) { return this; }
+			if (turns == 0) {
+				return this;
+			}
 
 			return rightBy().rightBy(turns - 1);
 		}
@@ -67,20 +73,23 @@ public class Robot extends Agent {
 
 	@Override
 	public void performBehavior() {
+		if (broken) {
+			return;
+		}
+
 		updateCoordinate();
-
-		if(broken) return;
-
 		ensureNeighbouringImagesTaken();
 
 		centralStation.sendTile(coordinate, Map.Tile.ROBOT);
 		centralStation.sendTile(tileAhead(currentDirection, -1), Map.Tile.COVERED);
 
-		if(!coordinate.isOnGrid()) {
+		if (!coordinate.isOnGrid()) {
 			return;
-		} else if(Math.random() < BREAKDOWN_PROBABILITY_PROBABILITY) {
+		}
+
+		if (Math.random() < BREAKDOWN_PROBABILITY_PROBABILITY) {
 			broken = true;
-		} else if(!centralStation.requestTile(tileAhead(currentDirection, 1)).isPassable()) {
+		} else if (!centralStation.requestTile(tileAhead(currentDirection, 1)).isPassable()) {
 			turnRight();
 		} else if (Math.random() < DIRECTION_CHANGE_PROBABILITY) {
 			turnRight();
@@ -111,7 +120,7 @@ public class Robot extends Agent {
 	private void takeImageIfNeeded(Direction direction, CameraSensor camera) {
 		CartesianCoordinate coordinate = tileAhead(direction, 1);
 
-		if(centralStation.requestTile(coordinate) == Map.Tile.EMPTY) {
+		if (centralStation.requestTile(coordinate) == Map.Tile.EMPTY) {
 			BufferedImage image = camera.createCompatibleImage();
 			centralStation.sendImage(image);
 			camera.copyVisionImage(image);
