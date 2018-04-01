@@ -87,12 +87,9 @@ public class Robot extends Agent {
 			return;
 		}
 
-		if (Math.random() < BREAKDOWN_PROBABILITY) {
+		if (detectedHardwareFault()) {
 			broken = true;
-		} else if (!centralStation.requestTile(tileAhead(currentDirection, 1)).isPassable()) {
-			stop();
-			turnRight();
-		} else if (Math.random() < DIRECTION_CHANGE_PROBABILITY) {
+		} else if (!isFrontClear() || isRandomTurn()) {
 			stop();
 			turnRight();
 		} else {
@@ -114,15 +111,29 @@ public class Robot extends Agent {
 	}
 
 	private void takeImageIfNeeded(Direction direction, CameraSensor camera) {
-		CartesianCoordinate coordinate = tileAhead(direction, 1);
+		CartesianCoordinate coordinateAhead = tileAhead(direction, 1);
 
-		if (centralStation.requestTile(coordinate) == Map.Tile.EMPTY) {
+		if (centralStation.requestTile(coordinateAhead) == Map.Tile.EMPTY) {
 			BufferedImage image = camera.createCompatibleImage();
 			centralStation.sendImage(image);
 			camera.copyVisionImage(image);
 
-			centralStation.sendCoveredArea(coordinate);
+			centralStation.sendCoveredArea(coordinateAhead);
 		}
+	}
+
+	private boolean detectedHardwareFault() {
+		return Math.random() <= BREAKDOWN_PROBABILITY;
+	}
+
+	private boolean isFrontClear() {
+		CartesianCoordinate coordinateAhead = tileAhead(currentDirection, 1);
+		Map.Tile tileAhead = centralStation.requestTile(coordinateAhead);
+		return tileAhead.isPassable();
+	}
+
+	private boolean isRandomTurn() {
+		return Math.random() <= DIRECTION_CHANGE_PROBABILITY;
 	}
 
 	private CartesianCoordinate tileAhead(Direction direction, int steps) {
