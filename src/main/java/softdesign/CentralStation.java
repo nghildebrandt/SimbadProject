@@ -109,6 +109,6 @@ public class CentralStation {
 
 		missionEndTime = Instant.now();
 		Duration missionDuration = Duration.between(missionStartTime, missionEndTime);
-		System.out.printf("Mission completed in %s!%n", missionDuration);
+		System.out.printf("Mission completed in %d seconds!%n", missionDuration.getSeconds());
 	}
 }
