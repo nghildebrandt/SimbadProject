@@ -56,9 +56,17 @@ public class CartesianGridMap extends AbstractMap {
 	}
 
 	private void setTile(CartesianCoordinate coordinate, Tile tile) {
-		try {
-			grid[coordinate.getX()][coordinate.getZ()] = tile;
-		} catch (ArrayIndexOutOfBoundsException e) {
+		int x = coordinate.getX();
+		int z = coordinate.getZ();
+
+		if (isNonReachableEdge(x) || isNonReachableEdge(z)) {
+			return;
 		}
+
+		grid[x][z] = tile;
+	}
+
+	private boolean isNonReachableEdge(int coordinatePoint) {
+		return coordinatePoint == -1 || coordinatePoint == getSize();
 	}
 }
