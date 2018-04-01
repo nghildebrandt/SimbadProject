@@ -40,11 +40,6 @@ public class CartesianGridMap extends AbstractMap {
 	}
 
 	@Override
-	public void markAsRobot(CartesianCoordinate coordinate) {
-		setTile(coordinate, Tile.ROBOT);
-	}
-
-	@Override
 	public void markAsWall(CartesianCoordinate coordinate) {
 		setTile(coordinate, Tile.WALL);
 	}
@@ -53,6 +48,11 @@ public class CartesianGridMap extends AbstractMap {
 	public void markAsCovered(CartesianCoordinate coordinate) {
 		setTile(coordinate, Tile.COVERED);
 		incrementNumberOfCoveredPoints();
+	}
+
+	@Override
+	public void markAsRobot(CartesianCoordinate coordinate) {
+		setTile(coordinate, Tile.ROBOT);
 	}
 
 	private void setTile(CartesianCoordinate coordinate, Tile tile) {

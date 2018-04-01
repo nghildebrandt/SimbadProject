@@ -3,10 +3,12 @@ package main.java.softdesign.map;
 abstract class AbstractMap implements Map {
 
 	private final int size;
+	private final int totalNumberOfPoints;
 	private int numberOfCoveredPoints;
 
 	AbstractMap(int size) {
 		this.size = size;
+		this.totalNumberOfPoints = size * size;
 		this.numberOfCoveredPoints = 0;
 	}
 
@@ -19,7 +21,11 @@ abstract class AbstractMap implements Map {
 		return size;
 	}
 
-	public int getNumberOfCoveredPoints() {
+	int getTotalNumberOfPoints() {
+		return totalNumberOfPoints;
+	}
+
+	int getNumberOfCoveredPoints() {
 		return numberOfCoveredPoints;
 	}
 }
