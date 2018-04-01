@@ -26,7 +26,6 @@ public class CentralStation {
 	private Map map;
 
 	private Instant missionStartTime;
-	private Instant missionEndTime;
 
 	private CentralStation() {
 		this.imageRepository = ImageRepositoryFactory.get();
@@ -37,11 +36,16 @@ public class CentralStation {
 		return INSTANCE;
 	}
 
-	public boolean isMissionComplete() {
-		return getMissionProgress() > COVERAGE_REQUIREMENT;
+	public void reportMissionProgress() {
+		double missionProgress = getMissionProgress();
+		System.out.printf("Current progress: %f%n", missionProgress);
 	}
 
-	public double getMissionProgress() {
+	public boolean isMissionComplete() {
+		return getMissionProgress() >= COVERAGE_REQUIREMENT;
+	}
+
+	private double getMissionProgress() {
 		return map.getCoverage();
 	}
 
@@ -107,8 +111,8 @@ public class CentralStation {
 	public void endMission() {
 		robots.forEach(Robot::moveToStartPosition);
 
-		missionEndTime = Instant.now();
+		Instant missionEndTime = Instant.now();
 		Duration missionDuration = Duration.between(missionStartTime, missionEndTime);
-		System.out.printf("Mission completed in %s!%n", missionDuration);
+		System.out.printf("Mission completed in %d seconds!%n", missionDuration.getSeconds());
 	}
 }

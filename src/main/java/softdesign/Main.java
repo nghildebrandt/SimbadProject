@@ -10,8 +10,7 @@ public class Main {
 		centralStation.startMission(environment);
 
 		while (!centralStation.isMissionComplete()) {
-			double missionCompletionPercentage = centralStation.getMissionProgress();
-			System.out.println(missionCompletionPercentage);
+			centralStation.reportMissionProgress();
 			Thread.sleep(REPORT_INTERVAL);
 		}
 

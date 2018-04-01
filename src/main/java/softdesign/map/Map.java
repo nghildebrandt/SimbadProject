@@ -10,15 +10,13 @@ public interface Map {
 		}
 	}
 
-	void markAsRobot(CartesianCoordinate coordinate);
-
 	void markAsWall(CartesianCoordinate coordinate);
 
 	void markAsCovered(CartesianCoordinate coordinate);
 
-	double getCoverage();
+	void markAsRobot(CartesianCoordinate coordinate);
 
-	int getNumberOfCoveredPoints();
+	double getCoverage();
 
 	Tile getTile(CartesianCoordinate coordinate);
 
