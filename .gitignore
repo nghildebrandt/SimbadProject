@@ -1,6 +1,7 @@
 *.class
 bin/
 .settings/
+*.txt
 
 # IntelliJ files
 .idea/
