@@ -100,19 +100,6 @@ public class Robot extends Agent {
 		}
 	}
 
-	private void stop() {
-		setTranslationalVelocity(0);
-	}
-
-	private void turnRight() {
-		rotateY(-(Math.PI / 2));
-		currentDirection = currentDirection.rightBy(1);
-	}
-
-	private void moveInCurrentDirection() {
-		setTranslationalVelocity(1);
-	}
-
 	private void updateCoordinate() {
 		Point3d point = new Point3d();
 		getCoords(point);
@@ -151,5 +138,18 @@ public class Robot extends Agent {
 			default:
 				throw new IllegalArgumentException("Unrecognized direction");
 		}
+	}
+
+	private void stop() {
+		setTranslationalVelocity(0);
+	}
+
+	private void turnRight() {
+		rotateY(-(Math.PI / 2));
+		currentDirection = currentDirection.rightBy(1);
+	}
+
+	private void moveInCurrentDirection() {
+		setTranslationalVelocity(1);
 	}
 }
