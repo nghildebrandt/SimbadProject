@@ -141,13 +141,13 @@ public class Robot extends Agent {
 	private CartesianCoordinate tileAhead(Direction direction, int steps) {
 		switch (direction) {
 			case EAST:
-				return new CartesianCoordinate(coordinate.x + steps, coordinate.z);
+				return new CartesianCoordinate(coordinate.getX() + steps, coordinate.getZ());
 			case WEST:
-				return new CartesianCoordinate(coordinate.x - steps, coordinate.z);
+				return new CartesianCoordinate(coordinate.getX() - steps, coordinate.getZ());
 			case NORTH:
-				return new CartesianCoordinate(coordinate.x, coordinate.z - steps);
+				return new CartesianCoordinate(coordinate.getX(), coordinate.getZ() - steps);
 			case SOUTH:
-				return new CartesianCoordinate(coordinate.x, coordinate.z + steps);
+				return new CartesianCoordinate(coordinate.getX(), coordinate.getZ() + steps);
 			default:
 				throw new IllegalArgumentException("Unrecognized direction");
 		}

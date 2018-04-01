@@ -5,14 +5,11 @@ import java.util.Arrays;
 public class CartesianGridMap extends AbstractMap {
 
 	private Tile[][] grid;
-	private int size;
 
 	public CartesianGridMap(int size) {
-		super();
+		super(size);
 
 		this.grid = new Tile[size][size];
-		this.size = size;
-
 		for (Tile[] row : grid) {
 			Arrays.fill(row, Tile.EMPTY);
 		}
@@ -47,10 +44,5 @@ public class CartesianGridMap extends AbstractMap {
 			grid[coordinate.x][coordinate.z] = tile;
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
-	}
-
-	@Override
-	public int getSize() {
-		return size;
 	}
 }
