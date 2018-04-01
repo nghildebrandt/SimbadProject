@@ -33,7 +33,7 @@ public class CartesianGridMap extends AbstractMap {
 	@Override
 	public Tile getTile(CartesianCoordinate coordinate) {
 		try {
-			return grid[coordinate.x][coordinate.z];
+			return grid[coordinate.getX()][coordinate.getZ()];
 		} catch (ArrayIndexOutOfBoundsException e) {
 			return Tile.WALL;
 		}
@@ -57,7 +57,7 @@ public class CartesianGridMap extends AbstractMap {
 
 	private void setTile(CartesianCoordinate coordinate, Tile tile) {
 		try {
-			grid[coordinate.x][coordinate.z] = tile;
+			grid[coordinate.getX()][coordinate.getZ()] = tile;
 		} catch (ArrayIndexOutOfBoundsException e) {
 		}
 	}
