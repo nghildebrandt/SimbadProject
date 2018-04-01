@@ -17,18 +17,18 @@ public class Robot extends Agent {
 
 	public enum Direction {
 
-		SOUTH, WEST, NORTH, EAST;
+		NORTH, EAST, SOUTH, WEST;
 
 		public Direction rightBy() {
 			switch (this) {
-				case SOUTH:
-					return WEST;
-				case WEST:
-					return NORTH;
 				case NORTH:
 					return EAST;
 				case EAST:
 					return SOUTH;
+				case SOUTH:
+					return WEST;
+				case WEST:
+					return NORTH;
 				default:
 					throw new IllegalArgumentException("Unrecognized direction");
 			}
@@ -138,14 +138,14 @@ public class Robot extends Agent {
 
 	private CartesianCoordinate tileAhead(Direction direction, int steps) {
 		switch (direction) {
-			case EAST:
-				return new CartesianCoordinate(coordinate.getX() + steps, coordinate.getZ());
-			case WEST:
-				return new CartesianCoordinate(coordinate.getX() - steps, coordinate.getZ());
 			case NORTH:
 				return new CartesianCoordinate(coordinate.getX(), coordinate.getZ() - steps);
+			case EAST:
+				return new CartesianCoordinate(coordinate.getX() + steps, coordinate.getZ());
 			case SOUTH:
 				return new CartesianCoordinate(coordinate.getX(), coordinate.getZ() + steps);
+			case WEST:
+				return new CartesianCoordinate(coordinate.getX() - steps, coordinate.getZ());
 			default:
 				throw new IllegalArgumentException("Unrecognized direction");
 		}
