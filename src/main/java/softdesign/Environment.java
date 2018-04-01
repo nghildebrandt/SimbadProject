@@ -19,7 +19,7 @@ public class Environment extends EnvironmentDescription {
 	private static final int MEDIUM = 15;
 	private static final int LARGE = 25;
 
-	private static final int NUMBER_OF_OBSTACLES = 20;
+	private static final int NUMBER_OF_OBSTACLES = 5;
 	private static final float BOX_SIZE = 0.5f;
 
 	private static final Environment INSTANCE = new Environment(MEDIUM);
