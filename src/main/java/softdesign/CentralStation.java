@@ -36,11 +36,16 @@ public class CentralStation {
 		return INSTANCE;
 	}
 
+	public void reportMissionProgress() {
+		double missionProgress = getMissionProgress();
+		System.out.printf("Current progress: %f%n", missionProgress);
+	}
+
 	public boolean isMissionComplete() {
 		return getMissionProgress() > COVERAGE_REQUIREMENT;
 	}
 
-	public double getMissionProgress() {
+	private double getMissionProgress() {
 		return map.getCoverage();
 	}
 
