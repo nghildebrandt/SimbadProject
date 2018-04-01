@@ -33,7 +33,7 @@ public class CentralStation {
 	}
 
 	public double getMissionProgress() {
-		return map.getCoveredRatio();
+		return map.getCoverage();
 	}
 
 	public void sendImage(BufferedImage image) {
@@ -44,8 +44,12 @@ public class CentralStation {
 		return map.getTile(coordinate);
 	}
 
-	public void sendTile(CartesianCoordinate coordinate, Tile tile) {
-		map.setTile(coordinate, tile);
+	public void sendCurrentPosition(CartesianCoordinate coordinate) {
+		map.markAsRobot(coordinate);
+	}
+
+	public void sendCoveredArea(CartesianCoordinate coordinate) {
+		map.markAsCovered(coordinate);
 	}
 
 	public int requestMapSize() {
@@ -62,7 +66,7 @@ public class CentralStation {
 		map = new CartesianGridMap(environment.getSize());
 
 		for (CartesianCoordinate obstacleCoordinate : environment.getObstacleCoordinates()) {
-			map.setTile(obstacleCoordinate, Map.Tile.WALL);
+			map.markAsWall(obstacleCoordinate);
 		}
 	}
 

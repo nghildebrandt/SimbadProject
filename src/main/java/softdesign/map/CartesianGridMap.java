@@ -15,7 +15,8 @@ public class CartesianGridMap extends AbstractMap {
 		}
 	}
 
-	public double getCoveredRatio() {
+	@Override
+	public double getCoverage() {
 		int covered = 0;
 		int toCover = 0;
 
@@ -39,7 +40,22 @@ public class CartesianGridMap extends AbstractMap {
 	}
 
 	@Override
-	public void setTile(CartesianCoordinate coordinate, Tile tile) {
+	public void markAsRobot(CartesianCoordinate coordinate) {
+		setTile(coordinate, Tile.ROBOT);
+	}
+
+	@Override
+	public void markAsWall(CartesianCoordinate coordinate) {
+		setTile(coordinate, Tile.WALL);
+	}
+
+	@Override
+	public void markAsCovered(CartesianCoordinate coordinate) {
+		setTile(coordinate, Tile.COVERED);
+		incrementNumberOfCoveredPoints();
+	}
+
+	private void setTile(CartesianCoordinate coordinate, Tile tile) {
 		try {
 			grid[coordinate.x][coordinate.z] = tile;
 		} catch (ArrayIndexOutOfBoundsException e) {

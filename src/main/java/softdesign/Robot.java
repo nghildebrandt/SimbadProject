@@ -80,8 +80,8 @@ public class Robot extends Agent {
 		updateCoordinate();
 		ensureNeighbouringImagesTaken();
 
-		centralStation.sendTile(coordinate, Map.Tile.ROBOT);
-		centralStation.sendTile(tileAhead(currentDirection, -1), Map.Tile.COVERED);
+		centralStation.sendCurrentPosition(coordinate);
+		centralStation.sendCoveredArea(tileAhead(currentDirection, -1));
 
 		if (!coordinate.isOnGrid()) {
 			return;
@@ -134,7 +134,7 @@ public class Robot extends Agent {
 			centralStation.sendImage(image);
 			camera.copyVisionImage(image);
 
-			centralStation.sendTile(coordinate, Map.Tile.COVERED);
+			centralStation.sendCoveredArea(coordinate);
 		}
 	}
 
