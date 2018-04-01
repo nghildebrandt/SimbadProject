@@ -26,7 +26,6 @@ public class CentralStation {
 	private Map map;
 
 	private Instant missionStartTime;
-	private Instant missionEndTime;
 
 	private CentralStation() {
 		this.imageRepository = ImageRepositoryFactory.get();
@@ -107,7 +106,7 @@ public class CentralStation {
 	public void endMission() {
 		robots.forEach(Robot::moveToStartPosition);
 
-		missionEndTime = Instant.now();
+		Instant missionEndTime = Instant.now();
 		Duration missionDuration = Duration.between(missionStartTime, missionEndTime);
 		System.out.printf("Mission completed in %d seconds!%n", missionDuration.getSeconds());
 	}
