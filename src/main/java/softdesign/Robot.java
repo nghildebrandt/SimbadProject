@@ -17,18 +17,18 @@ public class Robot extends Agent {
 
 	public enum Direction {
 
-		SOUTH, WEST, NORTH, EAST;
+		NORTH, EAST, SOUTH, WEST;
 
 		public Direction rightBy() {
 			switch (this) {
-				case SOUTH:
-					return WEST;
-				case WEST:
-					return NORTH;
 				case NORTH:
 					return EAST;
 				case EAST:
 					return SOUTH;
+				case SOUTH:
+					return WEST;
+				case WEST:
+					return NORTH;
 				default:
 					throw new IllegalArgumentException("Unrecognized direction");
 			}
@@ -87,30 +87,14 @@ public class Robot extends Agent {
 			return;
 		}
 
-		if (Math.random() < BREAKDOWN_PROBABILITY) {
+		if (detectedHardwareFault()) {
 			broken = true;
-		} else if (!centralStation.requestTile(tileAhead(currentDirection, 1)).isPassable()) {
-			stop();
-			turnRight();
-		} else if (Math.random() < DIRECTION_CHANGE_PROBABILITY) {
+		} else if (!isFrontClear() || isRandomTurn()) {
 			stop();
 			turnRight();
 		} else {
 			moveInCurrentDirection();
 		}
-	}
-
-	private void stop() {
-		setTranslationalVelocity(0);
-	}
-
-	private void turnRight() {
-		rotateY(-(Math.PI / 2));
-		currentDirection = currentDirection.rightBy(1);
-	}
-
-	private void moveInCurrentDirection() {
-		setTranslationalVelocity(1);
 	}
 
 	private void updateCoordinate() {
@@ -127,29 +111,56 @@ public class Robot extends Agent {
 	}
 
 	private void takeImageIfNeeded(Direction direction, CameraSensor camera) {
-		CartesianCoordinate coordinate = tileAhead(direction, 1);
+		CartesianCoordinate coordinateAhead = tileAhead(direction, 1);
 
-		if (centralStation.requestTile(coordinate) == Map.Tile.EMPTY) {
+		if (centralStation.requestTile(coordinateAhead) == Map.Tile.EMPTY) {
 			BufferedImage image = camera.createCompatibleImage();
 			centralStation.sendImage(image);
 			camera.copyVisionImage(image);
 
-			centralStation.sendCoveredArea(coordinate);
+			centralStation.sendCoveredArea(coordinateAhead);
 		}
+	}
+
+	private boolean detectedHardwareFault() {
+		return Math.random() <= BREAKDOWN_PROBABILITY;
+	}
+
+	private boolean isFrontClear() {
+		CartesianCoordinate coordinateAhead = tileAhead(currentDirection, 1);
+		Map.Tile tileAhead = centralStation.requestTile(coordinateAhead);
+		return tileAhead.isPassable();
+	}
+
+	private boolean isRandomTurn() {
+		return Math.random() <= DIRECTION_CHANGE_PROBABILITY;
 	}
 
 	private CartesianCoordinate tileAhead(Direction direction, int steps) {
 		switch (direction) {
-			case EAST:
-				return new CartesianCoordinate(coordinate.getX() + steps, coordinate.getZ());
-			case WEST:
-				return new CartesianCoordinate(coordinate.getX() - steps, coordinate.getZ());
 			case NORTH:
 				return new CartesianCoordinate(coordinate.getX(), coordinate.getZ() - steps);
+			case EAST:
+				return new CartesianCoordinate(coordinate.getX() + steps, coordinate.getZ());
 			case SOUTH:
 				return new CartesianCoordinate(coordinate.getX(), coordinate.getZ() + steps);
+			case WEST:
+				return new CartesianCoordinate(coordinate.getX() - steps, coordinate.getZ());
 			default:
 				throw new IllegalArgumentException("Unrecognized direction");
 		}
+	}
+
+	private void stop() {
+		setTranslationalVelocity(0);
+	}
+
+	private void turnRight() {
+		rotateY(-(Math.PI / 2));
+		currentDirection = currentDirection.rightBy(1);
+	}
+
+	private void moveInCurrentDirection() {
+		setTranslationalVelocity(1);
 	}
 }
