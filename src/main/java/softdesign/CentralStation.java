@@ -42,7 +42,7 @@ public class CentralStation {
 	}
 
 	public boolean isMissionComplete() {
-		return getMissionProgress() > COVERAGE_REQUIREMENT;
+		return getMissionProgress() >= COVERAGE_REQUIREMENT;
 	}
 
 	private double getMissionProgress() {
