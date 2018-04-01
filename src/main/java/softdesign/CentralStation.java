@@ -10,6 +10,8 @@ import simbad.gui.Simbad;
 
 import javax.vecmath.Vector3d;
 import java.awt.image.BufferedImage;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,9 @@ public class CentralStation {
 	private final List<Robot> robots;
 
 	private Map map;
+
+	private Instant missionStartTime;
+	private Instant missionEndTime;
 
 	private CentralStation() {
 		this.imageRepository = ImageRepositoryFactory.get();
@@ -63,7 +68,9 @@ public class CentralStation {
 	public void startMission(Environment environment) {
 		drawMap(environment);
 		deployRobots(environment);
+
 		launchMission(environment);
+		missionStartTime = Instant.now();
 	}
 
 	private void drawMap(Environment environment) {
@@ -100,6 +107,8 @@ public class CentralStation {
 	public void endMission() {
 		robots.forEach(Robot::moveToStartPosition);
 
-		System.out.println("Mission completed!");
+		missionEndTime = Instant.now();
+		Duration missionDuration = Duration.between(missionStartTime, missionEndTime);
+		System.out.printf("Mission completed in %s!%n", missionDuration);
 	}
 }
