@@ -71,13 +71,6 @@ public class Robot extends Agent {
 		this.rightCamera.rotateY(-Math.PI / 2);
 	}
 
-	/**
-	 * Resets the position of the robot. The robot will move from its current position to its initial position when the mission started.
-	 */
-	public void resetPosition() {
-		moveToStartPosition();
-	}
-
 	@Override
 	public void performBehavior() {
 		if (broken) {

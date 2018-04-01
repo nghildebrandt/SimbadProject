@@ -98,6 +98,8 @@ public class CentralStation {
 	}
 
 	public void endMission() {
-		robots.forEach(Robot::resetPosition);
+		robots.forEach(Robot::moveToStartPosition);
+
+		System.out.println("Mission completed!");
 	}
 }
