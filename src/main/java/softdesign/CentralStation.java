@@ -10,6 +10,8 @@ import simbad.gui.Simbad;
 
 import javax.vecmath.Vector3d;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CentralStation {
 
@@ -17,11 +19,13 @@ public class CentralStation {
 	private static final double COVERAGE_REQUIREMENT = 0.75;
 
 	private final ImageRepository imageRepository;
+	private final List<Robot> robots;
 
 	private Map map;
 
 	private CentralStation() {
 		this.imageRepository = ImageRepositoryFactory.get();
+		this.robots = new ArrayList<>();
 	}
 
 	public static CentralStation getInstance() {
@@ -71,17 +75,29 @@ public class CentralStation {
 	}
 
 	private void deployRobots(Environment environment) {
-		int extremes = environment.getSize() / 2;
+		int environmentSize = environment.getSize();
+		boolean smallEnvironment = environment.isSmall();
+		setupRobots(environmentSize, smallEnvironment);
 
-		environment.add(new Robot(new Vector3d(extremes, 0, extremes), "small", this));
-		environment.add(new Robot(new Vector3d(-extremes, 0, extremes), "small", this));
-		if (!environment.isSmall()) {
-			environment.add(new Robot(new Vector3d(-extremes, 0, -extremes), "small", this));
-			environment.add(new Robot(new Vector3d(extremes, 0, -extremes), "small", this));
+		robots.forEach(environment::add);
+	}
+
+	private void setupRobots(int environmentSize, boolean smallEnvironment) {
+		int extremes = environmentSize / 2;
+
+		robots.add(new Robot(new Vector3d(extremes, 0, extremes), "R1", this));
+		robots.add(new Robot(new Vector3d(-extremes, 0, extremes), "R2", this));
+		if (!smallEnvironment) {
+			robots.add(new Robot(new Vector3d(-extremes, 0, -extremes), "R3", this));
+			robots.add(new Robot(new Vector3d(extremes, 0, -extremes), "R4", this));
 		}
 	}
 
 	private void launchMission(Environment environment) {
 		new Simbad(environment, false);
+	}
+
+	public void endMission() {
+		robots.forEach(Robot::resetPosition);
 	}
 }

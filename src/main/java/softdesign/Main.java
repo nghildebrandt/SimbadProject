@@ -14,6 +14,8 @@ public class Main {
 			System.out.println(missionCompletionPercentage);
 			Thread.sleep(REPORT_INTERVAL);
 		}
+
+		centralStation.endMission();
 	}
 
 	public static void main(String[] args) throws InterruptedException {
