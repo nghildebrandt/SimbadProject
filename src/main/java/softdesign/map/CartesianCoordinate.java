@@ -6,8 +6,8 @@ public class CartesianCoordinate {
 
 	private static final double GRID_STICKYINESS = 0.0001;
 
-	public int x;
-	public int z;
+	private final int x;
+	private final int z;
 
 	private int gridSize;
 	private boolean onGrid;
@@ -28,11 +28,19 @@ public class CartesianCoordinate {
 		onGrid = estimatedX - x < GRID_STICKYINESS && estimatedZ - z < GRID_STICKYINESS;
 	}
 
-	public boolean isOnGrid() {
-		return onGrid;
-	}
-
 	private int cartesianOffset() {
 		return (gridSize - 1) / 2;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getZ() {
+		return z;
+	}
+
+	public boolean isOnGrid() {
+		return onGrid;
 	}
 }
