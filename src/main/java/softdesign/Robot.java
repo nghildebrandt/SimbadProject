@@ -19,7 +19,12 @@ public class Robot extends Agent {
 
 		NORTH, EAST, SOUTH, WEST;
 
-		public Direction rightBy() {
+		/**
+		 * Returns the direction after a single clockwise rotation.
+		 *
+		 * @return the direction after a single clockwise rotation.
+		 */
+		public Direction rotate() {
 			switch (this) {
 				case NORTH:
 					return EAST;
@@ -34,12 +39,18 @@ public class Robot extends Agent {
 			}
 		}
 
-		public Direction rightBy(int turns) {
-			if (turns == 0) {
+		/**
+		 * Returns the direction after {@code n} clockwise rotations.
+		 *
+		 * @param n n amount of times to rotate
+		 * @return the direction after all clockwise rotations.
+		 */
+		public Direction rotate(int n) {
+			if (n == 0) {
 				return this;
 			}
 
-			return rightBy().rightBy(turns - 1);
+			return rotate().rotate(n - 1);
 		}
 	}
 
@@ -105,9 +116,9 @@ public class Robot extends Agent {
 
 	//takes images from the back, left, and right side if not take yet
 	private void ensureNeighbouringImagesTaken() {
-		takeImageIfNeeded(currentDirection.rightBy(1), rightCamera);
-		takeImageIfNeeded(currentDirection.rightBy(2), backCamera);
-		takeImageIfNeeded(currentDirection.rightBy(3), leftCamera);
+		takeImageIfNeeded(currentDirection.rotate(1), rightCamera);
+		takeImageIfNeeded(currentDirection.rotate(2), backCamera);
+		takeImageIfNeeded(currentDirection.rotate(3), leftCamera);
 	}
 
 	private void takeImageIfNeeded(Direction direction, CameraSensor camera) {
@@ -157,7 +168,7 @@ public class Robot extends Agent {
 
 	private void turnRight() {
 		rotateY(-(Math.PI / 2));
-		currentDirection = currentDirection.rightBy(1);
+		currentDirection = currentDirection.rotate(1);
 	}
 
 	private void moveInCurrentDirection() {
