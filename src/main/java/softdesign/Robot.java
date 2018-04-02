@@ -54,7 +54,8 @@ public class Robot extends Agent {
 		}
 	}
 
-	private boolean broken = false;
+	private boolean broken;
+	private boolean missionComplete;
 
 	private Direction currentDirection;
 	private CentralStation centralStation;
@@ -67,8 +68,11 @@ public class Robot extends Agent {
 	Robot(Vector3d position, String name, CentralStation centralStation) {
 		super(position, name);
 
-		this.centralStation = centralStation;
+		broken = false;
+		missionComplete = false;
+
 		this.currentDirection = Direction.EAST;
+		this.centralStation = centralStation;
 
 		RobotFactory.addBumperBeltSensor(this, 12);
 		RobotFactory.addSonarBeltSensor(this, 4);
@@ -82,9 +86,14 @@ public class Robot extends Agent {
 		this.rightCamera.rotateY(-Math.PI / 2);
 	}
 
+	public void sendMissionComplete() {
+		missionComplete = true;
+		moveToStartPosition();
+	}
+
 	@Override
 	public void performBehavior() {
-		if (broken) {
+		if (broken || missionComplete) {
 			return;
 		}
 

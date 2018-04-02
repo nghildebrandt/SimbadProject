@@ -109,7 +109,7 @@ public class CentralStation {
 	}
 
 	public void endMission() {
-		robots.forEach(Robot::moveToStartPosition);
+		robots.forEach(Robot::sendMissionComplete);
 
 		Instant missionEndTime = Instant.now();
 		Duration missionDuration = Duration.between(missionStartTime, missionEndTime);
